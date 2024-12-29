@@ -21,11 +21,11 @@ public partial class Event
 
     public string? Description { get; set; }
 
-    public virtual ICollection<DepartmentEvent> DepartmentEvents { get; set; } = new List<DepartmentEvent>();
-
     public virtual EventName EventName { get; set; } = null!;
 
     public virtual Employee? ResponsibleEmployee { get; set; }
+
+    public virtual ICollection<Department> Dapartments { get; set; } = new List<Department>();
 
     public virtual ICollection<Employee> Employees { get; set; } = new List<Employee>();
 

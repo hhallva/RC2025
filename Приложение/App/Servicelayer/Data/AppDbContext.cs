@@ -20,8 +20,6 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Department> Departments { get; set; }
 
-    public virtual DbSet<DepartmentEvent> DepartmentEvents { get; set; }
-
     public virtual DbSet<Employee> Employees { get; set; }
 
     public virtual DbSet<Event> Events { get; set; }
@@ -76,22 +74,30 @@ public partial class AppDbContext : DbContext
             entity.HasOne(d => d.HeadDepartmentNavigation).WithMany(p => p.Departments)
                 .HasForeignKey(d => d.HeadDepartment)
                 .HasConstraintName("FK_Department_Employee");
-        });
 
-        modelBuilder.Entity<DepartmentEvent>(entity =>
-        {
-            entity.HasKey(e => new { e.DapartmentId, e.EventId });
+            entity.HasOne(d => d.ParentDepartment).WithMany(p => p.InverseParentDepartment)
+                .HasForeignKey(d => d.ParentDepartmentId)
+                .HasConstraintName("FK_Department_Department");
 
-            entity.ToTable("DepartmentEvent");
-
-            entity.Property(e => e.DapartmentId)
-                .HasMaxLength(20)
-                .IsUnicode(false);
-
-            entity.HasOne(d => d.Event).WithMany(p => p.DepartmentEvents)
-                .HasForeignKey(d => d.EventId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_DepartmentEvent_Event");
+            entity.HasMany(d => d.Events).WithMany(p => p.Dapartments)
+                .UsingEntity<Dictionary<string, object>>(
+                    "DepartmentEvent",
+                    r => r.HasOne<Event>().WithMany()
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_DepartmentEvent_Event"),
+                    l => l.HasOne<Department>().WithMany()
+                        .HasForeignKey("DapartmentId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_DepartmentEvent_Department"),
+                    j =>
+                    {
+                        j.HasKey("DapartmentId", "EventId");
+                        j.ToTable("DepartmentEvent");
+                        j.IndexerProperty<string>("DapartmentId")
+                            .HasMaxLength(20)
+                            .IsUnicode(false);
+                    });
         });
 
         modelBuilder.Entity<Employee>(entity =>
