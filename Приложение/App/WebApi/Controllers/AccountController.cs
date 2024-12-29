@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Servicelayer.Data;
-using Servicelayer.Models;
+using Servicelayer.DTOs;
 using Servicelayer.Services;
 
 namespace WebApi.Controllers
@@ -34,6 +33,5 @@ namespace WebApi.Controllers
                 return BadRequest("Почта или пароль неверны");
             return Ok(_tokenService.GenerateToken(dbEmployee));
         }
-
     }
 }
