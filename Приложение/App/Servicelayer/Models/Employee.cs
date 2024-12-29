@@ -29,7 +29,7 @@ public partial class Employee
 
     public DateOnly? Birthday { get; set; }
 
-    public string? Password { get; set; }
+    public string Password { get; set; } = null!;
 
     public virtual ICollection<AbsenceEvent> AbsenceEventEmployees { get; set; } = new List<AbsenceEvent>();
 
