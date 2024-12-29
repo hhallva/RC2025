@@ -6,6 +6,7 @@ using Servicelayer.DTOs;
 namespace WebApi.Controllers
 {
     [Route("api/v1/Documents")]
+    [Route("api/v1/")]
     [ApiController]
     public class DocumentsController : ControllerBase
     {
@@ -17,6 +18,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
+        [HttpGet("Documents")]
         public async Task<ActionResult<IEnumerable<MaterialDTO>>> GetMaterials()
         {
             try
@@ -38,6 +40,25 @@ namespace WebApi.Controllers
             }
         }
 
+        [HttpGet("Documents/{documentId}/Comments")]
+        public async Task<ActionResult<IEnumerable<CommentDTO>>> GetMaterialsComments(int documentId)
+        {
+            return await _context.MaterialComments
+                .Select(o => new CommentDTO
+                {
+                    CommentId = o.CommentId,
+                    MaterialId = o.Material.MaterialId,
+                    Comment = o.Comment,
+                    CreateDate = o.Material.CreateDate,
+                    ConfirmDate = o.Material.ConfirmDate,
+                    Author = new AuthorCommentDTO
+                    {
+                        AuthorId = o.Employee.EmployeeId,
+                        Name = $"{o.Employee.Name} {o.Employee.Surname}",
+                        Position = o.Employee.Position.Name
+                    }
+                }).Where(c => c.MaterialId == documentId).ToListAsync();
+        }
         //// GET: api/Materials/5
         //[HttpGet("{id}")]
         //public async Task<ActionResult<Material>> GetMaterial(int id)
