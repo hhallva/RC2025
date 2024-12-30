@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Servicelayer.Dtos
+﻿namespace Servicelayer.Dtos
 {
     public class Error
     {
-        public string TimeStamp {  get; set; }
+        public string TimeStamp { get; set; }
+
         public string Message { get; set; }
+
         public string ErrorCode { get; set; }
     }
 }

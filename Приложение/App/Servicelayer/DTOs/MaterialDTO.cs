@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Servicelayer.DTOs
+namespace Servicelayer.Dtos
 {
-    public class MaterialDTO
+    public class MaterialDto
     {
         public int MaterialId { get; set; }
         public string Name { get; set; } = null!;

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Servicelayer.Data;
-using Servicelayer.DTOs;
+using Servicelayer.Dtos;
 using Servicelayer.Services;
 
 namespace WebApi.Controllers
@@ -19,7 +19,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("SingIn")]
-        public IActionResult Login(EmployeeDTO employee)
+        public IActionResult Login(EmployeeDto employee)
         {
             if (string.IsNullOrWhiteSpace(employee.Email))
                 return BadRequest("Почта не указана");
