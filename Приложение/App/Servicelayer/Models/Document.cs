@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Servicelayer.Models;
 
-public partial class Material
+public partial class Document
 {
-    public int MaterialId { get; set; }
+    public int DocumentId { get; set; }
 
     public string Name { get; set; } = null!;
 
@@ -19,7 +19,7 @@ public partial class Material
 
     public string? Author { get; set; }
 
-    public virtual ICollection<MaterialComment> MaterialComments { get; set; } = new List<MaterialComment>();
+    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
     public virtual ICollection<Event> Events { get; set; } = new List<Event>();
 }

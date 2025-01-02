@@ -18,17 +18,17 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<AbsenceEvent> AbsenceEvents { get; set; }
 
+    public virtual DbSet<Comment> Comments { get; set; }
+
     public virtual DbSet<Department> Departments { get; set; }
+
+    public virtual DbSet<Document> Documents { get; set; }
 
     public virtual DbSet<Employee> Employees { get; set; }
 
     public virtual DbSet<Event> Events { get; set; }
 
     public virtual DbSet<EventName> EventNames { get; set; }
-
-    public virtual DbSet<Material> Materials { get; set; }
-
-    public virtual DbSet<MaterialComment> MaterialComments { get; set; }
 
     public virtual DbSet<Position> Positions { get; set; }
 
@@ -56,6 +56,25 @@ public partial class AppDbContext : DbContext
             entity.HasOne(d => d.ReplasementEmployee).WithMany(p => p.AbsenceEventReplasementEmployees)
                 .HasForeignKey(d => d.ReplasementEmployeeId)
                 .HasConstraintName("FK_AbsenceEvent_Employee1");
+        });
+
+        modelBuilder.Entity<Comment>(entity =>
+        {
+            entity.HasKey(e => e.CommentId).HasName("PK_MaterialComment");
+
+            entity.ToTable("Comment");
+
+            entity.Property(e => e.Text).HasMaxLength(300);
+
+            entity.HasOne(d => d.Document).WithMany(p => p.Comments)
+                .HasForeignKey(d => d.DocumentId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MaterialComment_Material");
+
+            entity.HasOne(d => d.Employee).WithMany(p => p.Comments)
+                .HasForeignKey(d => d.EmployeeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MaterialComment_Employee");
         });
 
         modelBuilder.Entity<Department>(entity =>
@@ -97,6 +116,35 @@ public partial class AppDbContext : DbContext
                         j.IndexerProperty<string>("DapartmentId")
                             .HasMaxLength(20)
                             .IsUnicode(false);
+                    });
+        });
+
+        modelBuilder.Entity<Document>(entity =>
+        {
+            entity.HasKey(e => e.DocumentId).HasName("PK_Material");
+
+            entity.ToTable("Document");
+
+            entity.Property(e => e.Author).HasMaxLength(100);
+            entity.Property(e => e.Category).HasMaxLength(100);
+            entity.Property(e => e.Name).HasMaxLength(100);
+            entity.Property(e => e.Status).HasMaxLength(15);
+
+            entity.HasMany(d => d.Events).WithMany(p => p.Documents)
+                .UsingEntity<Dictionary<string, object>>(
+                    "EventDocument",
+                    r => r.HasOne<Event>().WithMany()
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_EventMaterial_Event"),
+                    l => l.HasOne<Document>().WithMany()
+                        .HasForeignKey("DocumentId")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("FK_EventMaterial_Material"),
+                    j =>
+                    {
+                        j.HasKey("DocumentId", "EventId").HasName("PK_EventMaterial");
+                        j.ToTable("EventDocument");
                     });
         });
 
@@ -172,52 +220,6 @@ public partial class AppDbContext : DbContext
             entity.ToTable("EventName");
 
             entity.Property(e => e.Name).HasMaxLength(100);
-        });
-
-        modelBuilder.Entity<Material>(entity =>
-        {
-            entity.ToTable("Material");
-
-            entity.Property(e => e.Author).HasMaxLength(100);
-            entity.Property(e => e.Category).HasMaxLength(100);
-            entity.Property(e => e.Name).HasMaxLength(100);
-            entity.Property(e => e.Status).HasMaxLength(15);
-
-            entity.HasMany(d => d.Events).WithMany(p => p.Materioals)
-                .UsingEntity<Dictionary<string, object>>(
-                    "EventMaterial",
-                    r => r.HasOne<Event>().WithMany()
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_EventMaterial_Event"),
-                    l => l.HasOne<Material>().WithMany()
-                        .HasForeignKey("MaterioalId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK_EventMaterial_Material"),
-                    j =>
-                    {
-                        j.HasKey("MaterioalId", "EventId");
-                        j.ToTable("EventMaterial");
-                    });
-        });
-
-        modelBuilder.Entity<MaterialComment>(entity =>
-        {
-            entity.HasKey(e => e.CommentId);
-
-            entity.ToTable("MaterialComment");
-
-            entity.Property(e => e.Comment).HasMaxLength(300);
-
-            entity.HasOne(d => d.Employee).WithMany(p => p.MaterialComments)
-                .HasForeignKey(d => d.EmployeeId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MaterialComment_Employee");
-
-            entity.HasOne(d => d.Material).WithMany(p => p.MaterialComments)
-                .HasForeignKey(d => d.MaterialId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MaterialComment_Material");
         });
 
         modelBuilder.Entity<Position>(entity =>
