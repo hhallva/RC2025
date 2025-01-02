@@ -29,11 +29,13 @@ public partial class Employee
 
     public DateOnly? Birthday { get; set; }
 
-    public string? Password { get; set; }
+    public string Password { get; set; } = null!;
 
     public virtual ICollection<AbsenceEvent> AbsenceEventEmployees { get; set; } = new List<AbsenceEvent>();
 
     public virtual ICollection<AbsenceEvent> AbsenceEventReplasementEmployees { get; set; } = new List<AbsenceEvent>();
+
+    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
     public virtual ICollection<Department> Departments { get; set; } = new List<Department>();
 
@@ -42,8 +44,6 @@ public partial class Employee
     public virtual ICollection<Event> EventsNavigation { get; set; } = new List<Event>();
 
     public virtual ICollection<Employee> InverseDirectManagerNavigation { get; set; } = new List<Employee>();
-
-    public virtual ICollection<MaterialComment> MaterialComments { get; set; } = new List<MaterialComment>();
 
     public virtual Position Position { get; set; } = null!;
 
