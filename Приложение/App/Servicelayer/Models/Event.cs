@@ -27,7 +27,7 @@ public partial class Event
 
     public virtual ICollection<Department> Dapartments { get; set; } = new List<Department>();
 
-    public virtual ICollection<Employee> Employees { get; set; } = new List<Employee>();
+    public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
 
-    public virtual ICollection<Material> Materioals { get; set; } = new List<Material>();
+    public virtual ICollection<Employee> Employees { get; set; } = new List<Employee>();
 }
