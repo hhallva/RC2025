@@ -2,16 +2,16 @@
 {
     public class CommentDto
     {
-        public int CommentId { get; set; }
+        public int Id { get; set; }
 
-        public int MaterialId { get; set; }
+        public int DocumentId { get; set; }
 
-        public string Comment { get; set; } = null!;
+        public string Text { get; set; } = null!;
 
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; set; } = DateTime.Now;
 
-        public DateTime ConfirmDate { get; set; }
+        public DateTime? ConfirmDate { get; set; }
 
-        public AuthorCommentDto Author { get; set; } = null!;
+        public AuthorDto Author { get; set; } = null!;
     }
 }

@@ -214,7 +214,7 @@ public partial class AppDbContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_MaterialComment_Employee");
 
-            entity.HasOne(d => d.Material).WithMany(p => p.MaterialComments)
+            entity.HasOne(d => d.Material).WithMany(p => p.Comments)
                 .HasForeignKey(d => d.MaterialId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_MaterialComment_Material");

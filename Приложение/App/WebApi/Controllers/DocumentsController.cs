@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Servicelayer.Data;
 using Servicelayer.Dtos;
+using Servicelayer.Models;
 
 namespace WebApi.Controllers
 {
@@ -22,33 +23,62 @@ namespace WebApi.Controllers
             return await _context.Materials
                 .Select(m => new MaterialDto
                 {
-                    MaterialId = m.MaterialId,
-                    Name = m.Name,
+                    Id = m.MaterialId,
+                    Title = m.Name,
                     CreateDate = m.CreateDate,
                     ConfirmDate = m.ConfirmDate,
                     Category = m.Category,
-                    HasCommnets = (m.MaterialComments == null) ? true : false,
+                    HasCommnet = m.Comments.Count != 0
                 }).ToListAsync();
         }
 
-        [HttpGet("Documents/{documentId}/Comments")]
-        public async Task<ActionResult<IEnumerable<CommentDto>>> GetCommentsByDocumentIdAsync(int documentId)
+        [HttpGet("Document/{id}/Comments")]
+        public async Task<ActionResult<IEnumerable<CommentDto>>> GetDocumentComments(int id)
         {
-            return await _context.MaterialComments
-                .Select(c => new CommentDto
-                {
-                    CommentId = c.CommentId,
-                    MaterialId = c.Material.MaterialId,
-                    Comment = c.Comment,
-                    CreateDate = c.Material.CreateDate,
-                    ConfirmDate = c.Material.ConfirmDate,
-                    Author = new AuthorCommentDto
-                    {
-                        AuthorId = c.Employee.EmployeeId,
-                        Name = $"{c.Employee.Name} {c.Employee.Surname}",
-                        Position = c.Employee.Position.Name
-                    }
-                }).Where(c => c.MaterialId == documentId).ToListAsync();
+            var comments = await _context.MaterialComments
+                .Include(c => c.Employee)
+                .ThenInclude(e => e.Position)
+                .Where(c => c.MaterialId == id)
+                .ToListAsync();
+            
+            var commentDtos = comments.Select(c => c.ToDto()).ToList();
+
+            return Ok(commentDtos);
+        }
+
+        [HttpPost("Document/{id}/Comments")]
+        public async Task<ActionResult<CommentDto>> PostComment(int id, CommentDto commentDto)
+        {
+            var comment = new MaterialComment
+            {
+                MaterialId = id,
+                Comment = commentDto.Text,
+                EmployeeId = commentDto.Author.Id
+            };
+
+            _context.MaterialComments.Add(comment);
+            await _context.SaveChangesAsync();
+
+            await _context.MaterialComments
+                .Include(c => c.Employee)
+                .ThenInclude(e => e.Position)
+                .Where(c => c.MaterialId == id)
+                .ToListAsync();
+
+            commentDto = comment.ToDto();
+
+            return CreatedAtAction("GetComment", new { id = comment.CommentId }, commentDto);
+        }
+
+        [HttpGet("Comments/{id}")]
+        public async Task<ActionResult<CommentDto>> GetComment(int id)
+        {
+            var comment = await _context.MaterialComments
+                .Include(c => c.Employee)
+                .ThenInclude(e => e.Position)
+                .FirstOrDefaultAsync(c => c.CommentId == id);
+
+            return Ok(comment?.ToDto());
         }
     }
 }

@@ -19,7 +19,7 @@ public partial class Material
 
     public string? Author { get; set; }
 
-    public virtual ICollection<MaterialComment> MaterialComments { get; set; } = new List<MaterialComment>();
+    public virtual ICollection<MaterialComment> Comments { get; set; } = new List<MaterialComment>();
 
     public virtual ICollection<Event> Events { get; set; } = new List<Event>();
 }
