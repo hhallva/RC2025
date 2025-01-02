@@ -9,7 +9,7 @@ namespace Servicelayer.Dtos
 {
     public static class CommentMapper
     {
-        public static CommentDto ToDto(this MaterialComment comment)
+        public static CommentDto ToDto(this Comment comment)
         {
             if (comment == null)
                 throw new ArgumentNullException(nameof(comment));
@@ -17,10 +17,10 @@ namespace Servicelayer.Dtos
             return new CommentDto
             {
                 Id = comment.CommentId,
-                DocumentId = comment.MaterialId,
-                Text = comment.Comment,
-                CreateDate = comment.Material.CreateDate,
-                ConfirmDate = comment.Material.ConfirmDate,
+                DocumentId = comment.DocumentId,
+                Text = comment.Text,
+                CreateDate = comment.Document.CreateDate,
+                ConfirmDate = comment.Document.ConfirmDate,
                 Author = new AuthorDto
                 {
                     Id = comment.Employee.EmployeeId,

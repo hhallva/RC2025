@@ -20,10 +20,10 @@ namespace WebApi.Controllers
         [HttpGet("Documents")]
         public async Task<ActionResult<IEnumerable<MaterialDto>>> GetDocumentsAsync()
         {
-            return await _context.Materials
+            return await _context.Documents
                 .Select(m => new MaterialDto
                 {
-                    Id = m.MaterialId,
+                    Id = m.DocumentId,
                     Title = m.Name,
                     CreateDate = m.CreateDate,
                     ConfirmDate = m.ConfirmDate,
@@ -35,10 +35,10 @@ namespace WebApi.Controllers
         [HttpGet("Document/{id}/Comments")]
         public async Task<ActionResult<IEnumerable<CommentDto>>> GetDocumentComments(int id)
         {
-            var comments = await _context.MaterialComments
+            var comments = await _context.Comments
                 .Include(c => c.Employee)
                 .ThenInclude(e => e.Position)
-                .Where(c => c.MaterialId == id)
+                .Where(c => c.DocumentId == id)
                 .ToListAsync();
             
             var commentDtos = comments.Select(c => c.ToDto()).ToList();
@@ -49,20 +49,22 @@ namespace WebApi.Controllers
         [HttpPost("Document/{id}/Comments")]
         public async Task<ActionResult<CommentDto>> PostComment(int id, CommentDto commentDto)
         {
-            var comment = new MaterialComment
+            var comment = new Comment
             {
-                MaterialId = id,
-                Comment = commentDto.Text,
+                DocumentId = id,
+                Text = commentDto.Text,
+                CreatedDate = DateTime.Now,
+                UpdatedDate = null,
                 EmployeeId = commentDto.Author.Id
             };
 
-            _context.MaterialComments.Add(comment);
+            _context.Comments.Add(comment);
             await _context.SaveChangesAsync();
 
-            await _context.MaterialComments
+            await _context.Comments
                 .Include(c => c.Employee)
                 .ThenInclude(e => e.Position)
-                .Where(c => c.MaterialId == id)
+                .Where(c => c.DocumentId == id)
                 .ToListAsync();
 
             commentDto = comment.ToDto();
@@ -73,7 +75,7 @@ namespace WebApi.Controllers
         [HttpGet("Comments/{id}")]
         public async Task<ActionResult<CommentDto>> GetComment(int id)
         {
-            var comment = await _context.MaterialComments
+            var comment = await _context.Comments
                 .Include(c => c.Employee)
                 .ThenInclude(e => e.Position)
                 .FirstOrDefaultAsync(c => c.CommentId == id);
