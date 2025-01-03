@@ -57,7 +57,7 @@ namespace WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CommentDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiErrorDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiErrorDto))]
-        public async Task<ActionResult<IEnumerable<CommentDto>>> GetDocumentComments(int id)
+        public async Task<ActionResult<IEnumerable<CommentDto>>> GetDocumentCommentsAsync(int id)
         {
             if (id <= 0)
                 return BadRequest(new ApiErrorDto("Недопустимый идентификатор документа. ID должен быть положительным числом.", 2000));
@@ -87,7 +87,7 @@ namespace WebApi.Controllers
         [HttpPost("Document/{id}/Comments")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CommentDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiErrorDto))]
-        public async Task<ActionResult<CommentDto>> PostComment(int id, CommentDto commentDto)
+        public async Task<ActionResult<CommentDto>> PostCommentAsync(int id, CommentDto commentDto)
         {
             try
             {
