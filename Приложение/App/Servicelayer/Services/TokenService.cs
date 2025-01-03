@@ -7,18 +7,11 @@ using System.Text;
 
 namespace ServiceLayer.Services
 {
-    public class TokenService
+    public class TokenService(IConfiguration config)
     {
-        private readonly IConfiguration _config;
-
-        public TokenService(IConfiguration config)
-        {
-            _config = config;
-        }
-
         public string GenerateToken(Employee employee)
         {
-            var key = Encoding.UTF8.GetBytes(_config["JWT:Key"]);
+            var key = Encoding.UTF8.GetBytes(config["JWT:Key"]);
             var credentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256);
             var claims = new List<Claim>()
             {

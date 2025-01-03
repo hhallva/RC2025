@@ -23,7 +23,7 @@ namespace WebApi.Controllers
         /// <response code="400">Неверные параметры</response>
         /// <response code="403">Доступ запрещён</response>
         /// <response code="404">Пользователь не найден</response>
-        [HttpPost("SingIn")]
+        [HttpPost("SignIn")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiErrorDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiErrorDto))]
