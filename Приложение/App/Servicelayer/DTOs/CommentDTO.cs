@@ -1,4 +1,3 @@
-﻿namespace Servicelayer.Dtos
 ﻿namespace ServiceLayer.Dtos
 {
     public class CommentDto
@@ -9,9 +8,9 @@
 
         public string Text { get; set; } = null!;
 
-        public DateTime CreateDate { get; set; } = DateTime.Now;
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
 
-        public DateTime? ConfirmDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
 
         public AuthorDto Author { get; set; } = null!;
     }

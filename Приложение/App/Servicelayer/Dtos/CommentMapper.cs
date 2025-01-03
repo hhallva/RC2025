@@ -1,4 +1,3 @@
-﻿using Servicelayer.Models;
 ﻿using ServiceLayer.Models;
 using System;
 using System.Collections.Generic;
@@ -6,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Servicelayer.Dtos
 namespace ServiceLayer.Dtos
 {
     public static class CommentMapper
@@ -21,8 +19,8 @@ namespace ServiceLayer.Dtos
                 Id = comment.CommentId,
                 DocumentId = comment.DocumentId,
                 Text = comment.Text,
-                CreateDate = comment.Document.CreateDate,
-                ConfirmDate = comment.Document.ConfirmDate,
+                CreatedDate = comment.CreatedDate,
+                UpdatedDate = comment.UpdatedDate,
                 Author = new AuthorDto
                 {
                     Id = comment.Employee.EmployeeId,
