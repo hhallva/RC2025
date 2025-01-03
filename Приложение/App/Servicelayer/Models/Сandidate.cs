@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ServiceLayer.Models;
+﻿namespace ServiceLayer.Models;
 
 public partial class Сandidate
 {

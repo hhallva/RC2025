@@ -64,6 +64,7 @@ public partial class AppDbContext : DbContext
 
             entity.ToTable("Comment");
 
+            entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.Text).HasMaxLength(300);
 
             entity.HasOne(d => d.Document).WithMany(p => p.Comments)
