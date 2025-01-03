@@ -1,4 +1,4 @@
-﻿namespace ServiceLayer.Dtos
+﻿namespace ServiceLayer.DTOs
 {
     public class AuthorDto
     {

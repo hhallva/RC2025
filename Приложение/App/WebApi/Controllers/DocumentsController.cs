@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ServiceLayer.Data;
 using ServiceLayer.Dtos;
+using ServiceLayer.DTOs;
 using ServiceLayer.Models;
 
 namespace WebApi.Controllers
@@ -19,16 +20,20 @@ namespace WebApi.Controllers
 
         [HttpGet("Documents")]
         public async Task<ActionResult<IEnumerable<MaterialDto>>> GetDocumentsAsync()
+        public async Task<ActionResult<IEnumerable<DocumentDto>>> GetDocumentsAsync()
         {
             return await _context.Documents
                 .Select(m => new MaterialDto
+                .Select(m => new DocumentDto
                 {
                     Id = m.DocumentId,
                     Title = m.Name,
                     CreateDate = m.CreateDate,
                     ConfirmDate = m.ConfirmDate,
+                    CreatedDate = m.CreateDate,
+                    ApprovedDate = m.ConfirmDate,
                     Category = m.Category,
-                    HasCommnet = m.Comments.Count != 0
+                    HasComments = m.Comments.Count != 0
                 }).ToListAsync();
         }
 
@@ -81,6 +86,7 @@ namespace WebApi.Controllers
                 .FirstOrDefaultAsync(c => c.CommentId == id);
 
             return Ok(comment?.ToDto());
+            return Created("", commentDto);
         }
     }
 }
