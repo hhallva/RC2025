@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Servicelayer.Models;
+namespace ServiceLayer.Models;
 
 /// <summary>
 /// Список дней исключений в производственном календаре

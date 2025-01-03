@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Servicelayer.Dtos
+namespace ServiceLayer.Dtos
 {
     public class MaterialDto
     {

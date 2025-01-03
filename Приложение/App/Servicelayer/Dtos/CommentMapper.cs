@@ -1,4 +1,5 @@
 ﻿using Servicelayer.Models;
+﻿using ServiceLayer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Servicelayer.Dtos
+namespace ServiceLayer.Dtos
 {
     public static class CommentMapper
     {

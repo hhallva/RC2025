@@ -1,4 +1,5 @@
 ﻿namespace Servicelayer.Dtos
+﻿namespace ServiceLayer.Dtos
 {
     public class CommentDto
     {

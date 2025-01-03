@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Servicelayer.Data;
-using Servicelayer.Dtos;
-using Servicelayer.Services;
+using ServiceLayer.Data;
+using ServiceLayer.Dtos;
+using ServiceLayer.Services;
 
 namespace WebApi.Controllers
 {

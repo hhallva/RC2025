@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Servicelayer.Data;
-using Servicelayer.Dtos;
-using Servicelayer.Models;
+using ServiceLayer.Data;
+using ServiceLayer.Dtos;
+using ServiceLayer.Models;
 
 namespace WebApi.Controllers
 {
