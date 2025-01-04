@@ -12,6 +12,8 @@ public partial class Department
 
     public string Name { get; set; } = null!;
 
+    public virtual ICollection<Employee> Employees { get; set; } = new List<Employee>();
+
     public virtual Employee? HeadDepartmentNavigation { get; set; }
 
     public virtual ICollection<Department> InverseParentDepartment { get; set; } = new List<Department>();

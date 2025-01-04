@@ -28,11 +28,15 @@ public partial class Employee
 
     public string Password { get; set; } = null!;
 
+    public DateOnly? DismissalDate { get; set; }
+
     public virtual ICollection<AbsenceEvent> AbsenceEventEmployees { get; set; } = new List<AbsenceEvent>();
 
     public virtual ICollection<AbsenceEvent> AbsenceEventReplasementEmployees { get; set; } = new List<AbsenceEvent>();
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
+
+    public virtual Department Department { get; set; } = null!;
 
     public virtual ICollection<Department> Departments { get; set; } = new List<Department>();
 
