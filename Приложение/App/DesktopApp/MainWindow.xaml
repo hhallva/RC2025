@@ -6,7 +6,26 @@
         xmlns:local="clr-namespace:DesktopApp"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <StackPanel Orientation="Vertical">
+        <Grid Height="70" Background="#e1f4c8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
 
-    </Grid>
+            <Image Source="Images/Logo.png" Margin="3" Grid.Column="0"/>
+            <Border Background="White" CornerRadius="10" Grid.Column="1" Margin="20,15,200,15">
+                <Label Content="Организационная структура" VerticalAlignment="Center" Margin="20,0,0,0"/>
+            </Border>
+        </Grid>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50*"/>
+                <ColumnDefinition Width="50*"/>
+            </Grid.ColumnDefinitions>
+            
+            
+        </Grid>
+    </StackPanel>
 </Window>
