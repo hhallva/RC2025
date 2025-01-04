@@ -1,4 +1,4 @@
-﻿namespace WebApi.DTOs
+﻿namespace ServiceLayer.DTOs
 {
     public class ApiErrorDto
     {
