@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ServiceLayer.DataContexts;
-using ServiceLayer.DTOs;
-using ServiceLayer.Models;
+using DataLayer.DataContexts;
+using DataLayer.DTOs;
+using DataLayer.Models;
 
 namespace WebApi.Controllers
 {

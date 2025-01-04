@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using ServiceLayer.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using DataLayer.Models;
 
-namespace ServiceLayer.DataContexts;
+namespace DataLayer.DataContexts;
 
 public partial class AppDbContext : DbContext
 {

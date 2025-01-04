@@ -1,4 +1,4 @@
-﻿namespace ServiceLayer.Models;
+﻿namespace DataLayer.Models;
 
 /// <summary>
 /// Список дней исключений в производственном календаре

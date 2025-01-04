@@ -1,4 +1,4 @@
-﻿namespace ServiceLayer.Models
+﻿namespace DataLayer.Models
 {
     public partial class Employee
     {

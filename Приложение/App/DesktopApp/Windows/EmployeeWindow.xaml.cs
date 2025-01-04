@@ -1,4 +1,4 @@
-﻿using ServiceLayer.Models;
+﻿using DataLayer.Models;
 using System.Windows;
 
 namespace DesktopApp

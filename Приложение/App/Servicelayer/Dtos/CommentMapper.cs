@@ -1,6 +1,6 @@
-﻿using ServiceLayer.Models;
+﻿using DataLayer.Models;
 
-namespace ServiceLayer.DTOs
+namespace DataLayer.DTOs
 {
     public static class CommentMapper
     {

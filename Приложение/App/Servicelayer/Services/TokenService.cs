@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using ServiceLayer.Models;
+using DataLayer.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace ServiceLayer.Services
+namespace DataLayer.Services
 {
     public class TokenService(IConfiguration config)
     {

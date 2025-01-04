@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ServiceLayer.DataContexts;
-using ServiceLayer.Models;
+using DataLayer.DataContexts;
+using DataLayer.Models;
 
-namespace ServiceLayer.Services
+namespace DataLayer.Services
 {
     public class DepartmentService(AppDbContext context)
     {

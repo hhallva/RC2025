@@ -1,4 +1,4 @@
-﻿namespace ServiceLayer.DTOs
+﻿namespace DataLayer.DTOs
 {
     public class LoginDto
     {
