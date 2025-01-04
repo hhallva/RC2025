@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using ServiceLayer.Data;
+using ServiceLayer.DataContexts;
 using ServiceLayer.Services;
 using System.Text;
 

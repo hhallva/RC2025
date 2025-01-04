@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ServiceLayer.Data;
+using ServiceLayer.DataContexts;
 using ServiceLayer.DTOs;
 using ServiceLayer.Services;
-using WebApi.DTOs;
 
 namespace WebApi.Controllers
 {
