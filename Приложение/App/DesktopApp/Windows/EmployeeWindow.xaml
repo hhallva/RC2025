@@ -5,8 +5,86 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DesktopApp"
         mc:Ignorable="d"
-        Title="EmployeeWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen">
-    <Grid>
-        
+        Title="EmployeeWindow" 
+        Height="650" Width="800" 
+        WindowStartupLocation="CenterScreen">
+    <Grid Background="#d9d9d9">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Margin="10" Background="#ffffff">
+            <StackPanel  Margin="10">
+                <TextBlock Text="Фамилия:" Margin="0,10,0,0"/>
+                <TextBox x:Name="SurnameTextBox"/>
+
+                <TextBlock Text="Имя:" Margin="0,10,0,0"/>
+                <TextBox x:Name="NameTextBox" />
+
+                <TextBlock Text="Отчество:" Margin="0,10,0,0"/>
+                <TextBox x:Name="PatronymicTextBox"/>
+
+                <TextBlock Text="Дата рождения:" Margin="0,10,0,0"/>
+                <TextBox x:Name="BirthdayTextBox"/>
+
+                <Grid Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="0,0,0,5">
+                        <TextBlock Text="Мобильный телефон:"/>
+                        <TextBox x:Name="PhoneTextBox" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1"  Margin="5,0,0,0">
+                        <TextBlock Text="Рабочий телефон:"/>
+                        <TextBox x:Name="WorkPhoneTextBox"/>
+                    </StackPanel>
+                </Grid>
+
+                <TextBlock Text="Электронная почта:" Margin="0,5,0,0"/>
+                <TextBox x:Name="EmailTextBox"/>
+
+                <TextBlock Text="Стуктурное подразделение:" Margin="0,10,0,0"/>
+                <TextBox x:Name="DepartmentTextBox"/>
+
+                <TextBlock Text="Должность:" Margin="0,10,0,0"/>
+                <TextBox x:Name="PositionTextBox"/>
+
+                <TextBlock Text="Непосредственный руководитель:" Margin="0,10,0,0"/>
+                <ComboBox x:Name="DirectManagerComboBox"/>
+
+                <TextBlock Text="Кабинет:" Margin="0,10,0,0"/>
+                <TextBox x:Name="CabinetTextBox"/>
+
+                <Button Content="Сохранить ихменения" Margin="0,10,0,0" Background="#FFE4F4CC" BorderBrush="#FFE6E6E6" x:Name="SaveButton" Click="SaveButton_Click"/>
+            </StackPanel>
+        </StackPanel>
+
+
+        <StackPanel Grid.Column="1" Margin="10" Background="#ffffff">
+            <!--<StackPanel  Margin="10">
+                <StackPanel>
+                    <TextBlock Text="Группа событий:"/>
+                    <RadioButton Content="Прошедшие" GroupName="EventGroup"/>
+                    <RadioButton Content="Текущие" GroupName="EventGroup"/>
+                    <RadioButton Content="Будущие" GroupName="EventGroup"/>
+                </StackPanel>
+
+                <TextBlock Text="Обучения"/>
+                <ListView>
+                    
+                </ListView>
+                <TextBlock Text="Отгулы"/>
+                <ListView>
+
+                </ListView>
+                <TextBlock Text="Отпуска"/>
+                <ListView>
+
+                </ListView>
+            </StackPanel>-->
+        </StackPanel>
     </Grid>
 </Window>

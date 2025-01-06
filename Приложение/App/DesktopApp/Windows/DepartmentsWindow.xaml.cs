@@ -35,7 +35,7 @@ namespace DesktopApp
 
             employees.Clear();
             FillEmployeesList(department);
-            employeesListView.ItemsSource = employees;
+            employeesListView.ItemsSource = employees.OrderBy(e => e.FullName);
         }
 
         private void EmployeesListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -51,7 +51,8 @@ namespace DesktopApp
 
         private void FillEmployeesList(Department department)
         {
-            employees.AddRange(department.Employees.Where(e => e.DismissalDate == null || e.DayAfterDismissal <= 30));
+            employees.AddRange(department.Employees
+                .Where(e => e.DismissalDate == null || e.DayAfterDismissal <= 30));
             foreach (var childDepartment in department.InverseParentDepartment)
                 FillEmployeesList(childDepartment);
         }
