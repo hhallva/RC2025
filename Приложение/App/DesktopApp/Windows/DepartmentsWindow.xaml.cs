@@ -51,7 +51,7 @@ namespace DesktopApp
 
         private void FillEmployeesList(Department department)
         {
-            employees.AddRange(department.Employees);
+            employees.AddRange(department.Employees.Where(e => e.DismissalDate == null || e.DayAfterDismissal <= 30));
             foreach (var childDepartment in department.InverseParentDepartment)
                 FillEmployeesList(childDepartment);
         }
