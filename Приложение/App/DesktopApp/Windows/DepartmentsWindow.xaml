@@ -21,7 +21,7 @@
 
         <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
             <Image Source="/Images/Logo.png" Margin="3" Height="70"/>
-            <Border Background="White" CornerRadius="10" Margin="15" Width="650">
+            <Border Background="White" CornerRadius="10" Margin="15" Width="600">
                 <Label Content="Организационная структура" VerticalAlignment="Center" Margin="20,0,0,0"/>
             </Border>
         </StackPanel>
@@ -43,7 +43,8 @@
                 </Style>
             </TreeView.Resources>
         </TreeView>
-        <ListView x:Name="employeesListView" Grid.Column="1" Grid.Row="1" MouseDoubleClick="EmployeesListView_MouseDoubleClick">
+
+        <ListView x:Name="employeesListView" HorizontalContentAlignment="Stretch"  Grid.Column="1" Grid.Row="1" MouseDoubleClick="EmployeesListView_MouseDoubleClick">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <DataTemplate.Resources>
@@ -60,7 +61,7 @@
                             </Style.Triggers>
                         </Style>
                     </DataTemplate.Resources>
-                    
+
                     <StackPanel Margin="5">
                         <StackPanel Margin="10">
                             <StackPanel Orientation="Horizontal">
@@ -78,11 +79,6 @@
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                </Style>
-            </ListView.ItemContainerStyle>
         </ListView>
     </Grid>
 </Window>
