@@ -31,7 +31,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opt =>
 {
     opt.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "WebApi.xml"));
-    opt.AddServer(new() { Url = "http://localhost:5297" });
+    opt.AddServer(new() { Url = "http://localhost:5297" }); //ѕри добавлении этой строки в Postman по€вл€етс€ адресс
 
     //opt.SwaggerDoc("v1", new OpenApiInfo { Title = "MyAPI", Version = "v1" });
     opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
