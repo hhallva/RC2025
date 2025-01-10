@@ -1,4 +1,7 @@
-﻿using DataLayer.Models;
+﻿using DataLayer.DataContexts;
+using DataLayer.Models;
+using DataLayer.Services;
+using System.Net.Http;
 using System.Windows;
 
 namespace DesktopApp
@@ -8,36 +11,54 @@ namespace DesktopApp
     /// </summary>
     public partial class EmployeeWindow : Window
     {
+        public static AppDbContext _context = new();
+        private EmployeeService _service = new(new HttpClient());
         private Employee _employee;
 
-        public EmployeeWindow(Employee? employee = null)
-        {   
+        public EmployeeWindow(Employee? employee = null, Department? department = null)
+        {
             InitializeComponent();
-
-            _employee = employee ?? new();
-
-            SurnameTextBox.Text = _employee.Surname;
-            NameTextBox.Text = _employee.Name;
-            PatronymicTextBox.Text = _employee.Patronymic;
-            BirthdayTextBox.Text = _employee.Birthday.ToString();
-            PhoneTextBox.Text = _employee.Phone;
-            WorkPhoneTextBox.Text = _employee.WorkPhone;
-            EmailTextBox.Text = _employee.Email;
-            DepartmentTextBox.Text = _employee.Department.Name;
-            PositionTextBox.Text = _employee.Position.Name;
-            CabinetTextBox.Text = _employee.Cabinet;
-
-            DirectManagerComboBox.Items.Add(_employee.FullName);
+            _employee = employee;
+            DataContext = _employee;
+        }
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (_employee != null)
+                _employee = await _service.GetAsync(_employee.EmployeeId);
+            else   
+                _employee = new();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                await _service.UpdateAsync(_employee);
+                MessageBox.Show("Изменения сохранены.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Произошла ошибка при сохранении информации: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private async void DismissButton_Click(object sender, RoutedEventArgs e)
         {
+            MessageBoxResult messageBoxResult = MessageBox.Show("Вы уверены, что хотите уволить сотрудника?", "Подтверждение увольнения", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
+            if (messageBoxResult != MessageBoxResult.Yes)
+                return;
+
+            try
+            {
+                await _service.DismissAsync(_employee.EmployeeId);
+                MessageBox.Show("Сотрудник успешно уволен.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Произошла ошибка при увольнении сотрудника: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
