@@ -10,7 +10,7 @@ using DataLayer.Models;
 
 namespace WebApi.Controllers
 {
-    [Route("api/v1/")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class DepartmentsController : ControllerBase
     {
