@@ -31,7 +31,6 @@ namespace DesktopApp
             TreeViewItem rootItem = new() { Header = "Дороги России" };
             departmentsTreeView.Items.Add(rootItem);
 
-            // получили список основных отделов компании и добавили их
             departments = departments
                 .Where(d => d.ParentDepartmentId == null)
                 .OrderBy(d => int.Parse(d.DepartmentId));
@@ -42,7 +41,6 @@ namespace DesktopApp
         {
             foreach (var department in departments)
             {
-                // здесь department.DepartmentId для проверки. нужно написать: Header = department.Name
                 TreeViewItem childItem = new()
                 {
                     Header = department.Name,
@@ -50,7 +48,6 @@ namespace DesktopApp
                 };
                 currentItem.Items.Add(childItem);
 
-                // добавляем дочерние отделы для текущего
                 FillDepartmentsTreeView(department.InverseParentDepartment.OrderBy(d => d.DepartmentId), childItem);
             }
         }
