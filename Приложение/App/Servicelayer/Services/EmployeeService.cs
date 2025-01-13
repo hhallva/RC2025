@@ -26,7 +26,7 @@ namespace DataLayer.Services
         public async Task UpdateAsync(Employee employee) 
             => await _client.PutAsJsonAsync($"{employee.EmployeeId}", employee);
 
-        public async Task<Employee> GetAsync(int id) 
+        public async Task<Employee?> GetAsync(int id) 
             => await _client.GetFromJsonAsync<Employee>($"{id}");
     }
 }
