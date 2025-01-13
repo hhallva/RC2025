@@ -11,7 +11,7 @@
         WindowStartupLocation="CenterScreen"
         Loaded="Window_Loaded">
     <Window.DataContext>
-        <viewModels:Employee />
+        <viewModels:Employee/>
     </Window.DataContext>
     <Grid Background="#d9d9d9">
         <Grid.ColumnDefinitions>
@@ -31,8 +31,7 @@
                 <TextBox x:Name="PatronymicTextBox" Text="{Binding Patronymic}"/>
 
                 <TextBlock Text="Дата рождения:" Margin="0,10,0,0"/>
-                <!--<TextBox x:Name="BirthdayTextBox" Text="{Binding Birthday , StringFormat='{}{0:dd.MM.yyyy}'}"/>-->
-                <DatePicker x:Name="BirthdayDatePicker" SelectedDate="{Binding Birthday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <DatePicker x:Name="BirthdayDatePicker" SelectedDate="{Binding Birthday}"/>
 
                 <Grid Margin="0,10,0,0">
                     <Grid.ColumnDefinitions>
