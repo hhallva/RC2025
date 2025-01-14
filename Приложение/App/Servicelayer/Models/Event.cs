@@ -1,4 +1,6 @@
-﻿namespace DataLayer.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace DataLayer.Models;
 
 public partial class Event
 {
@@ -26,5 +28,6 @@ public partial class Event
 
     public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
 
+    [JsonIgnore]
     public virtual ICollection<Employee> Employees { get; set; } = new List<Employee>();
 }
