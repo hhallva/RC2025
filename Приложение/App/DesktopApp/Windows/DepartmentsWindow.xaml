@@ -50,11 +50,11 @@
                     <DataTemplate.Resources>
                         <Style TargetType="StackPanel">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding DismissedAgo}" Value="false">
+                                <DataTrigger Binding="{Binding DismissedAgo}" Value="true">
                                     <Setter Property="Opacity" Value="0.5"/>
                                     <Setter Property="Background" Value="LightGray"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding DismissedAgo}" Value="true">
+                                <DataTrigger Binding="{Binding DismissedAgo}" Value="false">
                                     <Setter Property="Opacity" Value="1"/>
                                     <Setter Property="Background" Value="#e1f4c8"/>
                                 </DataTrigger>
