@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using DataLayer.Models;
+﻿using DataLayer.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer.DataContexts;
 
@@ -26,7 +26,7 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Event> Events { get; set; }
 
-    public virtual DbSet<EventName> EventNames { get; set; }
+    public virtual DbSet<EventType> EventTypes { get; set; }
 
     public virtual DbSet<Position> Positions { get; set; }
 
@@ -207,22 +207,24 @@ public partial class AppDbContext : DbContext
             entity.ToTable("Event");
 
             entity.Property(e => e.Description).HasMaxLength(300);
+            entity.Property(e => e.Name).HasMaxLength(100);
             entity.Property(e => e.Status).HasMaxLength(100);
-            entity.Property(e => e.Type).HasMaxLength(100);
 
-            entity.HasOne(d => d.EventName).WithMany(p => p.Events)
-                .HasForeignKey(d => d.EventNameId)
+            entity.HasOne(d => d.EventType).WithMany(p => p.Events)
+                .HasForeignKey(d => d.EventTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Event_EventName");
+                .HasConstraintName("FK_Event_EventType");
 
             entity.HasOne(d => d.ResponsibleEmployee).WithMany(p => p.EventsNavigation)
                 .HasForeignKey(d => d.ResponsibleEmployeeId)
                 .HasConstraintName("FK_Event_Employee");
         });
 
-        modelBuilder.Entity<EventName>(entity =>
+        modelBuilder.Entity<EventType>(entity =>
         {
-            entity.ToTable("EventName");
+            entity.HasKey(e => e.EventTypeId).HasName("PK_EventName");
+
+            entity.ToTable("EventType");
 
             entity.Property(e => e.Name).HasMaxLength(100);
         });

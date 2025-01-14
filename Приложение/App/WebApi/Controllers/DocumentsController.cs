@@ -19,6 +19,7 @@ namespace WebApi.Controllers
         /// GET: /api/v1/Documents
         /// Получение списка всех документов
         /// </summary>
+        /// <remarks>Получает список всех документов из базы данных</remarks>
         /// <returns>Список документов</returns>
         /// <response code="200">Успешное получение списка</response>
         /// <response code="404">Документы не найдены</response>
@@ -47,6 +48,7 @@ namespace WebApi.Controllers
         /// GET: /api/v1/Document/{id}/Comments
         /// Получение списка комментариев у конктерного документа
         /// </summary>
+        ///<remarks>Принимает id необходимого документа и возвращает список комментариев оставленных у него</remarks>
         /// <param name="id">Id документа, у которого хотим получить комментарии</param>
         /// <returns>Список комментариев</returns>
         /// <response code="200">Успешное получение списка комментариев</response>
@@ -78,6 +80,7 @@ namespace WebApi.Controllers
         /// POST: /api/v1/Document/{id}/Comments
         /// Создание комментария для конктерного документа
         /// </summary>
+        ///<remarks>Принимает id документа и комментарий, сохраняет этот комменатрий в базе данных</remarks>
         /// <param name="id">Id документа, которому хотим оставить комментарий</param>
         /// <param name="commentDto">Комментарий</param>
         /// <returns>Созданный комментарий</returns>

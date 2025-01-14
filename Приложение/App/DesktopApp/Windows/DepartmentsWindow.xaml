@@ -21,7 +21,7 @@
 
         <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
             <Image Source="/Images/Logo.png" Margin="3" Height="70"/>
-            <Border Background="White" CornerRadius="10" Margin="15" Width="650">
+            <Border Background="White" CornerRadius="10" Margin="15" Width="600">
                 <Label Content="Организационная структура" VerticalAlignment="Center" Margin="20,0,0,0"/>
             </Border>
         </StackPanel>
@@ -43,24 +43,28 @@
                 </Style>
             </TreeView.Resources>
         </TreeView>
-        <ListView x:Name="employeesListView" Grid.Column="1" Grid.Row="1" MouseDoubleClick="EmployeesListView_MouseDoubleClick">
+
+        <ListView x:Name="employeesListView" HorizontalContentAlignment="Stretch"  Grid.Column="1" Grid.Row="1" MouseDoubleClick="EmployeesListView_MouseDoubleClick">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <DataTemplate.Resources>
                         <Style TargetType="StackPanel">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding DismissedAgo}" Value="false">
+                                <DataTrigger Binding="{Binding DismissedAgo}" Value="true">
                                     <Setter Property="Opacity" Value="0.5"/>
                                     <Setter Property="Background" Value="LightGray"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding DismissedAgo}" Value="true">
+                                <DataTrigger Binding="{Binding DismissedAgo}" Value="false">
                                     <Setter Property="Opacity" Value="1"/>
                                     <Setter Property="Background" Value="#e1f4c8"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding  IsDismiss}" Value="true">
+                                    <Setter Property="IsEnabled" Value="False"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </DataTemplate.Resources>
-                    
+
                     <StackPanel Margin="5">
                         <StackPanel Margin="10">
                             <StackPanel Orientation="Horizontal">
@@ -78,11 +82,6 @@
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                </Style>
-            </ListView.ItemContainerStyle>
         </ListView>
     </Grid>
 </Window>

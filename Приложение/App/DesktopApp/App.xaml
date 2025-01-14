@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:DesktopApp"
              StartupUri="Windows/DepartmentsWindow.xaml">
     <Application.Resources>
-         
+        <Style TargetType="RadioButton">
+            <!--<Setter Property="" Value="#84b159"/>-->
+        </Style>
     </Application.Resources>
 </Application>
