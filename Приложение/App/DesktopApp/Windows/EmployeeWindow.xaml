@@ -71,18 +71,18 @@
 
 
         <StackPanel Grid.Column="1" Margin="10" Background="#ffffff">
-            <!--<StackPanel  Margin="10">
+            <StackPanel  Margin="10">
                 <StackPanel>
                     <TextBlock Text="Группа событий:"/>
-                    <RadioButton Content="Прошедшие" GroupName="EventGroup"/>
-                    <RadioButton Content="Текущие" GroupName="EventGroup"/>
-                    <RadioButton Content="Будущие" GroupName="EventGroup"/>
+                    <CheckBox Content="Прошедшие"/>
+                    <CheckBox Content="Текущие"/>
+                    <CheckBox Content="Будущие"/>
                 </StackPanel>
 
                 <TextBlock Text="Обучения"/>
-                <ListView>
+                <DataGrid x:Name="EventsDataGrid">
                     
-                </ListView>
+                </DataGrid>
                 <TextBlock Text="Отгулы"/>
                 <ListView>
 
@@ -91,7 +91,7 @@
                 <ListView>
 
                 </ListView>
-            </StackPanel>-->
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>
