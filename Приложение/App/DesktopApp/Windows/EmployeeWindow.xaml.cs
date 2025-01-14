@@ -19,14 +19,17 @@ namespace DesktopApp
         {
             InitializeComponent();
             _employee = employee;
-            DataContext = _employee;
+
         }
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (_employee != null)
                 _employee = await _service.GetAsync(_employee.EmployeeId);
-            else   
+            else
                 _employee = new();
+
+            EventsDataGrid.ItemsSource = _employee.Events;
+            DataContext = _employee;
         }
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -44,6 +47,13 @@ namespace DesktopApp
 
         private async void DismissButton_Click(object sender, RoutedEventArgs e)
         {
+            if (_employee.Events.Where(e => e.EventTypeId == 1)
+                .Any(e => e.StartDate.ToDateTime(TimeOnly.MinValue) > DateTime.Now))
+            {
+                MessageBox.Show("Невозмонжно уволить сотрудника.\nПрисутсвтует запись на обучение.", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
             MessageBoxResult messageBoxResult = MessageBox.Show("Вы уверены, что хотите уволить сотрудника?", "Подтверждение увольнения", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             if (messageBoxResult != MessageBoxResult.Yes)

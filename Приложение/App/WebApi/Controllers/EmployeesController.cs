@@ -1,4 +1,5 @@
 ﻿using DataLayer.DataContexts;
+using DataLayer.DTOs;
 using DataLayer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,12 @@ namespace WebApi.Controllers
             var employee = await context.Employees.FindAsync(id);
             if (employee == null)
                 return NotFound();
+
+            var absences = await context.AbsenceEvents
+                .Where(e => e.EmployeeId == id)
+                .ToListAsync();
+
+            context.AbsenceEvents.RemoveRange(absences);
 
             employee.DismissalDate = DateOnly.FromDateTime(DateTime.Now);
             context.Employees.Update(employee);
@@ -36,7 +43,9 @@ namespace WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Employee>> GetEmployeeAsync(int id)
         {
-            var employee = await context.Employees.FindAsync(id);
+            var employee = await context.Employees
+                .Include(e => e.Events)
+                .SingleOrDefaultAsync(e => e.EmployeeId == id);
 
             if (employee == null)
                 return NotFound();
