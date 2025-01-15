@@ -2,6 +2,7 @@
 using DataLayer.Models;
 using DataLayer.Services;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Windows;
 
 namespace DesktopApp
@@ -34,6 +35,67 @@ namespace DesktopApp
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            #region Проверки
+            if (string.IsNullOrWhiteSpace(SurnameTextBox.Text) || string.IsNullOrWhiteSpace(NameTextBox.Text) || string.IsNullOrWhiteSpace(PatronymicTextBox.Text))
+            {
+                MessageBox.Show("ФИО являются обязательными полями для заполнения.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(WorkPhoneTextBox.Text))
+            {
+                MessageBox.Show("Поле \"Рабочий телефон\" обязательно для заполнения.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(EmailTextBox.Text))
+            {
+                MessageBox.Show("Поле \"Email\" обязательно для заполнения.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(DepartmentTextBox.Text))
+            {
+                MessageBox.Show("Поле \"Структурное подразделение\" обязательно для заполнения.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(PositionTextBox.Text))
+            {
+                MessageBox.Show("Поле \"Должность\" обязательно для заполнения.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(CabinetTextBox.Text))
+            {
+                MessageBox.Show("Поле \"Кабинет\" обязательно для заполнения.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            string pattern = @"^[\+]?[\d\(\)\-\s#]{1,20}$";
+            if (!string.IsNullOrWhiteSpace(PhoneTextBox.Text))
+            {
+                if (!Regex.IsMatch(PhoneTextBox.Text, pattern))
+                {
+                    MessageBox.Show("Поле \"Мобильный телефон\" заполненно неправильно.\nНомер телефона может содежать только цифры и спецсимволы \"+\", \"(\", \")\", \"-\", \" \", \"#\"\nМаксимум 20 символов.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+            }
+            if (!Regex.IsMatch(PhoneTextBox.Text, pattern))
+            {
+                MessageBox.Show("Поле \"Рабочий телефон\" заполненно неправильно.\nНомер телефона может содежать только цифры и спецсимволы \"+\", \"(\", \")\", \"-\", \" \", \"#\"\nМаксимум 20 символов.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+            pattern = "^[a-zA-Z0-9а-яА-Я]+@[a-zA-Z0-9а-яА-Я\\.]+\\.[a-zA-Zа-яА-Я0-9]{2,}$";
+            if (!Regex.IsMatch(EmailTextBox.Text, pattern))
+            {
+                MessageBox.Show("Поле \"Email\" заполненно неправильно.\nЭлектронная почта должна быть написанна в соответствии с шаблоном: x@x.x\nx - символ русского или английского алфавита, почта может модержать числа.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+            pattern = "^[a-zA-Z0-9а-яА-Я\\s]{1,10}$";
+            if (!Regex.IsMatch(CabinetTextBox.Text, pattern))
+            {
+                MessageBox.Show("Поле \"Кабинет\" заполненно неправильно.\nКабинет может содежать только 10 символов.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            #endregion
+
             try
             {
                 await _service.UpdateAsync(_employee);
