@@ -52,14 +52,21 @@
                 <TextBox x:Name="EmailTextBox" Text="{Binding Email}"/>
 
                 <TextBlock Text="Стуктурное подразделение:" Margin="0,10,0,0"/>
-                <TextBox x:Name="DepartmentTextBox" Text="{Binding DepartmentId}"/>
+                <!--<ComboBox x:Name="DepartmentComboBox">
+                </ComboBox>-->
+
+                <TextBox x:Name="DepartmentTextBox" Text="{Binding DepartmentId}">
+                </TextBox>
 
                 <TextBlock Text="Должность:" Margin="0,10,0,0"/>
-                <TextBox x:Name="PositionTextBox" Text="{Binding PositionId}"/>
+                <ComboBox x:Name="PositionComboBox" DisplayMemberPath="Name" SelectedItem="{Binding Position}">
+                </ComboBox>
 
                 <TextBlock Text="Непосредственный руководитель:" Margin="0,10,0,0"/>
                 <ComboBox x:Name="DirectManagerComboBox">
                 </ComboBox>
+                
+
 
                 <TextBlock Text="Кабинет:" Margin="0,10,0,0"/>
                 <TextBox x:Name="CabinetTextBox" Text="{Binding Cabinet}"/>
