@@ -1,9 +1,6 @@
-﻿using DataLayer.DataContexts;
-using DataLayer.Models;
+﻿using DataLayer.Models;
 using DataLayer.Services;
 using System.Net.Http;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows;
 
 namespace DesktopApp
@@ -16,28 +13,38 @@ namespace DesktopApp
         private EmployeeService _employeeService = new(new HttpClient());
         private PositionService _positionService = new(new HttpClient());
         private Employee _employee;
+        private Department _department;
         private List<Position> _positions;
-        private List<Employee> _directManagers;
+        //private List<Employee> _directManagers;
 
         public EmployeeWindow(Employee? employee = null, Department? department = null)
         {
             InitializeComponent();
             _employee = employee;
-
+            _department = department;
         }
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _positions = await _positionService.GetAsync();
-            PositionComboBox.ItemsSource = _positions;
 
             if (_employee != null)
                 _employee = await _employeeService.GetAsync(_employee.EmployeeId);
             else
                 _employee = new();
 
+
+
             EventsDataGrid.ItemsSource = _employee.Events;
             DataContext = _employee;
+            PositionComboBox.ItemsSource = _positions;
             PositionComboBox.SelectedItem = _employee.Position; //_positions.FirstOrDefault(p => p.PositionId == _employee.PositionId);
+
+            //Попытка реализовать DirectManagerComboBox
+            //if (_department != null)
+            //    _directManagers = _department.Employees.Except(new List<Employee> { _employee }).ToList(); //Не удаляет
+
+            //DirectManagerComboBox.ItemsSource = _directManagers;
+            //DirectManagerComboBox.SelectedItem = _employee.DirectManager; 
         }
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -72,11 +79,11 @@ namespace DesktopApp
 
             //if (errors.ToString().Contains("заполненно неправильно."))
             //    errors.AppendLine("Номер телефона может содежать только цифры и спецсимволы \"+\", \"(\", \")\", \"-\", \" \", \"#\"\nМаксимум 20 символов.");
-           
+
             //pattern = "^[a-zA-Z0-9а-яА-Я]+@[a-zA-Z0-9а-яА-Я\\.]+\\.[a-zA-Zа-яА-Я0-9]{2,}$";
             //if (!Regex.IsMatch(EmailTextBox.Text, pattern))
             //    errors.AppendLine("Поле \"Email\" заполненно неправильно.\nЭлектронная почта должна быть написанна в соответствии с шаблоном: x@x.x\nx - символ русского или английского алфавита, почта может модержать числа.");  
-            
+
             //pattern = "^[a-zA-Z0-9а-яА-Я\\s]{1,10}$";
             //if (!Regex.IsMatch(CabinetTextBox.Text, pattern))
             //    errors.AppendLine("Поле \"Кабинет\" заполненно неправильно.\nКабинет может содежать только 10 символов.");

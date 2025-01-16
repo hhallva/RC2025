@@ -11,6 +11,13 @@ namespace DataLayer.Models
 
         public bool DismissedAgo => (DismissalDate != null && DayAfterDismissal <= 30) ? true : false;
         public bool IsDismiss => (DismissalDate != null) ? true :  false;
+
+        //public override bool Equals(object? obj)
+        //{
+        //    if (obj is Employee employee)
+        //        return employee.DirectManager == DirectManager;
+        //    return false;
+        //}
     }
 }
 

@@ -82,7 +82,7 @@ namespace DesktopApp
             if (employee.DismissalDate != null)
                 return;
 
-            EmployeeWindow employeeWindow = new(employee);
+            EmployeeWindow employeeWindow = new(employee, department);
             employeeWindow.ShowDialog();
 
             UpdateTreeView();
