@@ -48,7 +48,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <DataTemplate.Resources>
-                        <Style TargetType="StackPanel">
+                        <Style TargetType="StackPanel" >
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding DismissedAgo}" Value="true">
                                     <Setter Property="Opacity" Value="0.5"/>
