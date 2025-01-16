@@ -45,6 +45,7 @@ namespace WebApi.Controllers
         {
             var employee = await context.Employees
                 .Include(e => e.Events)
+                .Include(e => e.AbsenceEventEmployees)
                 .Include(e => e.Position)
                 .SingleOrDefaultAsync(e => e.EmployeeId == id);
 
