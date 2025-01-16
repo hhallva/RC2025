@@ -1,7 +1,10 @@
 ﻿using DataLayer.Models;
 using DataLayer.Services;
+using Microsoft.Extensions.Logging;
 using System.Net.Http;
+using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace DesktopApp
 {
@@ -34,7 +37,14 @@ namespace DesktopApp
 
 
 
-            EventsDataGrid.ItemsSource = _employee.Events;
+            EventsListView.ItemsSource = _employee.Events;
+            FreeDaysListView.ItemsSource = _employee.AbsenceEventEmployees
+                .Where(e => e.AbsenceType != "Отпуск")
+                .OrderBy(e => e.StartDate);
+            HolidaysListView.ItemsSource = _employee.AbsenceEventEmployees
+                .Where(e => e.AbsenceType == "Отпуск")
+                .OrderBy(e => e.StartDate);
+
             DataContext = _employee;
             PositionComboBox.ItemsSource = _positions;
             PositionComboBox.SelectedItem = _employee.Position; //_positions.FirstOrDefault(p => p.PositionId == _employee.PositionId);
@@ -130,6 +140,16 @@ namespace DesktopApp
             {
                 MessageBox.Show($"Произошла ошибка при увольнении сотрудника: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void CheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            List<Event> filteredEvents = new List<Event>();
+            bool pastChecked = PastCheckBox.IsChecked ?? false;
+            bool presentChecked = NowCheckBox.IsChecked ?? false;
+            bool futureChecked = FutureCheckBox.IsChecked ?? false;
+
+            //Дописать
         }
     }
 }
