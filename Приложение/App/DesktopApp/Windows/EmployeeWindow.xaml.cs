@@ -17,6 +17,7 @@ namespace DesktopApp
         private PositionService _positionService = new(new HttpClient());
         private Employee _employee;
         private List<Position> _positions;
+        private List<Employee> _directManagers;
 
         public EmployeeWindow(Employee? employee = null, Department? department = null)
         {
@@ -37,72 +38,55 @@ namespace DesktopApp
             EventsDataGrid.ItemsSource = _employee.Events;
             DataContext = _employee;
             PositionComboBox.SelectedItem = _employee.Position; //_positions.FirstOrDefault(p => p.PositionId == _employee.PositionId);
-
-
         }
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
 
-            //#region Проверки
+            #region Проверки
             //StringBuilder errors = new();
 
-            //if (string.IsNullOrWhiteSpace(SurnameTextBox.Text) || string.IsNullOrWhiteSpace(NameTextBox.Text))
-            //    errors.AppendLine("Поле \"Фамилия\" являются обязательным для заполнения.");
+            //if (string.IsNullOrWhiteSpace(SurnameTextBox.Text))
+            //    errors.AppendLine("Поле \"Фамилия\" обязательно для заполнения.");
+            //if (string.IsNullOrWhiteSpace(NameTextBox.Text))
+            //    errors.AppendLine("Поле \"Имя\"  обязательно для заполнения.");
             //if (string.IsNullOrWhiteSpace(WorkPhoneTextBox.Text))
             //    errors.AppendLine("Поле \"Рабочий телефон\" обязательно для заполнения.");
             //if (string.IsNullOrWhiteSpace(EmailTextBox.Text))
             //    errors.AppendLine("Поле \"Email\" обязательно для заполнения.");
-        
-            ////if (string.IsNullOrWhiteSpace(DepartmentComboBox.Text))
-            ////{
-            ////    MessageBox.Show("Поле \"Структурное подразделение\" обязательно для заполнения.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
-            ////    return;
-            ////}
-            //if (string.IsNullOrWhiteSpace(DepartmentTextBox.Text))
-            //{
-            //    MessageBox.Show("Поле \"Структурное подразделение\" обязательно для заполнения.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
-            //    return;
-            //}
+            //if (string.IsNullOrWhiteSpace(DepartmentTextBox.Text)) //DepartmentComboBox.Text
+            //    errors.AppendLine("Поле \"Структурное подразделение\" обязательно для заполнения.");
             //if (string.IsNullOrWhiteSpace(PositionComboBox.Text))
-            //{
-            //    MessageBox.Show("Поле \"Должность\" обязательно для заполнения.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
-            //    return;
-            //}
+            //    errors.AppendLine("Поле \"Должность\" обязательно для заполнения.");
             //if (string.IsNullOrWhiteSpace(CabinetTextBox.Text))
-            //{
-            //    MessageBox.Show("Поле \"Кабинет\" обязательно для заполнения.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
-            //    return;
-            //}
+            //    errors.AppendLine("Поле \"Кабинет\" обязательно для заполнения.");
 
             //string pattern = @"^[\+]?[\d\(\)\-\s#]{1,20}$";
             //if (!string.IsNullOrWhiteSpace(PhoneTextBox.Text))
-            //{
             //    if (!Regex.IsMatch(PhoneTextBox.Text, pattern))
-            //    {
-            //        MessageBox.Show("Поле \"Мобильный телефон\" заполненно неправильно.\nНомер телефона может содежать только цифры и спецсимволы \"+\", \"(\", \")\", \"-\", \" \", \"#\"\nМаксимум 20 символов.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
-            //        return;
-            //    }
-            //}
-            //if (!Regex.IsMatch(WorkPhoneTextBox.Text, pattern))
-            //{
-            //    MessageBox.Show("Поле \"Рабочий телефон\" заполненно неправильно.\nНомер телефона может содежать только цифры и спецсимволы \"+\", \"(\", \")\", \"-\", \" \", \"#\"\nМаксимум 20 символов.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
-            //    return;
-            //}
+            //        errors.AppendLine("Поле \"Мобильный телефон\" заполненно неправильно.");
+
+            //if (!string.IsNullOrWhiteSpace(WorkPhoneTextBox.Text))
+            //    if (!Regex.IsMatch(WorkPhoneTextBox.Text, pattern))
+            //        errors.AppendLine("Поле \"Рабочий телефон\" заполненно неправильно.");
+
+            //if (errors.ToString().Contains("заполненно неправильно."))
+            //    errors.AppendLine("Номер телефона может содежать только цифры и спецсимволы \"+\", \"(\", \")\", \"-\", \" \", \"#\"\nМаксимум 20 символов.");
+           
             //pattern = "^[a-zA-Z0-9а-яА-Я]+@[a-zA-Z0-9а-яА-Я\\.]+\\.[a-zA-Zа-яА-Я0-9]{2,}$";
             //if (!Regex.IsMatch(EmailTextBox.Text, pattern))
-            //{
-            //    MessageBox.Show("Поле \"Email\" заполненно неправильно.\nЭлектронная почта должна быть написанна в соответствии с шаблоном: x@x.x\nx - символ русского или английского алфавита, почта может модержать числа.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
-            //    return;
-            //}
+            //    errors.AppendLine("Поле \"Email\" заполненно неправильно.\nЭлектронная почта должна быть написанна в соответствии с шаблоном: x@x.x\nx - символ русского или английского алфавита, почта может модержать числа.");  
+            
             //pattern = "^[a-zA-Z0-9а-яА-Я\\s]{1,10}$";
             //if (!Regex.IsMatch(CabinetTextBox.Text, pattern))
+            //    errors.AppendLine("Поле \"Кабинет\" заполненно неправильно.\nКабинет может содежать только 10 символов.");
+
+            //if(errors.Length > 0)
             //{
-            //    MessageBox.Show("Поле \"Кабинет\" заполненно неправильно.\nКабинет может содежать только 10 символов.", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+            //    MessageBox.Show(errors.ToString(), "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
             //    return;
             //}
-
-            //#endregion
+            #endregion
 
             try
             {
