@@ -81,9 +81,9 @@
             <StackPanel  Margin="10">
                 <StackPanel Margin="0,0,0,10">
                     <TextBlock Text="Группа событий:"/>
-                    <CheckBox x:Name="PastCheckBox" Content="Прошедшие" Click="CheckBox_Click"/>
-                    <CheckBox x:Name="NowCheckBox" Content="Текущие" Click="CheckBox_Click"/>
-                    <CheckBox x:Name="FutureCheckBox" Content="Будущие" Click="CheckBox_Click"/>
+                    <CheckBox x:Name="PastCheckBox" Content="Прошедшие" Click="FilterCheckBox_Click"/>
+                    <CheckBox x:Name="CurrentCheckBox" Content="Текущие" Click="FilterCheckBox_Click" IsChecked="True"/>
+                    <CheckBox x:Name="FutureCheckBox" Content="Будущие" Click="FilterCheckBox_Click" IsChecked="True"/>
                 </StackPanel>
 
                 <TextBlock Text="Обучения"/>

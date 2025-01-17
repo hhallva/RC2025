@@ -1,10 +1,8 @@
 ﻿using DataLayer.Models;
 using DataLayer.Services;
-using Microsoft.Extensions.Logging;
 using System.Net.Http;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
+
 
 namespace DesktopApp
 {
@@ -36,15 +34,7 @@ namespace DesktopApp
                 _employee = new();
 
 
-
-            EventsListView.ItemsSource = _employee.Events;
-            FreeDaysListView.ItemsSource = _employee.AbsenceEventEmployees
-                .Where(e => e.AbsenceType != "Отпуск")
-                .OrderBy(e => e.StartDate);
-            HolidaysListView.ItemsSource = _employee.AbsenceEventEmployees
-                .Where(e => e.AbsenceType == "Отпуск")
-                .OrderBy(e => e.StartDate);
-
+            UpdateListViews();
             DataContext = _employee;
             PositionComboBox.ItemsSource = _positions;
             PositionComboBox.SelectedItem = _employee.Position; //_positions.FirstOrDefault(p => p.PositionId == _employee.PositionId);
@@ -142,14 +132,33 @@ namespace DesktopApp
             }
         }
 
-        private void CheckBox_Click(object sender, RoutedEventArgs e)
+        private void FilterCheckBox_Click(object sender, RoutedEventArgs e)
         {
-            List<Event> filteredEvents = new List<Event>();
-            bool pastChecked = PastCheckBox.IsChecked ?? false;
-            bool presentChecked = NowCheckBox.IsChecked ?? false;
-            bool futureChecked = FutureCheckBox.IsChecked ?? false;
+            UpdateListViews();
+        }
 
-            //Дописать
+        private void UpdateListViews()
+        {
+            bool showFuture = FutureCheckBox.IsChecked == true;
+            bool showCurrent = CurrentCheckBox.IsChecked == true;
+            bool showPast = PastCheckBox.IsChecked == true;
+
+            var now = DateOnly.FromDateTime(DateTime.Now.Date);
+
+            EventsListView.ItemsSource = _employee.Events
+                .Where(e => (showFuture && e.StartDate > now) || (showCurrent && e.StartDate <= now && e.EndDate >= now) || (showPast && e.EndDate < now))
+                .OrderBy(e => e.StartDate);
+
+            FreeDaysListView.ItemsSource = _employee.AbsenceEventEmployees
+                .Where(e => (showFuture && e.StartDate > now) || (showCurrent && e.StartDate <= now && e.EndDate >= now) || (showPast && e.EndDate < now))
+                .Where(e => !e.AbsenceType.ToLower().Contains("отпуск"))
+                .OrderBy(e => e.StartDate);
+
+            HolidaysListView.ItemsSource = _employee.AbsenceEventEmployees
+                .Where(e => (showFuture && e.StartDate > now) || (showCurrent && e.StartDate <= now && e.EndDate >= now) || (showPast && e.EndDate < now))
+                .Where(e => e.AbsenceType.ToLower().Contains("отпуск"))
+                .OrderBy(e => e.StartDate);
         }
     }
 }
+
