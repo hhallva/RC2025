@@ -44,44 +44,47 @@
             </TreeView.Resources>
         </TreeView>
 
-        <ListView x:Name="employeesListView" HorizontalContentAlignment="Stretch"  Grid.Column="1" Grid.Row="1" MouseDoubleClick="EmployeesListView_MouseDoubleClick">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <DataTemplate.Resources>
-                        <Style TargetType="StackPanel" >
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding DismissedAgo}" Value="true">
-                                    <Setter Property="Opacity" Value="0.5"/>
-                                    <Setter Property="Background" Value="LightGray"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding DismissedAgo}" Value="false">
-                                    <Setter Property="Opacity" Value="1"/>
-                                    <Setter Property="Background" Value="#e1f4c8"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding  IsDismiss}" Value="true">
-                                    <Setter Property="IsEnabled" Value="False"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataTemplate.Resources>
+        <DockPanel Grid.Column="1" Grid.Row="1" Background="White">
+            <Button x:Name="AddEmployeeButton" Content="+" DockPanel.Dock="Bottom" Click="AddEmployeeButton_Click"  Height="40" Width="40" HorizontalAlignment="Right" Background="#FFE1F4C8" BorderBrush="{x:Null}"/> 
+            <ListView x:Name="employeesListView" HorizontalContentAlignment="Stretch"   MouseDoubleClick="EmployeesListView_MouseDoubleClick" BorderBrush="{x:Null}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <DataTemplate.Resources>
+                            <Style TargetType="StackPanel" >
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DismissedAgo}" Value="true">
+                                        <Setter Property="Opacity" Value="0.5"/>
+                                        <Setter Property="Background" Value="LightGray"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding DismissedAgo}" Value="false">
+                                        <Setter Property="Opacity" Value="1"/>
+                                        <Setter Property="Background" Value="#e1f4c8"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding  IsDismiss}" Value="true">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataTemplate.Resources>
 
-                    <StackPanel Margin="5">
-                        <StackPanel Margin="10">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Department.Name}"/>
-                                <TextBlock Text=" — "/>
-                                <TextBlock Text="{Binding Position.Name}"/>
+                        <StackPanel Margin="5">
+                            <StackPanel Margin="10">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Department.Name}"/>
+                                    <TextBlock Text=" — "/>
+                                    <TextBlock Text="{Binding Position.Name}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding FullName}" FontSize="16"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding WorkPhone}" Margin="0,0,10,0"/>
+                                    <TextBlock Text="{Binding Email}"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Cabinet}"/>
                             </StackPanel>
-                            <TextBlock Text="{Binding FullName}" FontSize="16"/>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding WorkPhone}" Margin="0,0,10,0"/>
-                                <TextBlock Text="{Binding Email}"/>
-                            </StackPanel>
-                            <TextBlock Text="{Binding Cabinet}"/>
                         </StackPanel>
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </DockPanel>
     </Grid>
 </Window>
