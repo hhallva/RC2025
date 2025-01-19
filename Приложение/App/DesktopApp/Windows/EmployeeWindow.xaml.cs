@@ -46,14 +46,7 @@ namespace DesktopApp
             UpdateListViews();
             DataContext = _employee;
             PositionComboBox.ItemsSource = _positions;
-            PositionComboBox.SelectedItem =_positions.FirstOrDefault(p => p.PositionId == _employee.PositionId); // _employee.Position; 
-
-            //Попытка реализовать DirectManagerComboBox
-            //if (_department != null)
-            //    _directManagers = _department.Employees.Except(new List<Employee> { _employee }).ToList(); //Не удаляет
-
-            //DirectManagerComboBox.ItemsSource = _directManagers;
-            //DirectManagerComboBox.SelectedItem = _employee.DirectManager; 
+            
         }
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -187,8 +180,9 @@ namespace DesktopApp
         private void EditData(Employee employee)
         {
             employee.Password = employee.Password ?? "Password";
-            employee.PositionId = employee.Position.PositionId;
+            employee.PositionId = (PositionComboBox.SelectedItem as Position).PositionId;
             employee.Position = null;
+
         }
     }
 }
