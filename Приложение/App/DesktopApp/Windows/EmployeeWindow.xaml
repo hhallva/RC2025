@@ -72,6 +72,7 @@
                 <TextBox x:Name="CabinetTextBox" Text="{Binding Cabinet}"/>
 
                 <Button Content="Сохранить именения" Margin="0,10,0,0" Background="#FFE4F4CC" BorderBrush="#FFE6E6E6" x:Name="SaveButton" Click="SaveButton_Click"/>
+                <Button Content="Добавить сотрудника" Margin="0,10,0,0" Background="#FFE4F4CC" BorderBrush="#FFE6E6E6" x:Name="AddButton" Click="AddButton_Click"/>
                 <Button Content="Уволить сотрудника" Margin="0,10,0,0" Background="#FFFF8C56" BorderBrush="#FFE6E6E6" x:Name="DismissButton" Click="DismissButton_Click"/>
             </StackPanel>
         </StackPanel>
