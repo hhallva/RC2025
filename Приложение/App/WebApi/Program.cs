@@ -1,9 +1,8 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using DataLayer.DataContexts;
 using DataLayer.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 //JWT
+builder.Services.AddResponseCompression();
 builder.Services.AddScoped<TokenService, TokenService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -72,5 +72,13 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+//using (var  context = new AppDbContext())
+//{
+//    context.Departments.FirstOrDefault();
+//    context.Employees.FirstOrDefault();
+//}
+
+
 
 app.Run();
