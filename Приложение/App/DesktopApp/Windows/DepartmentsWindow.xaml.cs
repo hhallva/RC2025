@@ -1,6 +1,8 @@
 ﻿using DataLayer.DataContexts;
 using DataLayer.Models;
 using DataLayer.Services;
+using System.Collections.ObjectModel;
+using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -11,9 +13,11 @@ namespace DesktopApp
     /// </summary>
     public partial class DepartmentsWindow : Window
     {
-        private DepartmentService _service = new(new AppDbContext());
+        private DepartmentService _departmentService = new(new AppDbContext());
         IEnumerable<Department> _departments;
         List<Employee> employees = new();
+
+        private readonly EmployeeService _employeeService = new EmployeeService();
 
         public DepartmentsWindow()
         {
@@ -22,7 +26,7 @@ namespace DesktopApp
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            _departments = await _service.GetDepartmentsAsync();
+            _departments = await _departmentService.GetDepartmentsAsync();
             AddRootNode(_departments);
         }
 
@@ -61,7 +65,7 @@ namespace DesktopApp
 
             employees.Clear();
             FillEmployeesList(department);
-            employeesListView.ItemsSource = employees.OrderBy(e => e.FullName);
+            employeesListView.ItemsSource = new ObservableCollection<Employee>(employees.OrderBy(e => e.FullName));
         }
 
         private void FillEmployeesList(Department department)
@@ -82,18 +86,40 @@ namespace DesktopApp
             if (employee.DismissalDate != null)
                 return;
 
-            EmployeeWindow employeeWindow = new(employee, department);
+            var currentItem = departmentsTreeView.SelectedItem;
+
+            EmployeeWindow employeeWindow = new(employee, department, _employeeService);
             employeeWindow.ShowDialog();
 
             UpdateTreeView();
             FillEmployeesList(department);
+
+            //var dep = _departments.FirstOrDefault(d => d.DepartmentId == department.DepartmentId);
+
+            //var tvi = departmentsTreeView
+            //    .ItemContainerGenerator
+            //    .ContainerFromItem(dep) as TreeViewItem;
+            //if (tvi != null)
+            //{
+            //    tvi.IsSelected = true;
+            //}
         }
 
         private async void UpdateTreeView()
         {
             departmentsTreeView.Items.Clear();
-            _departments = await _service.GetDepartmentsAsync();
+            _departments = await _departmentService.GetDepartmentsAsync();
             AddRootNode(_departments);
+        }
+
+        private void AddEmployeeButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (departmentsTreeView.SelectedItem is not TreeViewItem item ||
+               item.DataContext is not Department department)
+                return;
+
+            EmployeeWindow employeeWindow = new(null, department);
+            employeeWindow.ShowDialog();
         }
     }
 }
