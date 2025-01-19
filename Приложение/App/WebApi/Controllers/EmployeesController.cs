@@ -40,6 +40,15 @@ namespace WebApi.Controllers
             return Ok(employee);
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> PostEmployeeAsync(Employee employee)
+        {
+            await context.Employees.AddAsync(employee);
+            await context.SaveChangesAsync();
+            return Ok(employee);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Employee>> GetEmployeeAsync(int id)
         {
@@ -52,14 +61,6 @@ namespace WebApi.Controllers
             if (employee == null)
                 return NotFound();
 
-            return Ok(employee);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> PostEmployeeAsync(Employee employee)
-        {
-            await context.Employees.AddAsync(employee);
-            await context.SaveChangesAsync();
             return Ok(employee);
         }
     }
