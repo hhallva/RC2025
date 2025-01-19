@@ -8,6 +8,13 @@ namespace DataLayer.Services
         private readonly HttpClient _client;
         private readonly string _baseUrl = "http://localhost:5297/api/v1/Employees/";
 
+        public EmployeeService()
+        {
+            _client = new HttpClient();
+            _client.BaseAddress = new(_baseUrl);
+            _client.GetStringAsync($"1");
+        }
+
         public EmployeeService(HttpClient client)
         {
             _client = client;
@@ -22,5 +29,9 @@ namespace DataLayer.Services
 
         public async Task<Employee?> GetAsync(int id)
             => await _client.GetFromJsonAsync<Employee>($"{id}");
+
+        public async Task AddAsync(Employee employee)
+            => await _client.PostAsJsonAsync("", employee);
+
     }
 }
