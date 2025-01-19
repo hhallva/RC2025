@@ -11,33 +11,42 @@ namespace DesktopApp
     /// </summary>
     public partial class EmployeeWindow : Window
     {
-        private EmployeeService _employeeService = new(new HttpClient());
+        private EmployeeService _employeeService; // = new(new HttpClient());
         private PositionService _positionService = new(new HttpClient());
         private Employee _employee;
         private Department _department;
         private List<Position> _positions;
         //private List<Employee> _directManagers;
-
-        public EmployeeWindow(Employee? employee = null, Department? department = null)
+        
+        public EmployeeWindow(Employee? employee = null, Department? department = null, EmployeeService? employeeService = null)
         {
             InitializeComponent();
             _employee = employee;
             _department = department;
+            _employeeService = employeeService ?? new(new HttpClient());
         }
+
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _positions = await _positionService.GetAsync();
 
             if (_employee != null)
+            {
+                AddButton.Visibility = Visibility.Collapsed;
                 _employee = await _employeeService.GetAsync(_employee.EmployeeId);
+            }
             else
+            {
+                SaveButton.Visibility = Visibility.Collapsed;
                 _employee = new();
+            }
+
 
 
             UpdateListViews();
             DataContext = _employee;
             PositionComboBox.ItemsSource = _positions;
-            PositionComboBox.SelectedItem = _employee.Position; //_positions.FirstOrDefault(p => p.PositionId == _employee.PositionId);
+            PositionComboBox.SelectedItem =_positions.FirstOrDefault(p => p.PositionId == _employee.PositionId); // _employee.Position; 
 
             //Попытка реализовать DirectManagerComboBox
             //if (_department != null)
@@ -97,6 +106,7 @@ namespace DesktopApp
 
             try
             {
+                EditData(_employee);
                 await _employeeService.UpdateAsync(_employee);
                 MessageBox.Show("Изменения сохранены.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -158,6 +168,27 @@ namespace DesktopApp
                 .Where(e => (showFuture && e.StartDate > now) || (showCurrent && e.StartDate <= now && e.EndDate >= now) || (showPast && e.EndDate < now))
                 .Where(e => e.AbsenceType.ToLower().Contains("отпуск"))
                 .OrderBy(e => e.StartDate);
+        }
+
+        private async void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                EditData(_employee);
+                await _employeeService.AddAsync(_employee);
+                MessageBox.Show("Информаия добавлена.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Произошла ошибка при сохранении информации: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void EditData(Employee employee)
+        {
+            employee.Password = employee.Password ?? "Password";
+            employee.PositionId = employee.Position.PositionId;
+            employee.Position = null;
         }
     }
 }
