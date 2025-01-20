@@ -24,7 +24,7 @@ namespace WebApi.Controllers
 
             context.AbsenceEvents.RemoveRange(absences);
 
-            employee.DismissalDate = DateOnly.FromDateTime(DateTime.Now);
+            employee.DismissalDate = DateTime.Now;
             context.Employees.Update(employee);
             await context.SaveChangesAsync();
             return Ok(employee);
