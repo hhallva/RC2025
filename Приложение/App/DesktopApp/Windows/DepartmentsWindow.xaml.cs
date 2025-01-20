@@ -12,10 +12,8 @@ namespace DesktopApp
     public partial class DepartmentsWindow : Window
     {
         private DepartmentService _departmentService = new(new AppDbContext());
-        IEnumerable<Department> _departments;
-        List<Employee> employees = new();
-
         private readonly EmployeeService _employeeService = new EmployeeService();
+        List<Employee> employees = new();
 
         public DepartmentsWindow()
         {
@@ -77,12 +75,6 @@ namespace DesktopApp
 
             FillEmployeesList(department);
         }
-
-        //private async void UpdateTreeView()
-        //{
-        //    departmentsTreeView.Items.Clear();
-        //    _departments = await _departmentService.GetDepartmentsAsync();
-        //}
 
         private void AddEmployeeButton_Click(object sender, RoutedEventArgs e)
         {
