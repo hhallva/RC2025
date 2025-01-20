@@ -14,7 +14,7 @@ public partial class Сandidate
 
     public string Resume { get; set; } = null!;
 
-    public DateOnly DateReceived { get; set; }
+    public DateTime DateReceived { get; set; }
 
     public virtual Position DesiredPositionNavigation { get; set; } = null!;
 }
