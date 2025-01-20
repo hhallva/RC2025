@@ -16,12 +16,15 @@ namespace DesktopApp
         private Employee _employee;
         private Department _department;
         private List<Position> _positions;
+
+        public Employee Employee { get => _employee; set => _employee = value; }
+
         //private List<Employee> _directManagers;
-        
+
         public EmployeeWindow(Employee? employee = null, Department? department = null, EmployeeService? employeeService = null)
         {
             InitializeComponent();
-            _employee = employee;
+            Employee = employee;
             _department = department;
             _employeeService = employeeService ?? new(new HttpClient());
         }
@@ -30,23 +33,23 @@ namespace DesktopApp
         {
             _positions = await _positionService.GetAsync();
 
-            if (_employee != null)
+            if (Employee != null)
             {
                 AddButton.Visibility = Visibility.Collapsed;
-                _employee = await _employeeService.GetAsync(_employee.EmployeeId);
+                Employee = await _employeeService.GetAsync(Employee.EmployeeId);
             }
             else
             {
                 SaveButton.Visibility = Visibility.Collapsed;
-                _employee = new();
+                Employee = new();
             }
 
 
 
             UpdateListViews();
-            DataContext = _employee;
+            DataContext = Employee;
             PositionComboBox.ItemsSource = _positions;
-            
+            PositionComboBox.SelectedItem = Employee.Position;
         }
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
@@ -99,9 +102,10 @@ namespace DesktopApp
 
             try
             {
-                EditData(_employee);
-                await _employeeService.UpdateAsync(_employee);
+                EditData(Employee);
+                await _employeeService.UpdateAsync(Employee);
                 MessageBox.Show("Изменения сохранены.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                Employee.Position = PositionComboBox.SelectedItem as Position;
             }
             catch (Exception ex)
             {
@@ -111,7 +115,7 @@ namespace DesktopApp
 
         private async void DismissButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_employee.Events.Where(e => e.EventTypeId == 1)
+            if (Employee.Events.Where(e => e.EventTypeId == 1)
                 .Any(e => e.StartDate.ToDateTime(TimeOnly.MinValue) > DateTime.Now))
             {
                 MessageBox.Show("Невозмонжно уволить сотрудника.\nПрисутсвтует запись на обучение.", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -125,7 +129,7 @@ namespace DesktopApp
 
             try
             {
-                await _employeeService.DismissAsync(_employee.EmployeeId);
+                await _employeeService.DismissAsync(Employee.EmployeeId);
                 MessageBox.Show("Сотрудник успешно уволен.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
             }
@@ -148,16 +152,16 @@ namespace DesktopApp
 
             var now = DateOnly.FromDateTime(DateTime.Now.Date);
 
-            EventsListView.ItemsSource = _employee.Events
+            EventsListView.ItemsSource = Employee.Events
                 .Where(e => (showFuture && e.StartDate > now) || (showCurrent && e.StartDate <= now && e.EndDate >= now) || (showPast && e.EndDate < now))
                 .OrderBy(e => e.StartDate);
 
-            FreeDaysListView.ItemsSource = _employee.AbsenceEventEmployees
+            FreeDaysListView.ItemsSource = Employee.AbsenceEventEmployees
                 .Where(e => (showFuture && e.StartDate > now) || (showCurrent && e.StartDate <= now && e.EndDate >= now) || (showPast && e.EndDate < now))
                 .Where(e => !e.AbsenceType.ToLower().Contains("отпуск"))
                 .OrderBy(e => e.StartDate);
 
-            HolidaysListView.ItemsSource = _employee.AbsenceEventEmployees
+            HolidaysListView.ItemsSource = Employee.AbsenceEventEmployees
                 .Where(e => (showFuture && e.StartDate > now) || (showCurrent && e.StartDate <= now && e.EndDate >= now) || (showPast && e.EndDate < now))
                 .Where(e => e.AbsenceType.ToLower().Contains("отпуск"))
                 .OrderBy(e => e.StartDate);
@@ -167,8 +171,8 @@ namespace DesktopApp
         {
             try
             {
-                EditData(_employee);
-                await _employeeService.AddAsync(_employee);
+                EditData(Employee);
+                await _employeeService.AddAsync(Employee);
                 MessageBox.Show("Информаия добавлена.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
@@ -180,9 +184,9 @@ namespace DesktopApp
         private void EditData(Employee employee)
         {
             employee.Password = employee.Password ?? "Password";
+            employee.AbsenceEventEmployees.Clear();
             employee.PositionId = (PositionComboBox.SelectedItem as Position).PositionId;
-            employee.Position = null;
-
+            employee.Position = (PositionComboBox.SelectedItem as Position);
         }
     }
 }
