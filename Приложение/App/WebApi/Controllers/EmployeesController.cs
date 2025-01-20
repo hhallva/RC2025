@@ -3,6 +3,7 @@ using DataLayer.DTOs;
 using DataLayer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace WebApi.Controllers
 {
@@ -17,8 +18,10 @@ namespace WebApi.Controllers
             if (employee == null)
                 return NotFound();
 
+            var today = DateOnly.FromDateTime(DateTime.Now);
             var absences = await context.AbsenceEvents
                 .Where(e => e.EmployeeId == id)
+                .Where(e => e.EndDate.ToDateTime(TimeOnly.MinValue) > DateTime.Now)
                 .ToListAsync();
 
             context.AbsenceEvents.RemoveRange(absences);
@@ -35,15 +38,26 @@ namespace WebApi.Controllers
             if (id != employee.EmployeeId)
                 return BadRequest();
 
+            employee.Position = context.Positions.Find(employee.PositionId);  
+
             context.Entry(employee).State = EntityState.Modified;
-            await context.SaveChangesAsync();
+            try
+            {
+                await context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+           
             return Ok(employee);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> PostEmployeeAsync(Employee employee)
         {
+            employee.Position = context.Positions.Find(employee.PositionId);
+
             await context.Employees.AddAsync(employee);
             await context.SaveChangesAsync();
             return Ok(employee);
