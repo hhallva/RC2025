@@ -11,15 +11,13 @@ namespace DesktopApp
     /// </summary>
     public partial class EmployeeWindow : Window
     {
-        private EmployeeService _employeeService; // = new(new HttpClient());
+        private EmployeeService _employeeService;
         private PositionService _positionService = new(new HttpClient());
         private Employee _employee;
         private Department _department;
         private List<Position> _positions;
 
         public Employee Employee { get => _employee; set => _employee = value; }
-
-        //private List<Employee> _directManagers;
 
         public EmployeeWindow(Employee? employee = null, Department? department = null, EmployeeService? employeeService = null)
         {
@@ -116,7 +114,7 @@ namespace DesktopApp
         private async void DismissButton_Click(object sender, RoutedEventArgs e)
         {
             if (Employee.Events.Where(e => e.EventTypeId == 1)
-                .Any(e => e.StartDate.ToDateTime(TimeOnly.MinValue) > DateTime.Now))
+                .Any(e => e.StartDate > DateTime.Now))
             {
                 MessageBox.Show("Невозмонжно уволить сотрудника.\nПрисутсвтует запись на обучение.", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
@@ -150,7 +148,7 @@ namespace DesktopApp
             bool showCurrent = CurrentCheckBox.IsChecked == true;
             bool showPast = PastCheckBox.IsChecked == true;
 
-            var now = DateOnly.FromDateTime(DateTime.Now.Date);
+            var now = DateTime.Now.Date;
 
             EventsListView.ItemsSource = Employee.Events
                 .Where(e => (showFuture && e.StartDate > now) || (showCurrent && e.StartDate <= now && e.EndDate >= now) || (showPast && e.EndDate < now))

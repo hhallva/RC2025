@@ -6,7 +6,7 @@ public partial class AbsenceEvent
 {
     public int AbsenceEventId { get; set; }
 
-    public DateOnly StartDate { get; set; }
+    public DateTime StartDate { get; set; }
 
     public int DaysCount { get; set; }
 
@@ -20,7 +20,7 @@ public partial class AbsenceEvent
 
     [JsonIgnore]
     public virtual Employee Employee { get; set; } = null!;
-    
-    [JsonIgnore]    
+
+    [JsonIgnore]
     public virtual Employee? ReplasementEmployee { get; set; }
 }
