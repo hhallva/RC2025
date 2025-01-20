@@ -94,7 +94,7 @@ public partial class AppDbContext : DbContext
                 .HasForeignKey(d => d.HeadDepartment)
                 .HasConstraintName("FK_Department_Employee");
 
-            entity.HasOne(d => d.ParentDepartment).WithMany(p => p.InverseParentDepartment)
+            entity.HasOne(d => d.ParentDepartment).WithMany(p => p.ChildDepartment)
                 .HasForeignKey(d => d.ParentDepartmentId)
                 .HasConstraintName("FK_Department_Department");
 
