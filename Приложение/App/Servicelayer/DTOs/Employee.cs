@@ -5,7 +5,7 @@
         public string FullName => $"{Surname} {Name} {Patronymic}";
 
         public int? DayAfterDismissal => (DismissalDate == null) ?
-         null : (int)(DateTime.Now - DismissalDate.Value.ToDateTime(TimeOnly.MinValue)).TotalDays;
+         null : (int)(DateTime.Now.Date - DismissalDate.Value.Date).TotalDays;
 
         public bool DismissedAgo => (DismissalDate != null && DayAfterDismissal <= 30);
 
