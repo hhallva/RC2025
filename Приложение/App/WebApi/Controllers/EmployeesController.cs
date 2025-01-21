@@ -16,15 +16,14 @@ namespace WebApi.Controllers
             if (employee == null)
                 return NotFound();
 
-            var today = DateOnly.FromDateTime(DateTime.Now);
             var absences = await context.AbsenceEvents
-                .Where(e => e.EmployeeId == id)
-                .Where(e => e.EndDate> DateTime.Now)
+                .Where(a => a.EmployeeId == id)
+                .Where(e => e.EndDate > DateTime.Now.Date)
                 .ToListAsync();
 
             context.AbsenceEvents.RemoveRange(absences);
 
-            employee.DismissalDate = DateTime.Now;
+            employee.DismissalDate = DateTime.Now.Date;
             context.Employees.Update(employee);
             await context.SaveChangesAsync();
             return Ok(employee);
@@ -35,8 +34,6 @@ namespace WebApi.Controllers
         {
             if (id != employee.EmployeeId)
                 return BadRequest();
-
-            employee.Position = context.Positions.Find(employee.PositionId);
 
             context.Entry(employee).State = EntityState.Modified;
             try
