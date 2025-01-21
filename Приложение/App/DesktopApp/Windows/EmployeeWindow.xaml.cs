@@ -182,7 +182,8 @@ namespace DesktopApp
         private void EditData(Employee employee)
         {
             employee.Password = employee.Password ?? "Password";
-            employee.AbsenceEventEmployees.Clear();
+            employee.AbsenceEventEmployees = new List<AbsenceEvent>();
+            employee.Events = new List<Event>();
             employee.PositionId = (PositionComboBox.SelectedItem as Position).PositionId;
             employee.Position = (PositionComboBox.SelectedItem as Position);
         }
