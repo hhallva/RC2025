@@ -22,16 +22,41 @@ namespace DataLayer.Services
         }
 
         public async Task DismissAsync(int id)
-            => await _client.PatchAsJsonAsync($"{id}", id);
+        {
+            HttpResponseMessage response =
+                await _client.PatchAsJsonAsync($"{id}", id);
+            response.EnsureSuccessStatusCode();
+        }
 
         public async Task UpdateAsync(Employee employee)
-            => await _client.PutAsJsonAsync($"{employee.EmployeeId}", employee);
+        {
+            HttpResponseMessage response =
+                await _client.PutAsJsonAsync($"{employee.EmployeeId}", employee);
+            response.EnsureSuccessStatusCode();
+        }
 
         public async Task<Employee?> GetAsync(int id)
             => await _client.GetFromJsonAsync<Employee>($"{id}");
 
-        public async Task AddAsync(Employee employee)
-            => await _client.PostAsJsonAsync("", employee);
+        public async Task AddEmployeeAsync(Employee employee)
+        {
+            HttpResponseMessage response =
+                await _client.PostAsJsonAsync("", employee);
+            response.EnsureSuccessStatusCode();
+        }
 
+        public async Task AddAbsenseEventAsync(AbsenceEvent absenceEvent)
+        {
+            HttpResponseMessage response =
+                await _client.PostAsJsonAsync($"{absenceEvent.EmployeeId}/AbsenceEvent", absenceEvent);
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task AddEventAsync(int id, Event education)
+        {
+            HttpResponseMessage response =
+                await _client.PostAsJsonAsync($"{id}/Event", education);
+            response.EnsureSuccessStatusCode();
+        }
     }
 }
