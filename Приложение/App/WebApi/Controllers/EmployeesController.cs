@@ -18,12 +18,12 @@ namespace WebApi.Controllers
 
             var absences = await context.AbsenceEvents
                 .Where(a => a.EmployeeId == id)
-                .Where(e => e.EndDate > DateTime.Now.Date)
+                .Where(e => e.StartDate.AddDays(e.DaysCount - 1) > DateTime.Now)
                 .ToListAsync();
 
             context.AbsenceEvents.RemoveRange(absences);
 
-            employee.DismissalDate = DateTime.Now.Date;
+            employee.DismissalDate = DateTime.Now;
             context.Employees.Update(employee);
             await context.SaveChangesAsync();
             return Ok(employee);
