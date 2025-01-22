@@ -58,6 +58,27 @@ namespace WebApi.Controllers
             return Ok(employee);
         }
 
+        [HttpPost("{id}/AbsenceEvent")]
+        public async Task<ActionResult<AbsenceEvent>> PostAbsenseEventAsync(int id, AbsenceEvent absenceEvent)
+        {
+            absenceEvent.EmployeeId = context.Employees.Find(absenceEvent.EmployeeId).EmployeeId;
+
+            await context.AbsenceEvents.AddAsync(absenceEvent);
+            await context.SaveChangesAsync();
+            return Ok(absenceEvent);
+        }
+
+        [HttpPost("{id}/Event")]
+        public async Task<ActionResult<AbsenceEvent>> PostEventAsync(int id, Event newEvent)
+        {
+            var employee = await context.Employees.FindAsync(id);
+            newEvent.Employees.Add(employee);
+
+            await context.Events.AddAsync(newEvent);
+            await context.SaveChangesAsync();
+            return Ok(newEvent);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Employee>> GetEmployeeAsync(int id)
         {
