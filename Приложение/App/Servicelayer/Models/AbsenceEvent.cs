@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace DataLayer.Models;
 
@@ -19,8 +20,10 @@ public partial class AbsenceEvent
     public int EmployeeId { get; set; }
 
     [JsonIgnore]
-    public virtual Employee Employee { get; set; } = null!;
+    [NotMapped]
+    public virtual Employee? Employee { get; set; } = null!;
 
     [JsonIgnore]
+    [NotMapped]
     public virtual Employee? ReplasementEmployee { get; set; }
 }

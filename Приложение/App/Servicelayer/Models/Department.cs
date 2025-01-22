@@ -21,4 +21,9 @@ public partial class Department
     public virtual Department? ParentDepartment { get; set; }
 
     public virtual ICollection<Event> Events { get; set; } = new List<Event>();
+
+    public override string ToString()
+    {
+        return $"{DepartmentId} {Name}"; 
+    }
 }
