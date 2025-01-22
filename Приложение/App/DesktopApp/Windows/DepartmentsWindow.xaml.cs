@@ -14,6 +14,7 @@ namespace DesktopApp
         private DepartmentService _departmentService = new(new AppDbContext());
         private readonly EmployeeService _employeeService = new EmployeeService();
         List<Employee> employees = new();
+        List<Department> _departments;
 
         public DepartmentsWindow()
         {
@@ -27,8 +28,8 @@ namespace DesktopApp
 
         private async Task LoadDepartmentsAsync()
         {
-            var departments = await _departmentService.GetDepartmentsAsync();
-            ShowDepartments(departments);
+            _departments = (List<Department>)await _departmentService.GetDepartmentsAsync();
+            ShowDepartments(_departments);
         }
 
         private void ShowDepartments(IEnumerable<Department>? departments)
@@ -70,7 +71,7 @@ namespace DesktopApp
             if (employee.DismissalDate != null)
                 return;
 
-            EmployeeWindow employeeWindow = new(employee, department, _employeeService);
+            EmployeeWindow employeeWindow = new(employee, _departments, _employeeService);
             employeeWindow.ShowDialog();
 
             FillEmployeesList(department);
@@ -78,10 +79,10 @@ namespace DesktopApp
 
         private void AddEmployeeButton_Click(object sender, RoutedEventArgs e)
         {
-            if (departmentsTreeView.SelectedItem is not Department department)
+            if (departmentsTreeView.SelectedItem is not Department)
                 return;
 
-            EmployeeWindow employeeWindow = new(null, department);
+            EmployeeWindow employeeWindow = new(null, _departments);
             employeeWindow.ShowDialog();
         }
     }
