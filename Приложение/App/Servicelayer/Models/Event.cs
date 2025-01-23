@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace DataLayer.Models;
 
@@ -10,9 +11,9 @@ public partial class Event
 
     public string Name { get; set; } = null!;
 
-    public DateOnly StartDate { get; set; }
+    public DateTime StartDate { get; set; }
 
-    public DateOnly EndDate { get; set; }
+    public DateTime EndDate { get; set; }
 
     public int? ResponsibleEmployeeId { get; set; }
 
@@ -20,7 +21,8 @@ public partial class Event
 
     public string? Description { get; set; }
 
-    public virtual EventType EventType { get; set; } = null!;
+    [NotMapped]
+    public virtual EventType? EventType { get; set; } = null!;
 
     public virtual Employee? ResponsibleEmployee { get; set; }
 

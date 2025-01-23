@@ -1,23 +1,15 @@
-﻿using System.Drawing;
-
-namespace DataLayer.Models
+﻿namespace DataLayer.Models
 {
     public partial class Employee
     {
         public string FullName => $"{Surname} {Name} {Patronymic}";
 
         public int? DayAfterDismissal => (DismissalDate == null) ?
-         null : (int)(DateTime.Now - DismissalDate.Value.ToDateTime(TimeOnly.MinValue)).TotalDays;
+         null : (int)(DateTime.Now.Date - DismissalDate.Value.Date).TotalDays;
 
-        public bool DismissedAgo => (DismissalDate != null && DayAfterDismissal <= 30) ? true : false;
-        public bool IsDismiss => (DismissalDate != null) ? true :  false;
+        public bool DismissedAgo => (DismissalDate != null && DayAfterDismissal <= 30);
 
-        //public override bool Equals(object? obj)
-        //{
-        //    if (obj is Employee employee)
-        //        return employee.DirectManager == DirectManager;
-        //    return false;
-        //}
+        public bool IsDismiss => (DismissalDate != null);
     }
 }
 

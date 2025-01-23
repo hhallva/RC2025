@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using DataLayer.DataContexts;
+﻿using DataLayer.DataContexts;
 using DataLayer.DTOs;
 using DataLayer.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
@@ -16,7 +16,7 @@ namespace WebApi.Controllers
         /// POST: /api/v1/SignIn
         /// Вход в учетную запись, генерация JWT-токена
         /// </summary>
-        ///<remarks>Принимает учетные данные пользователя (email и пароль) и при удачной аунтентификации позвращает JWT-токен</remarks>
+        /// <remarks>Принимает учетные данные пользователя (email и пароль) и при удачной аунтентификации позвращает JWT-токен</remarks>
         /// <param name="employee">Объект содержащий email и пароль пользователя</param>
         /// <returns>JWT-токен</returns>
         /// <response code="200">Успешная авторизация</response>

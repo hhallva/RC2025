@@ -35,7 +35,6 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<Сandidate> Сandidates { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=MSI; Database=Profiki; Trusted_Connection=True; Trust Server Certificate = True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -94,7 +93,7 @@ public partial class AppDbContext : DbContext
                 .HasForeignKey(d => d.HeadDepartment)
                 .HasConstraintName("FK_Department_Employee");
 
-            entity.HasOne(d => d.ParentDepartment).WithMany(p => p.InverseParentDepartment)
+            entity.HasOne(d => d.ParentDepartment).WithMany(p => p.ChildDepartment)
                 .HasForeignKey(d => d.ParentDepartmentId)
                 .HasConstraintName("FK_Department_Department");
 

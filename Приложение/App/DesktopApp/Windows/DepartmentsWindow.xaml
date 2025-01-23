@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DesktopApp"
+        xmlns:models="clr-namespace:DataLayer.Models;assembly=DataLayer"
         mc:Ignorable="d"
         Title="" 
         Height="450" Width="800"
@@ -27,6 +28,12 @@
         </StackPanel>
 
         <TreeView x:Name="departmentsTreeView" Grid.Row="1" SelectedItemChanged="DepartmentsTreeView_SelectedItemChanged">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type models:Department}" 
+                                          ItemsSource="{Binding ChildDepartment}">
+                    <TextBlock Text="{Binding Name}"/>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
             <TreeView.Resources>
                 <Style TargetType="TreeViewItem">
                     <Setter Property="IsExpanded" Value="True"/>

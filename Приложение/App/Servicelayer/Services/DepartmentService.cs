@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using DataLayer.DataContexts;
+﻿using DataLayer.DataContexts;
 using DataLayer.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer.Services
 {
@@ -8,7 +8,7 @@ namespace DataLayer.Services
     {
         public async Task<IEnumerable<Department>> GetDepartmentsAsync()
            => await context.Departments
-            .Include(d => d.InverseParentDepartment)
+            .Include(d => d.ChildDepartment)
             .Include(d => d.Employees)
             .ThenInclude(e => e.Position)
             .ToListAsync();

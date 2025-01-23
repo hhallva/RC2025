@@ -13,7 +13,7 @@ public partial class WorkingCalendar
     /// <summary>
     /// День-исключение
     /// </summary>
-    public DateOnly ExceptionDate { get; set; }
+    public DateTime ExceptionDate { get; set; }
 
     /// <summary>
     /// 0 - будний день, но законодательно принят выходным

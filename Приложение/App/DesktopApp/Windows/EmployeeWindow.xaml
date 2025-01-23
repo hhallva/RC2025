@@ -7,9 +7,10 @@
         xmlns:viewModels="clr-namespace:DataLayer.Models;assembly=DataLayer"
         mc:Ignorable="d"
         Title="EmployeeWindow" 
-        Height="650" Width="800" 
         WindowStartupLocation="CenterScreen"
-        Loaded="Window_Loaded">
+        Loaded="Window_Loaded"
+        Height="650" Width="950" 
+        MinHeight="650" MinWidth="950">
     <Window.DataContext>
         <viewModels:Employee/>
     </Window.DataContext>
@@ -52,51 +53,60 @@
                 <TextBox x:Name="EmailTextBox" Text="{Binding Email}"/>
 
                 <TextBlock Text="Стуктурное подразделение:" Margin="0,10,0,0"/>
-                <!--<ComboBox x:Name="DepartmentComboBox">
-                </ComboBox>-->
+                <!--<TextBox x:Name="DepartmentTextBox" Text="{Binding DepartmentId}"/>-->
+                <ComboBox x:Name="DepartmentComboBox"/>
 
-                <TextBox x:Name="DepartmentTextBox" Text="{Binding DepartmentId}">
-                </TextBox>
 
                 <TextBlock Text="Должность:" Margin="0,10,0,0"/>
-                <ComboBox x:Name="PositionComboBox" DisplayMemberPath="Name" SelectedItem="{Binding Position}">
-                </ComboBox>
+                <ComboBox x:Name="PositionComboBox" DisplayMemberPath="Name"/>
 
                 <TextBlock Text="Непосредственный руководитель:" Margin="0,10,0,0"/>
-                <ComboBox x:Name="DirectManagerComboBox">
-                </ComboBox>
-
-
+                <ComboBox x:Name="DirectManagerComboBox"/>
 
                 <TextBlock Text="Кабинет:" Margin="0,10,0,0"/>
                 <TextBox x:Name="CabinetTextBox" Text="{Binding Cabinet}"/>
 
                 <Button Content="Сохранить именения" Margin="0,10,0,0" Background="#FFE4F4CC" BorderBrush="#FFE6E6E6" x:Name="SaveButton" Click="SaveButton_Click"/>
-                <Button Content="Добавить сотрудника" Margin="0,10,0,0" Background="#FFE4F4CC" BorderBrush="#FFE6E6E6" x:Name="AddButton" Click="AddButton_Click"/>
+                <Button Content="Добавить сотрудника" Margin="0,10,0,0" Background="#FFE4F4CC" BorderBrush="#FFE6E6E6" x:Name="AddButton" Click="AddEmployeeButton_Click"/>
                 <Button Content="Уволить сотрудника" Margin="0,10,0,0" Background="#FFFF8C56" BorderBrush="#FFE6E6E6" x:Name="DismissButton" Click="DismissButton_Click"/>
             </StackPanel>
         </StackPanel>
 
+        <DockPanel Grid.Column="1" Margin="10" Background="#ffffff">
+            <Grid Grid.Column="1" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="1" Margin="10" Background="#ffffff">
-            <StackPanel  Margin="10">
-                <StackPanel Margin="0,0,0,10">
-                    <TextBlock Text="Группа событий:"/>
-                    <CheckBox x:Name="PastCheckBox" Content="Прошедшие" Click="FilterCheckBox_Click"/>
-                    <CheckBox x:Name="CurrentCheckBox" Content="Текущие" Click="FilterCheckBox_Click" IsChecked="True"/>
-                    <CheckBox x:Name="FutureCheckBox" Content="Будущие" Click="FilterCheckBox_Click" IsChecked="True"/>
-                </StackPanel>
+                <Grid Margin="0,0,0,10" Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <CheckBox x:Name="PastCheckBox" Content="Прошедшие" Grid.Column="0" Click="FilterCheckBox_Click"/>
+                    <CheckBox x:Name="CurrentCheckBox" Content="Текущие" Grid.Column="1" Click="FilterCheckBox_Click" IsChecked="True"/>
+                    <CheckBox x:Name="FutureCheckBox" Content="Будущие" Grid.Column="2" Click="FilterCheckBox_Click" IsChecked="True"/>
+                </Grid>
 
-                <TextBlock Text="Обучения"/>
-                <ListView x:Name="EventsListView" HorizontalContentAlignment="Stretch" Height="150">
+
+                <TextBlock Text="Обучения" Grid.Row="1"/>
+                <ListView x:Name="EventsListView" HorizontalContentAlignment="Stretch" Grid.Row="2" >
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="1" Background="#FFE4F4CC">
-                                <TextBlock Text="{Binding Name}"  Padding="3,3,0,0"/>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding StartDate, StringFormat='{}{0:dd.MM.yyyy}'}" Padding="3,0,0,0"/>
                                     <TextBlock Text=" - "/>
                                     <TextBlock Text="{Binding EndDate, StringFormat='{}{0:dd.MM.yyyy}'}"/>
+                                    <TextBlock Text="{Binding Name}"  Padding="3,0,0,0"/>
                                 </StackPanel>
                                 <TextBlock Text="{Binding Description}"  Padding="3,0,0,3"/>
                             </StackPanel>
@@ -104,40 +114,59 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <TextBlock Text="Отгулы"/>
-                <ListView x:Name="FreeDaysListView" HorizontalContentAlignment="Stretch" Height="150">
+                <TextBlock Text="Отгулы" Grid.Row="3"/>
+                <ListView x:Name="FreeDaysListView" HorizontalContentAlignment="Stretch" Grid.Row="4">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="1" Background="#FFE4F4CC">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Padding="3,3,0,0">
-                                         <TextBlock Text="{Binding StartDate, StringFormat='{}{0:dd.MM.yyyy}'}"/>
-                                         <TextBlock Text=" - "/>
-                                         <TextBlock Text="{Binding EndDate, StringFormat='{}{0:dd.MM.yyyy}'}"/>
-                                    </TextBlock>
+                                 <TextBlock Text="{Binding StartDate, StringFormat='{}{0:dd.MM.yyyy}'}"/>
+                                 <TextBlock Text=" - "/>
+                                 <TextBlock Text="{Binding EndDate, StringFormat='{}{0:dd.MM.yyyy}'}"/>
+                            </TextBlock>
                                 </StackPanel>
                                 <TextBlock Text="{Binding Description}"  Padding="3,0,0,3"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                
-                <TextBlock Text="Отпуска"/>
-                <ListView x:Name="HolidaysListView" HorizontalContentAlignment="Stretch" Height="150">
+
+                <TextBlock Text="Отпуска" Grid.Row="5"/>
+                <ListView x:Name="HolidaysListView" HorizontalContentAlignment="Stretch" Grid.Row="6">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="1" Background="#FFE4F4CC">
                                 <TextBlock Padding="3,3,0,0">
-                                    <TextBlock Text="{Binding StartDate, StringFormat='{}{0:dd.MM.yyyy}'}"/>
-                                    <TextBlock Text=" - "/>
-                                    <TextBlock Text="{Binding EndDate, StringFormat='{}{0:dd.MM.yyyy}'}"/>
-                                </TextBlock>
+                            <TextBlock Text="{Binding StartDate, StringFormat='{}{0:dd.MM.yyyy}'}"/>
+                            <TextBlock Text=" - "/>
+                            <TextBlock Text="{Binding EndDate, StringFormat='{}{0:dd.MM.yyyy}'}"/>
+                        </TextBlock>
                                 <TextBlock Text="{Binding Description}"  Padding="3,0,0,3"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-            </StackPanel>
-        </StackPanel>
+
+                <StackPanel Grid.Row="7">
+                    <TextBlock Text="Добавить событие" Margin="0,0,0,5"/>
+                    <TextBlock Text="Вид события:"/>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox x:Name="TypeComboBox"  Width="150" >
+                            <ComboBoxItem Content="Обучение"/>
+                            <ComboBoxItem Content="Отгул"/>
+                            <ComboBoxItem Content="Отпуск"/>
+                        </ComboBox>
+                        <TextBlock Text="От:" Margin="5,5,5,0"/>
+                        <DatePicker x:Name="FromDatePicker"/>
+                        <TextBlock Text="До:" Margin="5,5,5,0"/>
+                        <DatePicker x:Name="ToDatePicker"/>
+                    </StackPanel>
+                    <TextBlock  Text="Комментарий:"/>
+                    <TextBox x:Name="DescriptionTextBox" Height="70" AcceptsReturn="True"/>
+                    <Button Content="Добавить событие" Margin="0,10,0,0" Background="#FFE4F4CC" BorderBrush="#FFE6E6E6" x:Name="AddEventButton" Click="AddEventButton_Click"/>
+                </StackPanel>
+            </Grid>
+        </DockPanel>
     </Grid>
 </Window>

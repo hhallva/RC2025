@@ -7,18 +7,18 @@ namespace WebApi.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class PositionsController : ControllerBase
+    public class WorkingCalendarsController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public PositionsController(AppDbContext context)
+        public WorkingCalendarsController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/v1/Positions
+        // GET: api/v1/WorkingCalendars
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Position>>> GetPositionsAsync()
-            => await _context.Positions.ToListAsync();
+        public async Task<ActionResult<IEnumerable<WorkingCalendar>>> GetWorkingCalendars()
+            => await _context.WorkingCalendars.ToListAsync();
     }
 }

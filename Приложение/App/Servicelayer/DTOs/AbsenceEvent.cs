@@ -2,7 +2,7 @@
 {
     public partial class AbsenceEvent
     {
-        public DateOnly EndDate => StartDate.AddDays(DaysCount - 1);
+        public DateTime EndDate => StartDate.AddDays(DaysCount - 1);
     }
 }
 

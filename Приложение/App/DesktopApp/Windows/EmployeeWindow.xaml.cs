@@ -1,7 +1,10 @@
 ﻿using DataLayer.Models;
 using DataLayer.Services;
 using System.Net.Http;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Controls;
 
 
 namespace DesktopApp
@@ -11,18 +14,20 @@ namespace DesktopApp
     /// </summary>
     public partial class EmployeeWindow : Window
     {
-        private EmployeeService _employeeService; // = new(new HttpClient());
+        private EmployeeService _employeeService;
         private PositionService _positionService = new(new HttpClient());
+        private WorkingCalendarService _workingCalendarService = new(new HttpClient());
         private Employee _employee;
-        private Department _department;
+        private List<Department> _departments;
         private List<Position> _positions;
-        //private List<Employee> _directManagers;
-        
-        public EmployeeWindow(Employee? employee = null, Department? department = null, EmployeeService? employeeService = null)
+
+        public Employee Employee { get => _employee; set => _employee = value; }
+
+        public EmployeeWindow(Employee? employee = null, List<Department> departments = null, EmployeeService? employeeService = null)
         {
             InitializeComponent();
-            _employee = employee;
-            _department = department;
+            Employee = employee;
+            _departments = departments;
             _employeeService = employeeService ?? new(new HttpClient());
         }
 
@@ -30,85 +35,82 @@ namespace DesktopApp
         {
             _positions = await _positionService.GetAsync();
 
-            if (_employee != null)
+            if (Employee != null)
             {
                 AddButton.Visibility = Visibility.Collapsed;
-                _employee = await _employeeService.GetAsync(_employee.EmployeeId);
+                Employee = await _employeeService.GetAsync(Employee.EmployeeId);
             }
             else
             {
                 SaveButton.Visibility = Visibility.Collapsed;
-                _employee = new();
+                Employee = new();
             }
 
 
+            DataContext = Employee;
+
+            DepartmentComboBox.ItemsSource = _departments;
+            DepartmentComboBox.SelectedItem = _departments.Find(e => e.DepartmentId == Employee.DepartmentId);
+
+            PositionComboBox.ItemsSource = _positions;
+            PositionComboBox.SelectedItem = Employee.Position;
 
             UpdateListViews();
-            DataContext = _employee;
-            PositionComboBox.ItemsSource = _positions;
-            PositionComboBox.SelectedItem =_positions.FirstOrDefault(p => p.PositionId == _employee.PositionId); // _employee.Position; 
-
-            //Попытка реализовать DirectManagerComboBox
-            //if (_department != null)
-            //    _directManagers = _department.Employees.Except(new List<Employee> { _employee }).ToList(); //Не удаляет
-
-            //DirectManagerComboBox.ItemsSource = _directManagers;
-            //DirectManagerComboBox.SelectedItem = _employee.DirectManager; 
         }
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-
             #region Проверки
-            //StringBuilder errors = new();
+            StringBuilder errors = new();
 
-            //if (string.IsNullOrWhiteSpace(SurnameTextBox.Text))
-            //    errors.AppendLine("Поле \"Фамилия\" обязательно для заполнения.");
-            //if (string.IsNullOrWhiteSpace(NameTextBox.Text))
-            //    errors.AppendLine("Поле \"Имя\"  обязательно для заполнения.");
-            //if (string.IsNullOrWhiteSpace(WorkPhoneTextBox.Text))
-            //    errors.AppendLine("Поле \"Рабочий телефон\" обязательно для заполнения.");
-            //if (string.IsNullOrWhiteSpace(EmailTextBox.Text))
-            //    errors.AppendLine("Поле \"Email\" обязательно для заполнения.");
-            //if (string.IsNullOrWhiteSpace(DepartmentTextBox.Text)) //DepartmentComboBox.Text
-            //    errors.AppendLine("Поле \"Структурное подразделение\" обязательно для заполнения.");
-            //if (string.IsNullOrWhiteSpace(PositionComboBox.Text))
-            //    errors.AppendLine("Поле \"Должность\" обязательно для заполнения.");
-            //if (string.IsNullOrWhiteSpace(CabinetTextBox.Text))
-            //    errors.AppendLine("Поле \"Кабинет\" обязательно для заполнения.");
+            if (string.IsNullOrWhiteSpace(SurnameTextBox.Text))
+                errors.AppendLine("Поле \"Фамилия\" обязательно для заполнения.");
+            if (string.IsNullOrWhiteSpace(NameTextBox.Text))
+                errors.AppendLine("Поле \"Имя\"  обязательно для заполнения.");
+            if (string.IsNullOrWhiteSpace(WorkPhoneTextBox.Text))
+                errors.AppendLine("Поле \"Рабочий телефон\" обязательно для заполнения.");
+            if (string.IsNullOrWhiteSpace(EmailTextBox.Text))
+                errors.AppendLine("Поле \"Email\" обязательно для заполнения.");
+            if (string.IsNullOrWhiteSpace(DepartmentComboBox.Text))
+                errors.AppendLine("Поле \"Структурное подразделение\" обязательно для заполнения.");
+            if (string.IsNullOrWhiteSpace(PositionComboBox.Text))
+                errors.AppendLine("Поле \"Должность\" обязательно для заполнения.");
+            if (string.IsNullOrWhiteSpace(CabinetTextBox.Text))
+                errors.AppendLine("Поле \"Кабинет\" обязательно для заполнения.");
 
-            //string pattern = @"^[\+]?[\d\(\)\-\s#]{1,20}$";
-            //if (!string.IsNullOrWhiteSpace(PhoneTextBox.Text))
-            //    if (!Regex.IsMatch(PhoneTextBox.Text, pattern))
-            //        errors.AppendLine("Поле \"Мобильный телефон\" заполненно неправильно.");
+            string pattern = @"^[\+]?[\d\(\)\-\s#]{1,20}$";
+            if (!string.IsNullOrWhiteSpace(PhoneTextBox.Text))
+                if (!Regex.IsMatch(PhoneTextBox.Text, pattern))
+                    errors.AppendLine("Поле \"Мобильный телефон\" заполненно неправильно.");
 
-            //if (!string.IsNullOrWhiteSpace(WorkPhoneTextBox.Text))
-            //    if (!Regex.IsMatch(WorkPhoneTextBox.Text, pattern))
-            //        errors.AppendLine("Поле \"Рабочий телефон\" заполненно неправильно.");
+            if (!string.IsNullOrWhiteSpace(WorkPhoneTextBox.Text))
+                if (!Regex.IsMatch(WorkPhoneTextBox.Text, pattern))
+                    errors.AppendLine("Поле \"Рабочий телефон\" заполненно неправильно.");
 
-            //if (errors.ToString().Contains("заполненно неправильно."))
-            //    errors.AppendLine("Номер телефона может содежать только цифры и спецсимволы \"+\", \"(\", \")\", \"-\", \" \", \"#\"\nМаксимум 20 символов.");
+            if (errors.ToString().Contains("заполненно неправильно."))
+                errors.AppendLine("Номер телефона может содежать только цифры и спецсимволы \"+\", \"(\", \")\", \"-\", \" \", \"#\"\nМаксимум 20 символов.");
 
-            //pattern = "^[a-zA-Z0-9а-яА-Я]+@[a-zA-Z0-9а-яА-Я\\.]+\\.[a-zA-Zа-яА-Я0-9]{2,}$";
-            //if (!Regex.IsMatch(EmailTextBox.Text, pattern))
-            //    errors.AppendLine("Поле \"Email\" заполненно неправильно.\nЭлектронная почта должна быть написанна в соответствии с шаблоном: x@x.x\nx - символ русского или английского алфавита, почта может модержать числа.");  
+            pattern = "^[e-zA-Z0-9а-яА-Я]+@[e-zA-Z0-9а-яА-Я\\.]+\\.[e-zA-Zа-яА-Я0-9]{2,}$";
+            if (!Regex.IsMatch(EmailTextBox.Text, pattern))
+                errors.AppendLine("Поле \"Email\" заполненно неправильно.\nЭлектронная почта должна быть написанна в соответствии с шаблоном: x@x.x\nx - символ русского или английского алфавита, почта может модержать числа.");
 
-            //pattern = "^[a-zA-Z0-9а-яА-Я\\s]{1,10}$";
-            //if (!Regex.IsMatch(CabinetTextBox.Text, pattern))
-            //    errors.AppendLine("Поле \"Кабинет\" заполненно неправильно.\nКабинет может содежать только 10 символов.");
+            pattern = "^[e-zA-Z0-9а-яА-Я\\s]{1,10}$";
+            if (!Regex.IsMatch(CabinetTextBox.Text, pattern))
+                errors.AppendLine("Поле \"Кабинет\" заполненно неправильно.\nКабинет может содежать только 10 символов.");
 
-            //if(errors.Length > 0)
-            //{
-            //    MessageBox.Show(errors.ToString(), "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
-            //    return;
-            //}
+            if (errors.Length > 0)
+            {
+                MessageBox.Show(errors.ToString(), "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
             #endregion
 
             try
             {
-                EditData(_employee);
-                await _employeeService.UpdateAsync(_employee);
+                EditData(Employee);
+                await _employeeService.UpdateAsync(Employee);
                 MessageBox.Show("Изменения сохранены.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                Employee.Position = PositionComboBox.SelectedItem as Position;
             }
             catch (Exception ex)
             {
@@ -118,8 +120,8 @@ namespace DesktopApp
 
         private async void DismissButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_employee.Events.Where(e => e.EventTypeId == 1)
-                .Any(e => e.StartDate.ToDateTime(TimeOnly.MinValue) > DateTime.Now))
+            if (Employee.Events.Where(e => e.EventTypeId == 1)
+                .Any(e => e.StartDate > DateTime.Now))
             {
                 MessageBox.Show("Невозмонжно уволить сотрудника.\nПрисутсвтует запись на обучение.", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
@@ -132,7 +134,7 @@ namespace DesktopApp
 
             try
             {
-                await _employeeService.DismissAsync(_employee.EmployeeId);
+                await _employeeService.DismissAsync(Employee.EmployeeId);
                 MessageBox.Show("Сотрудник успешно уволен.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
             }
@@ -153,30 +155,30 @@ namespace DesktopApp
             bool showCurrent = CurrentCheckBox.IsChecked == true;
             bool showPast = PastCheckBox.IsChecked == true;
 
-            var now = DateOnly.FromDateTime(DateTime.Now.Date);
+            var now = DateTime.Now.Date;
 
-            EventsListView.ItemsSource = _employee.Events
+            EventsListView.ItemsSource = Employee.Events
                 .Where(e => (showFuture && e.StartDate > now) || (showCurrent && e.StartDate <= now && e.EndDate >= now) || (showPast && e.EndDate < now))
                 .OrderBy(e => e.StartDate);
 
-            FreeDaysListView.ItemsSource = _employee.AbsenceEventEmployees
+            FreeDaysListView.ItemsSource = Employee.AbsenceEventEmployees
                 .Where(e => (showFuture && e.StartDate > now) || (showCurrent && e.StartDate <= now && e.EndDate >= now) || (showPast && e.EndDate < now))
                 .Where(e => !e.AbsenceType.ToLower().Contains("отпуск"))
                 .OrderBy(e => e.StartDate);
 
-            HolidaysListView.ItemsSource = _employee.AbsenceEventEmployees
+            HolidaysListView.ItemsSource = Employee.AbsenceEventEmployees
                 .Where(e => (showFuture && e.StartDate > now) || (showCurrent && e.StartDate <= now && e.EndDate >= now) || (showPast && e.EndDate < now))
                 .Where(e => e.AbsenceType.ToLower().Contains("отпуск"))
                 .OrderBy(e => e.StartDate);
         }
 
-        private async void AddButton_Click(object sender, RoutedEventArgs e)
+        private async void AddEmployeeButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                EditData(_employee);
-                await _employeeService.AddAsync(_employee);
-                MessageBox.Show("Информаия добавлена.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                EditData(Employee);
+                await _employeeService.AddEmployeeAsync(Employee);
+                MessageBox.Show("Информация добавлена.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
@@ -187,9 +189,113 @@ namespace DesktopApp
         private void EditData(Employee employee)
         {
             employee.Password = employee.Password ?? "Password";
-            employee.PositionId = employee.Position.PositionId;
-            employee.Position = null;
+            employee.AbsenceEventEmployees = new List<AbsenceEvent>();
+            employee.Events = new List<Event>();
+            employee.PositionId = (PositionComboBox.SelectedItem as Position).PositionId;
+            employee.Position = (PositionComboBox.SelectedItem as Position);
+            employee.DepartmentId = (DepartmentComboBox.SelectedItem as Department).DepartmentId;
         }
+
+        private async void AddEventButton_Click(object sender, RoutedEventArgs e)
+        {
+            StringBuilder errors = new();
+            if (TypeComboBox.SelectedIndex < 0)
+                errors.AppendLine("Поле \"Вид события\" обязательно для заполнения.");
+            if (FromDatePicker.SelectedDate is not DateTime)
+                errors.AppendLine("Поле \"От:\" обязательно для заполнения.");
+            if (ToDatePicker.SelectedDate is not DateTime)
+                errors.AppendLine("Поле \"До:\" обязательно для заполнения.");
+            if (FromDatePicker.SelectedDate > ToDatePicker.SelectedDate)
+                errors.AppendLine("Дата начала должна быть раньше даты конца.");
+            if (errors.Length > 0)
+            {
+                MessageBox.Show(errors.ToString(), "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            try
+            {
+                var startDate = FromDatePicker.SelectedDate.Value;
+                var endDate = ToDatePicker.SelectedDate.Value;
+                var content = (TypeComboBox.SelectedItem as ComboBoxItem).Content.ToString();
+                var specialDays = await _workingCalendarService.GetAsync();
+
+                if (content == "Обучение")
+                {
+                    Event education = new()
+                    {
+                        Name = "Обучение",
+                        StartDate = startDate,
+                        EndDate = endDate,
+                        EventTypeId = 1,
+                        Description = DescriptionTextBox.Text,
+                        Status = "Запланировано"
+                    };
+
+                    if (HasConflicts(education, Employee.AbsenceEventEmployees.ToList(), Employee.Events.ToList(), specialDays))
+                        return;
+
+                    await _employeeService.AddEventAsync(Employee.EmployeeId, education);
+                    MessageBox.Show("Информация добавлена.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Employee.Events.Add(education);
+                }
+                else
+                {
+                    AbsenceEvent absenceEvent = new()
+                    {
+                        StartDate = startDate,
+                        DaysCount = (int)(endDate - startDate).TotalDays,
+                        AbsenceType = content,
+                        Description = DescriptionTextBox.Text,
+                        EmployeeId = Employee.EmployeeId
+                    };
+
+                    if (HasConflicts(absenceEvent, Employee.AbsenceEventEmployees.ToList(), Employee.Events.ToList(), specialDays))
+                        return;
+
+                    await _employeeService.AddAbsenseEventAsync(absenceEvent);
+                    MessageBox.Show("Информация добавлена.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    Employee.AbsenceEventEmployees.Add(absenceEvent);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Произошла ошибка при сохранении информации: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public static bool HasConflicts(object newEvent, List<AbsenceEvent> absenceEvents, List<Event> events, List<WorkingCalendar> specialDays)
+        {
+            StringBuilder errors = new();
+            if (newEvent is AbsenceEvent absence)
+            {
+                if (absenceEvents.Any(a => (absence.StartDate <= a.EndDate && a.StartDate <= absence.EndDate)))
+                    errors.Append("Отпуск и отгул не могут быть в один одни даты (не могут пересекаться).");
+                if (events.Any(e => (absence.StartDate <= e.EndDate && e.StartDate <= absence.EndDate) &&
+                                (absence.AbsenceType == "Отгул" && e.EventTypeId == 1)))
+                    errors.Append("Отгул и обучение не могут быть в одни даты (не могут пересекаться).");
+                if (specialDays.Any(s => (absence.StartDate <= s.ExceptionDate && absence.EndDate >= s.ExceptionDate) &&
+                                  (absence.AbsenceType == "Отгул" && s.IsWorkingDay == false)))
+                    errors.Append("Отгул не может быть в выходной день по производственному календарю.");
+            }
+            if (newEvent is Event training)
+            {
+                if (absenceEvents.Any(a => (training.StartDate <= a.EndDate && a.StartDate <= training.EndDate) &&
+                                               a.AbsenceType == "Отгул"))
+                    errors.Append("Отгул и обучение не могут быть в одни даты (не могут пересекаться).");
+            }
+
+            if (errors.Length > 0)
+            {
+                MessageBox.Show(errors.ToString(), "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+                return true;
+            }
+            return false;
+        }
+
     }
 }
+
 

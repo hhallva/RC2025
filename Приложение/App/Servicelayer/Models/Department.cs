@@ -16,9 +16,14 @@ public partial class Department
 
     public virtual Employee? HeadDepartmentNavigation { get; set; }
 
-    public virtual ICollection<Department> InverseParentDepartment { get; set; } = new List<Department>();
+    public virtual ICollection<Department> ChildDepartment { get; set; } = new List<Department>();
 
     public virtual Department? ParentDepartment { get; set; }
 
     public virtual ICollection<Event> Events { get; set; } = new List<Event>();
+
+    public override string ToString()
+    {
+        return $"{DepartmentId} {Name}";
+    }
 }
