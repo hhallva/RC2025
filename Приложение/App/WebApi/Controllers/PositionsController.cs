@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using DataLayer.DataContexts;
+using DataLayer.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DataLayer.DataContexts;
-using DataLayer.Models;
 
 namespace WebApi.Controllers
 {
@@ -23,7 +18,7 @@ namespace WebApi.Controllers
 
         // GET: api/v1/Positions
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Position>>> GetPositionsAsync() 
+        public async Task<ActionResult<IEnumerable<Position>>> GetPositionsAsync()
             => await _context.Positions.ToListAsync();
     }
 }
