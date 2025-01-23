@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using DataLayer.DataContexts;
+﻿using DataLayer.DataContexts;
 using DataLayer.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer.Services
 {
