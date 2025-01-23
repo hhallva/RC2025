@@ -1,10 +1,51 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Портал Дороги России";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div>
+    <h3>Сотрудники</h3>
+    <div>
+        @if (Model.Employees != null && Model.Employees.Any())
+        {
+            foreach (var employee in Model.Employees)
+            {
+                <div>
+                    <h4>@employee.FullName</h4>
+                    <p>@employee.Phone</p>
+                    <p>@employee.WorkPhone</p>
+                    <p>@employee.Birthday</p>
+                    <button>QR</button>
+                </div>
+            }
+        }
+        else
+        {
+            <p>Нет новостей для отображения.</p>
+        }
+    </div>
+
+    <h3>Новости</h3>
+    <div>
+        @if (Model.RssItems != null && Model.RssItems.Any())
+        {
+            foreach (var rssItem in Model.RssItems)
+            {
+                <div>
+                    <p>
+                        <img src="@rssItem.Image" alt="@rssItem.Title"
+                             style="width: 100%; height: 200px; object-fit: cover;">
+                    </p>
+                    <h4>@rssItem.Title</h4>
+                    <p>@rssItem.Description</p>
+                    <p>@rssItem.PublicationDate.ToShortDateString()</p>
+                </div>
+            }
+        }
+        else
+        {
+            <p>Нет новостей для отображения.</p>
+        }
+    </div>
 </div>

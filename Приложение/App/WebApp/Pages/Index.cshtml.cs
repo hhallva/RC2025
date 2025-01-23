@@ -1,20 +1,19 @@
-using Microsoft.AspNetCore.Mvc;
+using DataLayer.Models;
+using DataLayer.RSS;
+using DataLayer.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace WebApp.Pages
 {
-    public class IndexModel : PageModel
+    public class IndexModel(RssService rssService, EmployeeService employeeService) : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        public List<RssItem> RssItems { get; set; }
+        public List<Employee?> Employees { get; set; }
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public async Task OnGetAsync()
         {
-            _logger = logger;
-        }
-
-        public void OnGet()
-        {
-
+            RssItems = await rssService.GetRssItemsAsync();
+            Employees = await employeeService.GetAllAsync();
         }
     }
 }
