@@ -46,10 +46,14 @@ public partial class Employee
 
     public virtual ICollection<Department> Departments { get; set; } = new List<Department>();
 
+    [JsonIgnore]
+
     public virtual Employee? DirectManagerNavigation { get; set; }
 
     [NotMapped]
     public virtual ICollection<Event> EventsNavigation { get; set; } = new List<Event>();
+
+    [JsonIgnore]
 
     public virtual ICollection<Employee> InverseDirectManagerNavigation { get; set; } = new List<Employee>();
 
