@@ -9,23 +9,31 @@ namespace WebApi.Controllers
     [ApiController]
     public class EmployeesController(AppDbContext context) : ControllerBase
     {
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> DismissEmployeeAsync(int id)
+        [HttpGet]
+        public async Task<ActionResult<Employee>> GetAllEmployeesAsync()
         {
-            var employee = await context.Employees.FindAsync(id);
+            var employee = await context.Employees
+                .Include(e => e.Position)
+                .ToListAsync();
+
             if (employee == null)
                 return NotFound();
 
-            var absences = await context.AbsenceEvents
-                .Where(a => a.EmployeeId == id)
-                .Where(e => e.StartDate.AddDays(e.DaysCount - 1) > DateTime.Now)
-                .ToListAsync();
+            return Ok(employee);
+        }
 
-            context.AbsenceEvents.RemoveRange(absences);
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Employee>> GetEmployeeAsync(int id)
+        {
+            var employee = await context.Employees
+                .Include(e => e.Events)
+                .Include(e => e.AbsenceEventEmployees)
+                .Include(e => e.Position)
+                .SingleOrDefaultAsync(e => e.EmployeeId == id);
 
-            employee.DismissalDate = DateTime.Now;
-            context.Employees.Update(employee);
-            await context.SaveChangesAsync();
+            if (employee == null)
+                return NotFound();
+
             return Ok(employee);
         }
 
@@ -45,6 +53,26 @@ namespace WebApi.Controllers
                 throw ex;
             }
 
+            return Ok(employee);
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> DismissEmployeeAsync(int id)
+        {
+            var employee = await context.Employees.FindAsync(id);
+            if (employee == null)
+                return NotFound();
+
+            var absences = await context.AbsenceEvents
+                .Where(a => a.EmployeeId == id)
+                .Where(e => e.StartDate.AddDays(e.DaysCount - 1) > DateTime.Now)
+                .ToListAsync();
+
+            context.AbsenceEvents.RemoveRange(absences);
+
+            employee.DismissalDate = DateTime.Now;
+            context.Employees.Update(employee);
+            await context.SaveChangesAsync();
             return Ok(employee);
         }
 
@@ -77,21 +105,6 @@ namespace WebApi.Controllers
             await context.Events.AddAsync(newEvent);
             await context.SaveChangesAsync();
             return Ok(newEvent);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Employee>> GetEmployeeAsync(int id)
-        {
-            var employee = await context.Employees
-                .Include(e => e.Events)
-                .Include(e => e.AbsenceEventEmployees)
-                .Include(e => e.Position)
-                .SingleOrDefaultAsync(e => e.EmployeeId == id);
-
-            if (employee == null)
-                return NotFound();
-
-            return Ok(employee);
-        }
+        } 
     }
 }
