@@ -2,7 +2,6 @@
 using DataLayer.Models;
 using DataLayer.Services;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace DesktopApp
 {

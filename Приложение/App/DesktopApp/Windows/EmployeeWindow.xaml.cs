@@ -46,7 +46,7 @@ namespace DesktopApp
                 Employee = new();
             }
 
-            
+
             DataContext = Employee;
 
             DepartmentComboBox.ItemsSource = _departments;
@@ -206,7 +206,7 @@ namespace DesktopApp
             if (ToDatePicker.SelectedDate is not DateTime)
                 errors.AppendLine("Поле \"До:\" обязательно для заполнения.");
             if (FromDatePicker.SelectedDate > ToDatePicker.SelectedDate)
-                errors.AppendLine("Дата начала должна быть раньше даты конца");
+                errors.AppendLine("Дата начала должна быть раньше даты конца.");
             if (errors.Length > 0)
             {
                 MessageBox.Show(errors.ToString(), "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -229,7 +229,7 @@ namespace DesktopApp
                         EndDate = endDate,
                         EventTypeId = 1,
                         Description = DescriptionTextBox.Text,
-                        Status = "Запланированно"
+                        Status = "Запланировано"
                     };
 
                     if (HasConflicts(education, Employee.AbsenceEventEmployees.ToList(), Employee.Events.ToList(), specialDays))
