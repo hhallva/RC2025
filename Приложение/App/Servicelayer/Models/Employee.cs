@@ -52,7 +52,7 @@ public partial class Employee
     public virtual ICollection<Event> EventsNavigation { get; set; } = new List<Event>();
 
     public virtual ICollection<Employee> InverseDirectManagerNavigation { get; set; } = new List<Employee>();
-    
+
     [NotMapped]
     public virtual Position Position { get; set; } = null!;
 

@@ -27,7 +27,7 @@ public partial class Event
     public virtual Employee? ResponsibleEmployee { get; set; }
 
     public virtual ICollection<Department> Dapartments { get; set; } = new List<Department>();
-    
+
     public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
 
     [JsonIgnore]

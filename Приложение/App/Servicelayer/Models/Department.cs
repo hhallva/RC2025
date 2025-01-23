@@ -24,6 +24,6 @@ public partial class Department
 
     public override string ToString()
     {
-        return $"{DepartmentId} {Name}"; 
+        return $"{DepartmentId} {Name}";
     }
 }
