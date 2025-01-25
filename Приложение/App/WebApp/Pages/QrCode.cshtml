@@ -1,0 +1,11 @@
+﻿@page
+@model WebApp.Pages.QrCodeModel
+@{
+    ViewData["Title"] = "QR Code";
+}
+
+<h1>QR Code</h1>
+@if (!string.IsNullOrEmpty(Model.QrCodeImage))
+{
+    <img src="@Model.QrCodeImage" alt="QR Code"/>
+}
