@@ -4,6 +4,7 @@ html {
 
 @media (min-width: 768px) {
   html {
+    font-family:Calibri;
     font-size: 16px;
   }
 }
@@ -17,6 +18,104 @@ html {
   min-height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
+header {
+    margin-top: -10px;
+    margin-left: -10px;
+    display: flex;
+    background-color: #E7FED9;
+    padding: 10px;
+    align-items: center;
 }
+
+
+
+.scrolling-list {
+    display: flex;
+    overflow-x: auto;
+    margin-bottom:20px;
+}
+
+.employee-container {
+    display: flex;
+    gap: 10px; 
+}
+
+.employee-card {
+    position:relative;
+    background-color: #78b349;
+    padding-left: 15px;
+    width: 200px;
+}
+
+    .employee-card p {
+        color: white;
+    }
+
+    .employee-card a {
+        position: absolute; 
+        bottom: 10px; 
+        right: 10px;
+    }
+
+
+
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 400px auto;
+    grid-template-rows: 250px auto;
+}
+
+.calendar-container {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+
+
+
+.events-container {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+
+
+
+
+.news-container {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.news {
+    display: flex;
+    flex-wrap: wrap; /* Добавлено для перехода на новую строку */
+    gap: 30px;
+    margin-right: 500px;
+}
+
+.news-card {
+    position: relative;
+    background-color: #78b349;
+    width: calc(50% - 30px); /* Ширина 50%,  минус gap */
+}
+
+    .news-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .news-card h4 {
+        font-size: 18px;
+        color: white;
+        margin: 0px 10px 0px 20px;
+    }
+
+    .news-card p {
+        color:white;
+        margin: 0px 10px 10px 20px;
+    }
+
+    
