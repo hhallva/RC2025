@@ -1,3 +1,4 @@
+/*#region BodyStruct*/
 html {
   font-size: 14px;
 }
@@ -26,22 +27,22 @@ header {
     padding: 10px;
     align-items: center;
 }
+/*#endregion RegionName*/
 
-
-
+/*#region Employee */
 .scrolling-list {
     display: flex;
     overflow-x: auto;
-    margin-bottom:20px;
+    margin-bottom: 20px;
 }
 
 .employee-container {
     display: flex;
-    gap: 10px; 
+    gap: 10px;
 }
 
 .employee-card {
-    position:relative;
+    position: relative;
     background-color: #78b349;
     padding-left: 15px;
     width: 200px;
@@ -52,12 +53,12 @@ header {
     }
 
     .employee-card a {
-        position: absolute; 
-        bottom: 10px; 
+        position: absolute;
+        bottom: 10px;
         right: 10px;
     }
 
-
+/*#endregion */
 
 
 .grid-container {
@@ -66,33 +67,67 @@ header {
     grid-template-rows: 250px auto;
 }
 
+/*#region Calenadr  */
 .calendar-container {
     grid-column: 1;
     grid-row: 1;
 }
+/*#endregion */
 
-
-
-
+/*#region Events */
 .events-container {
     grid-column: 1;
     grid-row: 2;
 }
 
+.events {
+    display: flex;
+    flex-wrap: wrap; /* ƒобавлено дл€ перехода на новую строку */
+    gap: 30px;
+}
 
+.event-card {
+    position: relative;
+    background-color: #78b349;
+    padding-bottom: 50px;
+}
 
+    .event-card h4 {
+        font-size: 18px;
+        color: white;
+        margin: 10px;
+    }
 
+    .event-card p {
+        color: white;
+        margin: 10px;
+    }
 
+.event-date {
+    position: absolute;
+    bottom: 10px;
+}
+
+.event-author {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+/*#endregion */
+
+/*#region News */
 .news-container {
     grid-column: 2;
     grid-row: 1;
+    margin-left: 50px;
+    margin-right: 100px;
 }
 
 .news {
     display: flex;
     flex-wrap: wrap; /* ƒобавлено дл€ перехода на новую строку */
     gap: 30px;
-    margin-right: 500px;
 }
 
 .news-card {
@@ -114,8 +149,10 @@ header {
     }
 
     .news-card p {
-        color:white;
+        color: white;
         margin: 0px 10px 10px 20px;
     }
+/*#endregion */
+
 
     

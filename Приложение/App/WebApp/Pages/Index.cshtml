@@ -4,7 +4,6 @@
     ViewData["Title"] = "Портал Дороги России";
 }
 
-
 <header>
     <img src="~/assets/img/Logo.png" alt="Логотип компании" height="100px">
     <div class="search-box">
@@ -36,6 +35,60 @@
     {
         <p>Нет сотрудников для отображения.</p>
     }
+</div>
+
+<div class="grid-container">
+    <div class="calendar-container">
+        <h3>Календарь событий</h3>
+
+    </div>
+
+    <div class="events-container">
+        <h3>События</h3>
+        <div class="events">
+            @if (Model.Events != null && Model.Events.Any())
+            {
+                foreach (var eventItem in Model.Events)
+                {
+                    <div class="event-card">
+                        <h4>@eventItem.Title</h4>
+                        <p>@eventItem.Annotation</p>
+                        <p class="event-date">🗓️ @eventItem.Date.ToShortDateString()</p>
+                        <p class="event-author">@eventItem.Author</p>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>Нет новостей для отображения.</p>
+            }
+        </div>
+    </div>
+
+    <div class="news-container">
+        <h3>Новости</h3>
+        <div class="news">
+            @if (Model.RssItems != null && Model.RssItems.Any())
+            {
+                foreach (var rssItem in Model.RssItems)
+                {
+                    if (rssItem.Image != null)
+                    {
+                        <div class="news-card">
+                            <img src="@rssItem.Image" alt="@rssItem.Title">
+                            <h4>@rssItem.Title</h4>
+                            <p>@rssItem.Description</p>
+                            <p>@rssItem.PublicationDate.ToShortDateString()</p>
+                        </div>
+                    }
+                }
+            }
+            else
+            {
+                <p>Нет новостей для отображения.</p>
+            }
+        </div>
+    </div>
 </div>
 
 @* <div class="container">
@@ -82,40 +135,3 @@
         </div>
     </div>
 </div> *@
-
-<div class="grid-container">
-    <div class="calendar-container">
-        <h3>Календарь</h3>
-
-    </div>
-
-    <div class="events-container">
-        <h3>События</h3>
-
-    </div>
-    
-    <div class="news-container">
-        <h3>Новости</h3>
-        <div class="news">
-            @if (Model.RssItems != null && Model.RssItems.Any())
-            {
-                foreach (var rssItem in Model.RssItems)
-                {
-                    if (rssItem.Image != null)
-                    {
-                        <div class="news-card">
-                            <img src="@rssItem.Image" alt="@rssItem.Title">
-                            <h4>@rssItem.Title</h4>
-                            <p>@rssItem.Description</p>
-                            <p>@rssItem.PublicationDate.ToShortDateString()</p>
-                        </div>
-                    }
-                }
-            }
-            else
-            {
-                <p>Нет новостей для отображения.</p>
-            }
-        </div>
-    </div>
-</div>
