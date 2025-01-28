@@ -20,7 +20,7 @@ namespace DataLayer.Services
             _client.BaseAddress = new(_baseUrl);
         }
 
-        public async Task<List<WorkingCalendar?>> GetAsync()
+        public async Task<List<WorkingCalendar?>> GetAllAsync()
             => await _client.GetFromJsonAsync<List<WorkingCalendar?>>("");
     }
 }
