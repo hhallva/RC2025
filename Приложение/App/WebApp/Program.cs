@@ -7,6 +7,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddHttpClient<RssService>(); // зарегистрировали 
 builder.Services.AddHttpClient<EmployeeService>(); 
 builder.Services.AddHttpClient<EventsService>(); 
+builder.Services.AddHttpClient<WorkingCalendarService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
