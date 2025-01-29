@@ -82,7 +82,11 @@ namespace WebApp.Pages
             dataIcs.AppendLine("END:VEVENT");
             dataIcs.AppendLine("END:VCALENDAR");
 
-            var filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{id}_{DateTime.Now.ToString("yyyy-MM-dd HHmmss")}.ics");
+            
+            var fileName = $"{id}_{DateTime.Now.ToString("yyyy-MM-dd HHmmss")}.ics";
+            var downloadPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Downloads";
+            var filePath = Path.Combine(downloadPath, fileName);
+
             System.IO.File.WriteAllText(filePath, dataIcs.ToString());
             return RedirectToPage();
         }
