@@ -218,7 +218,7 @@ namespace DesktopApp
                 var startDate = FromDatePicker.SelectedDate.Value;
                 var endDate = ToDatePicker.SelectedDate.Value;
                 var content = (TypeComboBox.SelectedItem as ComboBoxItem).Content.ToString();
-                var specialDays = await _workingCalendarService.GetAsync();
+                var specialDays = await _workingCalendarService.GetAllAsync();
 
                 if (content == "Обучение")
                 {

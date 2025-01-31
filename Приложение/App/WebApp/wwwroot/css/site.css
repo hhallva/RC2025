@@ -1,0 +1,261 @@
+﻿/*#region BodyStruct*/
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-family:Calibri;
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+header {
+    margin-top: -10px;
+    margin-left: -10px;
+    display: flex;
+    background-color: #E7FED9;
+    padding: 10px;
+    align-items: center;
+}
+
+form{
+    display:flex;
+    flex-grow:1;
+}
+
+.search-box {
+    border-color: white;
+    margin-left: 20px;
+    width: 100%;
+    height: 40px;
+    border-radius: 15px;
+    text-indent: 20px;
+}
+
+.event-button {
+   border: none; 
+   background: none;
+   padding: 0; 
+   cursor: pointer; 
+   font-size: 1em;
+}
+/*#endregion RegionName*/
+
+/*#region Employee */
+.scrolling-list {
+    display: flex;
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+.employee-container {
+    display: flex;
+    gap: 10px;
+}
+
+.employee-card {
+    position: relative;
+    background-color: #78b349;
+    padding-left: 15px;
+    width: 200px;
+}
+
+    .employee-card p {
+        color: white;
+    }
+
+    .employee-card a {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+    }
+
+/*#endregion */
+
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 400px auto;
+    grid-template-rows: 250px auto;
+}
+
+/*#region Calenadr  */
+.calendar-container {
+    grid-column: 1;
+    grid-row: 1;
+    /*justify-content:stretch;*/
+}
+
+.month-head {
+    background-color: #78b349;
+    width: 80%;
+    text-align:center;
+}
+
+.calendar {
+    width: 100%;
+    place-items: center;
+}
+
+    .calendar th, .calendar td {
+      padding: 5px; 
+      text-align: center;
+      width: 10%;
+    }
+
+    .calendar th {
+      font-weight: bold;
+    }
+
+
+.weekend-day {
+    color: red; 
+}
+
+.current-day {
+    border: 2px solid black;
+    border-radius: 100%;
+}
+
+.event-red {
+    background-color: #ff000098;
+    border-radius: 100%;
+}
+
+.event-green {
+    background-color: green;
+    border-radius: 100%;
+}
+
+.event-yellow {
+    background-color: yellow;
+    border-radius: 100%;
+}
+
+.birthday-day {
+    position: relative;
+}
+
+    .birthday-day::before {
+        content: "🎂";
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        cursor: pointer;
+    }
+
+.birthday-tooltip {
+    display: none;
+    position: absolute;
+    background-color: white;
+    color: black;
+    border: 1px solid #ccc;
+    padding: 5px;
+    z-index: 3; /* Отображение над другими элементами */
+}
+
+.birthday-day:hover .birthday-tooltip {
+    display: block;
+}
+
+
+/*#endregion */
+
+/*#region Events */
+.events-container {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.events {
+    display: flex;
+    flex-wrap: wrap; /* Добавлено для перехода на новую строку */
+    gap: 30px;
+}
+
+.event-card {
+    position: relative;
+    background-color: #78b349;
+    padding-bottom: 50px;
+}
+
+    .event-card h4 {
+        font-size: 18px;
+        color: white;
+        margin: 10px;
+    }
+
+    .event-card p {
+        color: white;
+        margin: 10px;
+    }
+
+.event-date {
+    position: absolute; 
+    bottom: 10px;
+    left: 20px;
+}
+
+.event-author {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.event-img {
+    position: absolute;
+    bottom: 20px;
+    left: 10px;
+}
+/*#endregion */
+
+/*#region News */
+.news-container {
+    grid-column: 2;
+    grid-row: 1;
+    margin-left: 50px;
+    margin-right: 100px;
+}
+
+.news {
+    display: flex;
+    flex-wrap: wrap; /* Добавлено для перехода на новую строку */
+    gap: 30px;
+}
+
+.news-card {
+    position: relative;
+    background-color: #78b349;
+    width: calc(50% - 30px); /* Ширина 50%,  минус gap */
+}
+
+    .news-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .news-card h4 {
+        font-size: 18px;
+        color: white;
+        margin: 0px 10px 0px 20px;
+    }
+
+    .news-card p {
+        color: white;
+        margin: 0px 10px 10px 20px;
+    }
+/*#endregion */
+
+
+

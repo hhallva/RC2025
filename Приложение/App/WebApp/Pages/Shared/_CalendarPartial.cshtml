@@ -1,0 +1,82 @@
+﻿@using WebApp.Calendar;
+
+@model CalendarViewModel
+
+<table>
+    <tr>
+        <th>пн</th>
+        <th>вт</th>
+        <th>ср</th>
+        <th>чт</th>
+        <th>пт</th>
+        <th>сб</th>
+        <th>вс</th>
+    </tr>
+    @{
+        int day = 2 - Model.StartWeekDay; // с какого недели дня выводить месяц
+        for (int row = 0; row < 6; row++)
+        {
+            <tr>
+                @for (int col = 0; col < 7; col++)
+                {
+                    string cssClass = "";
+                    string birthdayTooltip = "";
+                    List<string> birthdayPeople = new List<string>();
+
+                    if (day > 0 && day <= Model.DaysInMonth)
+                    {
+                        // Проверяем, является ли день выходным (суббота или воскресенье)
+                        var currentDay = new DateTime(Model.Year, Model.Month, day);
+
+                        bool isWeekend = currentDay.DayOfWeek == DayOfWeek.Saturday || currentDay.DayOfWeek == DayOfWeek.Sunday ||
+                            Model.ExeptionDays.Any(d => d.ExceptionDate.Date == currentDay.Date && !d.IsWorkingDay);
+                        bool isWorkingDay = Model.ExeptionDays.Any(d => d.ExceptionDate.Date == currentDay.Date && d.IsWorkingDay);
+                        bool isToday = currentDay.Date == DateTime.Now.Date;
+
+                        var birthdayEmployees = Model.Employees
+                            .Where(
+                                e => e.Birthday.HasValue &&
+                                e.Birthday.Value.Month == currentDay.Month && 
+                                e.Birthday.Value.Day == currentDay.Day
+                            )
+                            .ToList();
+
+                        var eventsCount = Model.Events.Count(e => e.Date.Date == currentDay.Date);
+
+
+                        if (isWeekend)
+                            cssClass = " weekend-day";
+                        if (isWorkingDay)
+                            cssClass = "";
+                        if (isToday)
+                            cssClass += " current-day";
+
+                        if (eventsCount >= 5)
+                            cssClass += " event-red";
+                        else if (eventsCount < 2 && eventsCount > 0)
+                            cssClass += " event-green"; 
+                        else if (eventsCount >= 2 && eventsCount < 5)
+                            cssClass += " event-yellow";
+
+
+                        if (birthdayEmployees.Count > 0)
+                        {
+                            cssClass += " birthday-day";
+                            birthdayPeople = birthdayEmployees.Select(e => $"{e.Surname}").ToList();
+                        }
+
+                    }
+
+                    if (birthdayPeople.Count > 0)
+                        birthdayTooltip = $"<div class='birthday-tooltip'>{string.Join("<br/>", birthdayPeople)}</div>";  
+
+                    <td class="@cssClass">
+                        @(day > 0 && day <= Model.DaysInMonth ? day : "")
+                        @Html.Raw(birthdayTooltip)
+                    </td>
+                    day++;
+                }
+            </tr>
+        }
+    }
+</table>

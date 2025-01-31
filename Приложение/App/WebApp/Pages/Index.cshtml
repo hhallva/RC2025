@@ -1,0 +1,110 @@
+﻿@page
+@using DataLayer.DTOs
+
+@model IndexModel
+@{
+    ViewData["Title"] = "Портал Дороги России";
+}
+
+
+<header>
+    <img src="~/assets/img/Logo.png" alt="Логотип компании" height="100px">
+    <form>
+        <input type="text" name="searchTerm" value="@Model.SearchTerm" placeholder="Введите для поиска" class="search-box" />
+    </form>
+</header>
+
+<h3>Сотрудники</h3>
+<div class="scrolling-list">
+    @if (Model.Employees != null && Model.Employees.Any())
+    {
+        <div class="employee-container">
+            @foreach (var employee in Model.Employees)
+            {
+                <div class="employee-card">
+                    <p>
+                        <strong>@employee.FullName</strong><br />
+                        @employee.Position?.Name<br />
+                        @employee.Email<br />
+                        @employee.WorkPhone<br />
+                        @employee.Birthday?.ToString("d MMMM")
+                    </p>
+                    <a class="save-image" href="./QrCode?employeeId=@employee.EmployeeId">💾</a>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>Нет сотрудников для отображения.</p>
+    }
+</div>
+
+<div class="grid-container">
+    <div class="calendar-container" >
+        <h3>Календарь событий</h3>
+
+        <div style="place-items: center;">
+            <div class="month-head">
+                <a href="?month=prev">&lt;</a>
+                <strong>@Model.CalendarViewModel</strong>
+                <a href="?month=next">&gt;</a>
+            </div>
+
+            <div class="calendar">
+                @await Html.PartialAsync("_CalendarPartial", Model.CalendarViewModel)
+            </div>
+        </div>
+    </div>
+
+    <div class="events-container">
+        <h3>События</h3>
+        <div class="events">
+            @if (Model.Events != null && Model.Events.Any())
+            {
+                foreach (var eventItem in Model.Events)
+                {
+                    <div class="event-card">
+                        <h4>@eventItem.Title</h4>
+                        <p>@eventItem.Annotation</p>
+                        <form method="post" class="event-img">
+                            <input type="hidden" name="id" value="@eventItem.Id"/>
+                            <button type="submit" class="event-button">🗓️</button>
+                        </form>
+                        <p class="event-date">@eventItem.Date.ToShortDateString()</p>
+                        <p class="event-author">@eventItem.Author</p>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>Нет новостей для отображения.</p>
+            }
+        </div>
+    </div>
+
+    <div class="news-container">
+        <h3>Новости</h3>
+        <div class="news">
+            @if (Model.RssItems != null && Model.RssItems.Any())
+            {
+                foreach (var rssItem in Model.RssItems)
+                {
+                    if (rssItem.Image != null)
+                    {
+                        <div class="news-card">
+                            <img src="@rssItem.Image" alt="@rssItem.Title">
+                            <h4>@rssItem.Title</h4>
+                            <p>@rssItem.Description</p>
+                            <p>@rssItem.PublicationDate.ToShortDateString()</p>
+                        </div>
+                    }
+                }
+            }
+            else
+            {
+                <p>Нет новостей для отображения.</p>
+            }
+        </div>
+    </div>
+</div>

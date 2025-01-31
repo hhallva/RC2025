@@ -21,12 +21,11 @@ namespace DataLayer.Services
             _client.BaseAddress = new(_baseUrl);
         }
 
-        public async Task DismissAsync(int id)
-        {
-            HttpResponseMessage response =
-                await _client.PatchAsJsonAsync($"{id}", id);
-            response.EnsureSuccessStatusCode();
-        }
+        public async Task<List<Employee?>> GetAllAsync()
+           => await _client.GetFromJsonAsync<List<Employee?>>("");
+
+        public async Task<Employee?> GetAsync(int id)
+           => await _client.GetFromJsonAsync<Employee>($"{id}");
 
         public async Task UpdateAsync(Employee employee)
         {
@@ -35,13 +34,17 @@ namespace DataLayer.Services
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task<Employee?> GetAsync(int id)
-            => await _client.GetFromJsonAsync<Employee>($"{id}");
-
         public async Task AddEmployeeAsync(Employee employee)
         {
             HttpResponseMessage response =
                 await _client.PostAsJsonAsync("", employee);
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task DismissAsync(int id)
+        {
+            HttpResponseMessage response =
+                await _client.PatchAsJsonAsync($"{id}", id);
             response.EnsureSuccessStatusCode();
         }
 
