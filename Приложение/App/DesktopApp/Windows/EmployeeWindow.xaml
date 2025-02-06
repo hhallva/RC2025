@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DesktopApp"
         xmlns:viewModels="clr-namespace:DataLayer.Models;assembly=DataLayer"
         mc:Ignorable="d"
-        Title="EmployeeWindow" 
+        Title="Карточка сотрудника" 
         WindowStartupLocation="CenterScreen"
         Loaded="Window_Loaded"
         Height="650" Width="950" 
@@ -70,6 +70,7 @@
                 <Button Content="Добавить сотрудника" Margin="0,10,0,0" Background="#FFE4F4CC" BorderBrush="#FFE6E6E6" x:Name="AddButton" Click="AddEmployeeButton_Click"/>
                 <Button Content="Уволить сотрудника" Margin="0,10,0,0" Background="#FFFF8C56" BorderBrush="#FFE6E6E6" x:Name="DismissButton" Click="DismissButton_Click"/>
             </StackPanel>
+            <CheckBox Content="Разрешить редактирование" Margin="0,10,0,0"/>
         </StackPanel>
 
         <DockPanel Grid.Column="1" Margin="10" Background="#ffffff">
