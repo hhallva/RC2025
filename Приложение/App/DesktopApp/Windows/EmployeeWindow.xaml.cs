@@ -294,8 +294,5 @@ namespace DesktopApp
             }
             return false;
         }
-
     }
 }
-
-

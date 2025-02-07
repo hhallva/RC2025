@@ -17,7 +17,7 @@ namespace WebApp.Pages
         public List<WorkingCalendar> ExeptionDays { get; set; } = new();
         public CalendarViewModel CalendarViewModel { get; set; }
 
-        public string SearchTerm {  get; set; }
+        public string SearchTerm { get; set; }
 
 
         public async Task<IActionResult> OnGetAsync(string? month, string searchTerm = null)
@@ -25,17 +25,16 @@ namespace WebApp.Pages
             RssItems = await rssService.GetRssItemsAsync();
             Employees = await employeeService.GetAllAsync();
             Events = await eventsService.GetAllAsync();
-            ExeptionDays = await  workingCalendarService.GetAllAsync();
+            ExeptionDays = await workingCalendarService.GetAllAsync();
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                SearchTerm = searchTerm;
                 Employees = Employees
-                    .Where(e => 
-                        e.FullName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                        e.Position.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                        e.Birthday.Value.ToString("d MMMM").Contains(searchTerm))
-                    .ToList();
+                     .Where(e =>
+                         e.FullName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                         e.Position.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                         e.Birthday.Value.ToString("d MMMM").Contains(searchTerm))
+                     .ToList();
 
                 Events = Events
                    .Where(e =>
@@ -82,7 +81,7 @@ namespace WebApp.Pages
             dataIcs.AppendLine("END:VEVENT");
             dataIcs.AppendLine("END:VCALENDAR");
 
-            
+
             var fileName = $"{id}_{DateTime.Now.ToString("yyyy-MM-dd HHmmss")}.ics";
             var downloadPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Downloads";
             var filePath = Path.Combine(downloadPath, fileName);
