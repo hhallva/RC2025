@@ -27,7 +27,7 @@ namespace DesktopApp
 
         private async Task LoadDepartmentsAsync()
         {
-            _departments = (List<Department>)await _departmentService.GetDepartmentsAsync();
+            _departments = await _departmentService.GetDepartmentsAsync();
             ShowDepartments(_departments);
         }
 
@@ -37,6 +37,7 @@ namespace DesktopApp
             departments = departments
                 .Where(d => d.ParentDepartmentId == null)
                 .OrderBy(d => int.Parse(d.DepartmentId));
+
             foreach (var department in departments)
                 company.ChildDepartment.Add(department);
             departmentsTreeView.Items.Add(company);
@@ -44,11 +45,12 @@ namespace DesktopApp
 
         private void DepartmentsTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            employeesListView.ItemsSource = null;
-            if (departmentsTreeView.SelectedItem is not Department department)
+            if(departmentsTreeView.SelectedItem is not Department department)
                 return;
 
+            employeesListView.ItemsSource = null;
             employees.Clear();
+
             FillEmployeesList(department);
             employeesListView.ItemsSource = employees.OrderBy(e => e.FullName);
         }
@@ -56,7 +58,8 @@ namespace DesktopApp
         private void FillEmployeesList(Department department)
         {
             employees.AddRange(department.Employees
-                .Where(e => e.DismissalDate == null || e.DayAfterDismissal <= 30));
+                .Where(e => e.IsDismissedAgo == false));
+
             foreach (var childDepartment in department.ChildDepartment)
                 FillEmployeesList(childDepartment);
         }
@@ -65,24 +68,19 @@ namespace DesktopApp
         {
             if (departmentsTreeView.SelectedItem is not Department department)
                 return;
-            if (employeesListView.SelectedItem is not Employee employee)
+            if(employeesListView.SelectedItem is not Employee employee)
                 return;
-            if (employee.DismissalDate != null)
+            if(employee.IsDismiss)
                 return;
 
-            EmployeeWindow employeeWindow = new(employee, _departments, _employeeService);
-            employeeWindow.ShowDialog();
-
-            FillEmployeesList(department);
+            EmployeeWindow window = new EmployeeWindow(employee, _departments, _employeeService);
+            window.ShowDialog();
         }
 
         private void AddEmployeeButton_Click(object sender, RoutedEventArgs e)
         {
-            if (departmentsTreeView.SelectedItem is not Department)
-                return;
-
-            EmployeeWindow employeeWindow = new(null, _departments);
-            employeeWindow.ShowDialog();
+            EmployeeWindow window = new EmployeeWindow(null, _departments, _employeeService);
+            window.ShowDialog();
         }
     }
 }

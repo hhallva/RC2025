@@ -6,7 +6,7 @@ namespace DataLayer.Services
 {
     public class DepartmentService(AppDbContext context)
     {
-        public async Task<IEnumerable<Department>> GetDepartmentsAsync()
+        public async Task<List<Department>> GetDepartmentsAsync()
            => await context.Departments
             .Include(d => d.ChildDepartment)
             .Include(d => d.Employees)
