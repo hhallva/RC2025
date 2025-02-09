@@ -33,16 +33,24 @@ namespace DesktopApp
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            _positions = await _positionService.GetAsync();
-
+            AddButton.Visibility = Visibility.Collapsed;
+            DismissButton.Visibility = Visibility.Collapsed;
+            SaveButton.Visibility = Visibility.Collapsed;
+           
             if (Employee != null)
             {
-                AddButton.Visibility = Visibility.Collapsed;
+                EmployeeData.IsEnabled = false;
+                EventData.IsEnabled = false;
+
+                DismissButton.Visibility = Visibility.Visible;
+                SaveButton.Visibility = Visibility.Visible;
                 Employee = await _employeeService.GetAsync(Employee.EmployeeId);
             }
             else
             {
-                SaveButton.Visibility = Visibility.Collapsed;
+                AddEventButton.IsEnabled = false;
+
+                AddButton.Visibility = Visibility.Visible;
                 Employee = new();
             }
 
@@ -52,6 +60,8 @@ namespace DesktopApp
             DepartmentComboBox.ItemsSource = _departments;
             DepartmentComboBox.SelectedItem = _departments.Find(e => e.DepartmentId == Employee.DepartmentId);
 
+
+            _positions = await _positionService.GetAsync();
             PositionComboBox.ItemsSource = _positions;
             PositionComboBox.SelectedItem = Employee.Position;
 
@@ -60,7 +70,24 @@ namespace DesktopApp
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            #region Проверки
+            if (CheckCata())
+                return;
+
+            try
+            {
+                EditData(Employee);
+                await _employeeService.UpdateAsync(Employee);
+                MessageBox.Show("Изменения сохранены.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                Employee.Position = PositionComboBox.SelectedItem as Position;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Произошла ошибка при сохранении информации: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private bool CheckCata()
+        {
             StringBuilder errors = new();
 
             if (string.IsNullOrWhiteSpace(SurnameTextBox.Text))
@@ -101,21 +128,9 @@ namespace DesktopApp
             if (errors.Length > 0)
             {
                 MessageBox.Show(errors.ToString(), "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
+                return true;
             }
-            #endregion
-
-            try
-            {
-                EditData(Employee);
-                await _employeeService.UpdateAsync(Employee);
-                MessageBox.Show("Изменения сохранены.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-                Employee.Position = PositionComboBox.SelectedItem as Position;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Произошла ошибка при сохранении информации: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            return false;
         }
 
         private async void DismissButton_Click(object sender, RoutedEventArgs e)
@@ -174,6 +189,9 @@ namespace DesktopApp
 
         private async void AddEmployeeButton_Click(object sender, RoutedEventArgs e)
         {
+            if (CheckCata())
+                return;
+
             try
             {
                 EditData(Employee);
@@ -293,6 +311,12 @@ namespace DesktopApp
                 return true;
             }
             return false;
+        }
+
+        private void EditCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            EmployeeData.IsEnabled = EditCheckBox.IsChecked == true;    
+            EventData.IsEnabled = EditCheckBox.IsChecked == true;
         }
     }
 }

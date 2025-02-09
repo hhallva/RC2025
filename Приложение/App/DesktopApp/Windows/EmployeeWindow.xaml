@@ -21,56 +21,58 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Margin="10" Background="#ffffff">
-            <StackPanel  Margin="10">
-                <TextBlock Text="Фамилия:" Margin="0,10,0,0"/>
-                <TextBox x:Name="SurnameTextBox" Text="{Binding Surname}"/>
+            <StackPanel x:Name="EmployeeData">
+                <StackPanel  Margin="10">
+                    <TextBlock Text="Фамилия:" Margin="0,10,0,0"/>
+                    <TextBox x:Name="SurnameTextBox" Text="{Binding Surname}"/>
 
-                <TextBlock Text="Имя:" Margin="0,10,0,0"/>
-                <TextBox x:Name="NameTextBox" Text="{Binding Name}"/>
+                    <TextBlock Text="Имя:" Margin="0,10,0,0"/>
+                    <TextBox x:Name="NameTextBox" Text="{Binding Name}"/>
 
-                <TextBlock Text="Отчество:" Margin="0,10,0,0"/>
-                <TextBox x:Name="PatronymicTextBox" Text="{Binding Patronymic}"/>
+                    <TextBlock Text="Отчество:" Margin="0,10,0,0"/>
+                    <TextBox x:Name="PatronymicTextBox" Text="{Binding Patronymic}"/>
 
-                <TextBlock Text="Дата рождения:" Margin="0,10,0,0"/>
-                <DatePicker x:Name="BirthdayDatePicker" SelectedDate="{Binding Birthday}"/>
+                    <TextBlock Text="Дата рождения:" Margin="0,10,0,0"/>
+                    <DatePicker x:Name="BirthdayDatePicker" SelectedDate="{Binding Birthday}"/>
 
-                <Grid Margin="0,10,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" Margin="0,0,0,5">
-                        <TextBlock Text="Мобильный телефон:"/>
-                        <TextBox x:Name="PhoneTextBox" Text="{Binding Phone}"/>
-                    </StackPanel>
-                    <StackPanel Grid.Column="1"  Margin="5,0,0,0">
-                        <TextBlock Text="Рабочий телефон:"/>
-                        <TextBox x:Name="WorkPhoneTextBox" Text="{Binding WorkPhone}"/>
-                    </StackPanel>
-                </Grid>
+                    <Grid Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Margin="0,0,0,5">
+                            <TextBlock Text="Мобильный телефон:"/>
+                            <TextBox x:Name="PhoneTextBox" Text="{Binding Phone}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1"  Margin="5,0,0,0">
+                            <TextBlock Text="Рабочий телефон:"/>
+                            <TextBox x:Name="WorkPhoneTextBox" Text="{Binding WorkPhone}"/>
+                        </StackPanel>
+                    </Grid>
 
-                <TextBlock Text="Электронная почта:" Margin="0,5,0,0"/>
-                <TextBox x:Name="EmailTextBox" Text="{Binding Email}"/>
+                    <TextBlock Text="Электронная почта:" Margin="0,5,0,0"/>
+                    <TextBox x:Name="EmailTextBox" Text="{Binding Email}"/>
 
-                <TextBlock Text="Стуктурное подразделение:" Margin="0,10,0,0"/>
-                <!--<TextBox x:Name="DepartmentTextBox" Text="{Binding DepartmentId}"/>-->
-                <ComboBox x:Name="DepartmentComboBox"/>
+                    <TextBlock Text="Стуктурное подразделение:" Margin="0,10,0,0"/>
+                    <!--<TextBox x:Name="DepartmentTextBox" Text="{Binding DepartmentId}"/>-->
+                    <ComboBox x:Name="DepartmentComboBox"/>
 
 
-                <TextBlock Text="Должность:" Margin="0,10,0,0"/>
-                <ComboBox x:Name="PositionComboBox" DisplayMemberPath="Name"/>
+                    <TextBlock Text="Должность:" Margin="0,10,0,0"/>
+                    <ComboBox x:Name="PositionComboBox" DisplayMemberPath="Name"/>
 
-                <TextBlock Text="Непосредственный руководитель:" Margin="0,10,0,0"/>
-                <ComboBox x:Name="DirectManagerComboBox"/>
+                    <TextBlock Text="Непосредственный руководитель:" Margin="0,10,0,0"/>
+                    <ComboBox x:Name="DirectManagerComboBox"/>
 
-                <TextBlock Text="Кабинет:" Margin="0,10,0,0"/>
-                <TextBox x:Name="CabinetTextBox" Text="{Binding Cabinet}"/>
+                    <TextBlock Text="Кабинет:" Margin="0,10,0,0"/>
+                    <TextBox x:Name="CabinetTextBox" Text="{Binding Cabinet}"/>
 
-                <Button Content="Сохранить именения" Margin="0,10,0,0" Background="#FFE4F4CC" BorderBrush="#FFE6E6E6" x:Name="SaveButton" Click="SaveButton_Click"/>
-                <Button Content="Добавить сотрудника" Margin="0,10,0,0" Background="#FFE4F4CC" BorderBrush="#FFE6E6E6" x:Name="AddButton" Click="AddEmployeeButton_Click"/>
-                <Button Content="Уволить сотрудника" Margin="0,10,0,0" Background="#FFFF8C56" BorderBrush="#FFE6E6E6" x:Name="DismissButton" Click="DismissButton_Click"/>
+                    <Button Content="Сохранить именения" Margin="0,10,0,0" Background="#FFE4F4CC" BorderBrush="#FFE6E6E6" x:Name="SaveButton" Click="SaveButton_Click"/>
+                    <Button Content="Добавить сотрудника" Margin="0,10,0,0" Background="#FFE4F4CC" BorderBrush="#FFE6E6E6" x:Name="AddButton" Click="AddEmployeeButton_Click"/>
+                    <Button Content="Уволить сотрудника" Margin="0,10,0,0" Background="#FFFF8C56" BorderBrush="#FFE6E6E6" x:Name="DismissButton" Click="DismissButton_Click"/>
+                </StackPanel>
             </StackPanel>
-            <CheckBox Content="Разрешить редактирование" Margin="0,10,0,0"/>
+            <CheckBox Content="Разрешить редактирование" x:Name="EditCheckBox" Click="EditCheckBox_Click" Margin="0,10,0,0"/>
         </StackPanel>
 
         <DockPanel Grid.Column="1" Margin="10" Background="#ffffff">
@@ -149,23 +151,25 @@
                     </ListView.ItemTemplate>
                 </ListView>
 
-                <StackPanel Grid.Row="7">
-                    <TextBlock Text="Добавить событие" Margin="0,0,0,5"/>
-                    <TextBlock Text="Вид события:"/>
-                    <StackPanel Orientation="Horizontal">
-                        <ComboBox x:Name="TypeComboBox"  Width="150" >
-                            <ComboBoxItem Content="Обучение"/>
-                            <ComboBoxItem Content="Отгул"/>
-                            <ComboBoxItem Content="Отпуск"/>
-                        </ComboBox>
-                        <TextBlock Text="От:" Margin="5,5,5,0"/>
-                        <DatePicker x:Name="FromDatePicker"/>
-                        <TextBlock Text="До:" Margin="5,5,5,0"/>
-                        <DatePicker x:Name="ToDatePicker"/>
+                <StackPanel x:Name="EventData" Grid.Row="7">
+                    <StackPanel >
+                        <TextBlock Text="Добавить событие" Margin="0,0,0,5"/>
+                        <TextBlock Text="Вид события:"/>
+                        <StackPanel Orientation="Horizontal">
+                            <ComboBox x:Name="TypeComboBox"  Width="150" >
+                                <ComboBoxItem Content="Обучение"/>
+                                <ComboBoxItem Content="Отгул"/>
+                                <ComboBoxItem Content="Отпуск"/>
+                            </ComboBox>
+                            <TextBlock Text="От:" Margin="5,5,5,0"/>
+                            <DatePicker x:Name="FromDatePicker"/>
+                            <TextBlock Text="До:" Margin="5,5,5,0"/>
+                            <DatePicker x:Name="ToDatePicker"/>
+                        </StackPanel>
+                        <TextBlock  Text="Комментарий:"/>
+                        <TextBox x:Name="DescriptionTextBox" Height="70" AcceptsReturn="True"/>
+                        <Button Content="Добавить событие" Margin="0,10,0,0" Background="#FFE4F4CC" BorderBrush="#FFE6E6E6" x:Name="AddEventButton" Click="AddEventButton_Click"/>
                     </StackPanel>
-                    <TextBlock  Text="Комментарий:"/>
-                    <TextBox x:Name="DescriptionTextBox" Height="70" AcceptsReturn="True"/>
-                    <Button Content="Добавить событие" Margin="0,10,0,0" Background="#FFE4F4CC" BorderBrush="#FFE6E6E6" x:Name="AddEventButton" Click="AddEventButton_Click"/>
                 </StackPanel>
             </Grid>
         </DockPanel>
