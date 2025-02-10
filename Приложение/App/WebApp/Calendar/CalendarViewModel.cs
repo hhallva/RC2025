@@ -1,16 +1,15 @@
 ﻿using DataLayer.DTOs;
 using DataLayer.Models;
-using DataLayer.Services;
 
 namespace WebApp.Calendar
 {
-    public  class CalendarViewModel()
+    public class CalendarViewModel()
     {
         public List<WorkingCalendar> ExeptionDays;
         public List<Employee?> Employees;
         public List<EventDto?> Events;
 
-        public CalendarViewModel(List<WorkingCalendar> exeptionDays, List<Employee?> employees, List<EventDto?> events) : this() 
+        public CalendarViewModel(List<WorkingCalendar> exeptionDays, List<Employee?> employees, List<EventDto?> events) : this()
         {
             ExeptionDays = exeptionDays;
             Employees = employees;
