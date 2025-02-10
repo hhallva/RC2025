@@ -14,44 +14,38 @@
         <th>вс</th>
     </tr>
     @{
-        int day = 2 - Model.StartWeekDay; // Начальный день календаря
-        int daysInMonth = Model.DaysInMonth; // Количество дней в месяце
-        DateTime today = DateTime.Now.Date; // Текущая дата (без времени)
+        int day = 2 - Model.StartWeekDay;
+        int daysInMonth = Model.DaysInMonth;
+        DateTime today = DateTime.Now.Date;
 
-        for (int row = 0; row < 6; row++) // 6 строк для календаря
+        for (int row = 0; row < 6; row++)
         {
             <tr>
-                @for (int col = 0; col < 7; col++) // 7 дней в неделе
+                @for (int col = 0; col < 7; col++)
                 {
-                    string cssClass = ""; // CSS класс для ячейки
-                    string tooltip = ""; // Подсказка с днями рождения
+                    string cssClass = "";
+                    string tooltip = "";
 
-                    if (day > 0 && day <= daysInMonth) // Если день входит в текущий месяц
+                    if (day > 0 && day <= daysInMonth)
                     {
-                        DateTime currentDay = new DateTime(Model.Year, Model.Month, day); // Текущая дата
+                        DateTime currentDay = new DateTime(Model.Year, Model.Month, day);
 
-                        // Определяем, является ли день выходным, рабочим или текущим днем
                         bool isWeekend = currentDay.DayOfWeek == DayOfWeek.Saturday || currentDay.DayOfWeek == DayOfWeek.Sunday || Model.ExeptionDays.Any(d => d.ExceptionDate.Date == currentDay.Date && !d.IsWorkingDay);
                         bool isWorkingDay = Model.ExeptionDays.Any(d => d.ExceptionDate.Date == currentDay.Date && d.IsWorkingDay);
-                        bool isToday = currentDay.Date == today;
+                        bool isToday = currentDay.Date == today.Date;
 
-                        // Получаем список сотрудников, у которых день рождения в этот день
                         var birthdayEmployees = Model.Employees.Where(e => e.Birthday.HasValue && e.Birthday.Value.Month == currentDay.Month && e.Birthday.Value.Day == currentDay.Day).ToList();
 
-                        // Считаем количество событий в этот день
                         var eventsCount = Model.Events.Count(e => e.Date.Date == currentDay.Date);
 
-                        // Применяем CSS классы
-                        if (isWeekend) cssClass = "weekend-day"; // Выходной
-                        if (isWorkingDay) cssClass = ""; // Сбрасываем класс для выходного, если это рабочий день
-                        if (isToday) cssClass += " current-day"; // Текущий день
+                        if (isWeekend) cssClass = "weekend-day";
+                        if (isWorkingDay) cssClass = "";
+                        if (isToday) cssClass += " current-day";
 
-                        // Раскрашиваем в зависимости от количества событий
                         if (eventsCount > 5) cssClass += " event-red";
                         else if (eventsCount >= 2) cssClass += " event-yellow";
                         else if (eventsCount > 0) cssClass += " event-green";
 
-                        // Добавляем дни рождения
                         if (birthdayEmployees.Count > 0)
                         {
                             cssClass += " birthday-day";
@@ -64,7 +58,7 @@
                         @(day > 0 && day <= daysInMonth ? day : "") @Html.Raw(tooltip)
                     </td>
 
-                    day++; // Переходим к следующему дню
+                    day++;
                 }
             </tr>
         }

@@ -30,35 +30,25 @@ namespace WebApp.Pages
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 Employees = Employees
-                     .Where(e =>
-                         e.FullName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                         e.Position.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                         e.Birthday.Value.ToString("d MMMM").Contains(searchTerm))
-                     .ToList();
+                     .Where(e => e.FullName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                                 e.Position.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                                 e.Birthday.Value.ToString("d MMMM").Contains(searchTerm)).ToList();
 
                 Events = Events
-                   .Where(e =>
-                       e.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                       e.Annotation.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                       e.Author.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                       e.Date.ToShortDateString().Contains(searchTerm))
-                   .ToList();
+                   .Where(e => e.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                               e.Annotation.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                               e.Author.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                               e.Date.ToShortDateString().Contains(searchTerm)).ToList();
 
                 RssItems = RssItems
-                   .Where(r =>
-                       r.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                       r.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                       r.PublicationDate.ToShortDateString().Contains(searchTerm))
-                   .ToList();
+                   .Where(r => r.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                               r.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                               r.PublicationDate.ToShortDateString().Contains(searchTerm)).ToList();
             }
 
-
-            if (month == "prev")
-                CalendarHelper.AddMonths(-1);
-            else if (month == "next")
-                CalendarHelper.AddMonths(1);
-            else
-                CalendarHelper.SetCurrentMonth();
+            if (month == "prev") CalendarHelper.AddMonths(-1);
+            else if (month == "next") CalendarHelper.AddMonths(1);
+            else CalendarHelper.SetCurrentMonth();
 
             CalendarViewModel = new(ExeptionDays, Employees, Events);
             return Page();
