@@ -1,83 +1,57 @@
 using DataLayer.DTOs;
 using DataLayer.Models;
-using DataLayer.RSS;
 using DataLayer.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Text;
 using WebApp.Calendar;
 
 namespace WebApp.Pages
 {
-    public class IndexModel(RssService rssService, EmployeeService employeeService, EventsService eventsService, WorkingCalendarService workingCalendarService) : PageModel
+    public class IndexModel(WorkingCalendarService calendarService, NewsService newsService,EventsService eventsService, EmployeeService employeeService) : PageModel
     {
-        public List<RssItem> RssItems { get; set; } = new();
         public List<Employee?> Employees { get; set; } = new();
         public List<EventDto?> Events { get; set; } = new();
-        public List<WorkingCalendar> ExeptionDays { get; set; } = new();
+        public List<NewsDto?> News { get; set; } = new();
+        public List<WorkingCalendar?> ExeptionDays { get; set; } = new();
+
+
         public CalendarViewModel CalendarViewModel { get; set; }
+        public string? SearchTerm { get; set; }
 
-        public string SearchTerm { get; set; }
-
-
-        public async Task<IActionResult> OnGetAsync(string? month, string searchTerm = null)
+        public async Task<IActionResult> OnGetAsync(string? month,string? searthTerm = null)
         {
-            RssItems = await rssService.GetRssItemsAsync();
             Employees = await employeeService.GetAllAsync();
             Events = await eventsService.GetAllAsync();
-            ExeptionDays = await workingCalendarService.GetAllAsync();
+            News = await newsService.GetAllAsync();
 
-            if (!string.IsNullOrEmpty(searchTerm))
+
+            if(searthTerm != null)
             {
                 Employees = Employees
-                     .Where(e => e.FullName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                                 e.Position.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                                 e.Birthday.Value.ToString("d MMMM").Contains(searchTerm)).ToList();
+                    .Where(e => e.FullName.Contains(searthTerm, StringComparison.OrdinalIgnoreCase) ||
+                                e.Position.Name.Contains(searthTerm, StringComparison.OrdinalIgnoreCase) ||
+                                e.Birthday.Value.ToString("d MMMM").Contains(searthTerm, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
 
                 Events = Events
-                   .Where(e => e.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                               e.Annotation.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                               e.Author.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                               e.Date.ToShortDateString().Contains(searchTerm)).ToList();
+                 .Where(e => e.Title.Contains(searthTerm, StringComparison.OrdinalIgnoreCase) ||
+                             e.Description.Contains(searthTerm, StringComparison.OrdinalIgnoreCase) ||
+                             e.Date.ToShortDateString().Contains(searthTerm, StringComparison.OrdinalIgnoreCase))
+                 .ToList();
 
-                RssItems = RssItems
-                   .Where(r => r.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                               r.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                               r.PublicationDate.ToShortDateString().Contains(searchTerm)).ToList();
+                News = News
+                .Where(e => e.Title.Contains(searthTerm, StringComparison.OrdinalIgnoreCase) ||
+                            e.Description.Contains(searthTerm, StringComparison.OrdinalIgnoreCase) ||
+                            e.PublicationDate.ToShortDateString().Contains(searthTerm, StringComparison.OrdinalIgnoreCase))
+                .ToList();
             }
 
             if (month == "prev") CalendarHelper.AddMonths(-1);
             else if (month == "next") CalendarHelper.AddMonths(1);
             else CalendarHelper.SetCurrentMonth();
 
-            CalendarViewModel = new(ExeptionDays, Employees, Events);
+            CalendarViewModel = new(Employees, Events, ExeptionDays);
             return Page();
-        }
-
-        public async Task<IActionResult> OnPostAsync(int? id)
-        {
-            EventDto eventDto = (await eventsService.GetAllAsync()).FirstOrDefault(e => e.Id == id);
-
-            StringBuilder dataIcs = new();
-            dataIcs.AppendLine("BEGIN:VCALENDAR");
-            dataIcs.AppendLine("VERSION:2.0");
-            dataIcs.AppendLine($"SUMMARY:{eventDto.Title}");
-            dataIcs.AppendLine($"DTSTART:{eventDto.Date}");
-            dataIcs.AppendLine($"UID:{eventDto.Id}");
-            dataIcs.AppendLine($"DESCRIPTION:{eventDto.Annotation} ");
-            dataIcs.AppendLine($"ORGANIZER:{eventDto.Author} ");
-            dataIcs.AppendLine("STATUS:CONFIRMED");
-            dataIcs.AppendLine("PRIORITY:0");
-            dataIcs.AppendLine("END:VEVENT");
-            dataIcs.AppendLine("END:VCALENDAR");
-
-
-            var fileName = $"{id}_{DateTime.Now.ToString("yyyy-MM-dd HHmmss")}.ics";
-            var downloadPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\Downloads";
-            var filePath = Path.Combine(downloadPath, fileName);
-
-            System.IO.File.WriteAllText(filePath, dataIcs.ToString());
-            return RedirectToPage();
         }
     }
 }
