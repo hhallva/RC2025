@@ -1,4 +1,16 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿const buttons = document.querySelectorAll('.event-button')
 
-// Write your JavaScript code.
+buttons.forEach(button => {
+    button.addEventListener('click', async () => {
+        const text = button.getAttribute('data-ics');
+
+        const file = await window.showSaveFilePicker({
+            types: [{accept: {'text/plain':'.ics'}}]
+        })
+        
+        const stream = await file.createWritable();
+        await stream.write(text);
+        await stream.close();
+        alert('Файл сохранен!')
+    })
+})
