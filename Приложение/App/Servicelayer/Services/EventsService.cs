@@ -14,7 +14,8 @@ namespace DataLayer.Services
             _client.BaseAddress = new(_baseUrl);
         }
 
-        public async Task<List<EventDto>> GetAllAsync(int since = 0, int count = 10)
-            => (await _client.GetFromJsonAsync<EventsResponseDto>($"?since={since}&count={count}"))?.Events;
+        public async Task<List<EventDto>> GetAllAsync()
+           => (await _client.GetFromJsonAsync<EventsResponseDto>(""))?.Events;
+
     }
 }
