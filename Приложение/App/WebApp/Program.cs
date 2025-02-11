@@ -4,9 +4,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddHttpClient<RssService>(); // зарегистрировали 
-builder.Services.AddHttpClient<EmployeeService>(); 
-builder.Services.AddHttpClient<EventsService>(); 
+builder.Services.AddHttpClient<EmployeeService>();
+builder.Services.AddHttpClient<EventsService>();
+builder.Services.AddHttpClient<NewsService>();
 builder.Services.AddHttpClient<WorkingCalendarService>();
 var app = builder.Build();
 
