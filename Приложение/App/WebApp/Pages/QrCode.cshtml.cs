@@ -8,42 +8,42 @@ namespace WebApp.Pages
 {
     public class QrCodeModel(EmployeeService employeeService) : PageModel
     {
-        private Employee employee;
-
         public string? QrCodeImage { get; set; }
 
-        public async Task OnGetAsync(int employeeId)
+        public async Task OnGet(int employeeId)
         {
-            employee = await employeeService.GetAsync(employeeId);
+            var employee = (await employeeService.GetAllAsync()).SingleOrDefault(e => e.EmployeeId == employeeId);
 
             if (employee != null)
             {
-                string data = GenerateVCard();
+                string data = GenerateData(employee);
                 QrCodeImage = GenerateQrCode(data);
             }
         }
 
         private string GenerateQrCode(string data)
         {
-            using var qrGenerator = new QRCodeGenerator();
-            using var qrCode = new PngByteQRCode(qrGenerator.CreateQrCode(data, QRCodeGenerator.ECCLevel.Q));
+            var qrGenerator = new QRCodeGenerator();
+            var qrCode = new PngByteQRCode(qrGenerator.CreateQrCode(data, QRCodeGenerator.ECCLevel.Q));
             return "data:image/png;base64," + Convert.ToBase64String(qrCode.GetGraphic(5));
         }
 
-        private string GenerateVCard()
+        private string GenerateData(Employee employee)
         {
-            StringBuilder dataVCard = new();
-            dataVCard.AppendLine("BEGIN:VCARD");
-            dataVCard.AppendLine("VERSION:3.0");
-            dataVCard.AppendLine($"N:{employee.Name}");
-            dataVCard.AppendLine($"FM:{employee.Surname}");
-            dataVCard.AppendLine($"ORG:ГК Дороги России");
-            dataVCard.AppendLine($"TITLE:{employee.Position.Name}");
-            dataVCard.AppendLine($"WORK:{employee.WorkPhone}");
-            dataVCard.AppendLine($"EMAIL:{employee.Email}");
-            dataVCard.AppendLine("END:VCARD");
+            StringBuilder vCard = new();
+            vCard.AppendLine("BEGIN:VCARD");
+            vCard.AppendLine("VERSION:3.0");
+            vCard.AppendLine($"N:{employee.Name}");
+            vCard.AppendLine($"FN:{employee.Surname}");
+            vCard.AppendLine($"ORG:ГК Дороги России");
+            vCard.AppendLine($"TITLE:{employee.Position.Name}");
+            vCard.AppendLine($"WORK:{employee.WorkPhone}");
+            vCard.AppendLine($"TEL:{employee.Phone}");
+            vCard.AppendLine($"EMAIL:{employee.Email}");
+            vCard.AppendLine("END:VCARD");
 
-            return dataVCard.ToString();
+            return vCard.ToString();
         }
+
     }
 }
