@@ -19,12 +19,9 @@ namespace WebApp.Calendar
         public int Year { get; } = CalendarHelper.Date.Year;
         public int Month { get; } = CalendarHelper.Date.Month;
 
-        // количество дней в месяце, чтобы выводить все дни месяца
         public int DaysInMonth => DateTime.DaysInMonth(Year, Month);
-        // номер дня недели (нужно, т.к. воскресенье - нулевой, а должен быть седьмым)
         public int StartWeekDay
            => CalendarHelper.Date.DayOfWeek == DayOfWeek.Sunday ? 7 : (int)CalendarHelper.Date.DayOfWeek;
-        // для вывода названия месяца и года сверху в календаре
         public override string ToString() => CalendarHelper.Date.ToString("MMMM yyyy");
 
     }
