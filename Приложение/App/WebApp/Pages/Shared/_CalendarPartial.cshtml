@@ -49,8 +49,8 @@
                         if (birthdayEmployees.Count > 0)
                         {
                             cssClass += " birthday-day";
-                            var birthdayPeople = birthdayEmployees.Select(e => e.Surname).ToList();
-                            tooltip = $"<div class='birthday-tooltip'>{string.Join("<br />", birthdayPeople)}</div>";
+                            var people = birthdayEmployees.Select(e => e.Surname).ToList();
+                            tooltip = $"<div class='birthday-tooltip'>{string.Join("<br />", people)}</div>";
                         }
                     }
 
