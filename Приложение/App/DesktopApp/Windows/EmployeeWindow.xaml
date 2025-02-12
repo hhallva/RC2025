@@ -61,9 +61,6 @@
                     <TextBlock Text="Должность:" Margin="0,10,0,0"/>
                     <ComboBox x:Name="PositionComboBox" DisplayMemberPath="Name"/>
 
-                    <TextBlock Text="Непосредственный руководитель:" Margin="0,10,0,0"/>
-                    <ComboBox x:Name="DirectManagerComboBox"/>
-
                     <TextBlock Text="Кабинет:" Margin="0,10,0,0"/>
                     <TextBox x:Name="CabinetTextBox" Text="{Binding Cabinet}"/>
 
@@ -72,7 +69,7 @@
                     <Button Content="Уволить сотрудника" Margin="0,10,0,0" Background="#FFFF8C56" BorderBrush="#FFE6E6E6" x:Name="DismissButton" Click="DismissButton_Click"/>
                 </StackPanel>
             </StackPanel>
-            <CheckBox Content="Разрешить редактирование" x:Name="EditCheckBox" Click="EditCheckBox_Click" Margin="0,10,0,0"/>
+            <CheckBox Content="Разрешить редактирование" x:Name="EditCheckBox" Click="EditCheckBox_Click" Margin="10,0,0,0"/>
         </StackPanel>
 
         <DockPanel Grid.Column="1" Margin="10" Background="#ffffff">
