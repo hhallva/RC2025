@@ -50,7 +50,7 @@ namespace WebApp.Pages
             else if (month == "next") CalendarHelper.AddMonths(1);
             else CalendarHelper.SetCurrentMonth();
 
-            CalendarViewModel = new(Employees, Events, ExeptionDays);
+            CalendarViewModel = new(ExeptionDays, Employees, Events);
             return Page();
         }
     }
