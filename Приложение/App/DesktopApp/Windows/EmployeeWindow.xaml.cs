@@ -118,11 +118,13 @@ namespace DesktopApp
                 errors.AppendLine("Номер телефона может содежать только цифры и спецсимволы \"+\", \"(\", \")\", \"-\", \" \", \"#\"\nМаксимум 20 символов.");
 
             pattern = @"^[e-zA-Z0-9а-яА-Я]+@[e-zA-Z0-9а-яА-Я\.]+\.[e-zA-Zа-яА-Я0-9]{2,}$";
-            if (!Regex.IsMatch(EmailTextBox.Text, pattern))
+            if (!string.IsNullOrWhiteSpace(EmailTextBox.Text))
+                if (!Regex.IsMatch(EmailTextBox.Text, pattern))
                 errors.AppendLine("Поле \"Email\" заполненно неправильно.\nЭлектронная почта должна быть написанна в соответствии с шаблоном: x@x.x\nx - символ русского или английского алфавита, почта может модержать числа.");
 
             pattern = "^[e-zA-Z0-9а-яА-Я\\s]{1,10}$";
-            if (!Regex.IsMatch(CabinetTextBox.Text, pattern))
+            if (!string.IsNullOrWhiteSpace(CabinetTextBox.Text))
+                if (!Regex.IsMatch(CabinetTextBox.Text, pattern))
                 errors.AppendLine("Поле \"Кабинет\" заполненно неправильно.\nКабинет может содежать только 10 символов.");
 
             if (errors.Length > 0)

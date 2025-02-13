@@ -54,7 +54,6 @@
                     <TextBox x:Name="EmailTextBox" Text="{Binding Email}"/>
 
                     <TextBlock Text="Стуктурное подразделение:" Margin="0,10,0,0"/>
-                    <!--<TextBox x:Name="DepartmentTextBox" Text="{Binding DepartmentId}"/>-->
                     <ComboBox x:Name="DepartmentComboBox"/>
 
 
