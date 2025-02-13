@@ -35,27 +35,17 @@
                     <TextBlock Text="Дата рождения:" Margin="0,10,0,0"/>
                     <DatePicker x:Name="BirthdayDatePicker" SelectedDate="{Binding Birthday}"/>
 
-                    <Grid Margin="0,10,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" Margin="0,0,0,5">
-                            <TextBlock Text="Мобильный телефон:"/>
-                            <TextBox x:Name="PhoneTextBox" Text="{Binding Phone}"/>
-                        </StackPanel>
-                        <StackPanel Grid.Column="1"  Margin="5,0,0,0">
-                            <TextBlock Text="Рабочий телефон:"/>
-                            <TextBox x:Name="WorkPhoneTextBox" Text="{Binding WorkPhone}"/>
-                        </StackPanel>
-                    </Grid>
+                    <TextBlock Text="Мобильный телефон:" Margin="0,10,0,0"/>
+                    <TextBox x:Name="PhoneTextBox" Text="{Binding Phone}"/>
+
+                    <TextBlock Text="Рабочий телефон:" Margin="0,10,0,0"/>
+                    <TextBox x:Name="WorkPhoneTextBox" Text="{Binding WorkPhone}"/>
 
                     <TextBlock Text="Электронная почта:" Margin="0,5,0,0"/>
                     <TextBox x:Name="EmailTextBox" Text="{Binding Email}"/>
 
                     <TextBlock Text="Стуктурное подразделение:" Margin="0,10,0,0"/>
                     <ComboBox x:Name="DepartmentComboBox"/>
-
 
                     <TextBlock Text="Должность:" Margin="0,10,0,0"/>
                     <ComboBox x:Name="PositionComboBox" DisplayMemberPath="Name"/>
@@ -90,11 +80,10 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <CheckBox x:Name="PastCheckBox" Content="Прошедшие" Grid.Column="0" Click="FilterCheckBox_Click"/>
-                    <CheckBox x:Name="CurrentCheckBox" Content="Текущие" Grid.Column="1" Click="FilterCheckBox_Click" IsChecked="True"/>
-                    <CheckBox x:Name="FutureCheckBox" Content="Будущие" Grid.Column="2" Click="FilterCheckBox_Click" IsChecked="True"/>
+                    <ToggleButton x:Name="PastToggleButton" Content="Прошедшие" Grid.Column="0" Click="FilterToggleButton_Click" BorderBrush="{x:Null}" Background="#FFE4F4CC" Margin="5,0,5,0"/>
+                    <ToggleButton x:Name="CurrentToggleButton" Content="Текущие" Grid.Column="1" Click="FilterToggleButton_Click" IsChecked="True" BorderBrush="{x:Null}" Background="#FFE4F4CC" Margin="5,0,5,0"/>
+                    <ToggleButton x:Name="FutureToggleButton" Content="Будущие" Grid.Column="2" Click="FilterToggleButton_Click" IsChecked="True" BorderBrush="{x:Null}" Background="#FFE4F4CC" Margin="5,0,5,0"/>
                 </Grid>
-
 
                 <TextBlock Text="Обучения" Grid.Row="1"/>
                 <ListView x:Name="EventsListView" HorizontalContentAlignment="Stretch" Grid.Row="2" >

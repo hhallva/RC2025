@@ -161,16 +161,16 @@ namespace DesktopApp
             }
         }
 
-        private void FilterCheckBox_Click(object sender, RoutedEventArgs e)
+        private void FilterToggleButton_Click(object sender, RoutedEventArgs e)
         {
             UpdateListViews();
         }
 
         private void UpdateListViews()
         {
-            bool showFuture = FutureCheckBox.IsChecked == true;
-            bool showCurrent = CurrentCheckBox.IsChecked == true;
-            bool showPast = PastCheckBox.IsChecked == true;
+            bool showFuture = FutureToggleButton.IsChecked == true;
+            bool showCurrent = CurrentToggleButton.IsChecked == true;
+            bool showPast = PastToggleButton.IsChecked == true;
 
             var now = DateTime.Now.Date;
 
