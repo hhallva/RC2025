@@ -39,7 +39,7 @@ public partial class Employee
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
-    [JsonIgnore , NotMapped]
+    [JsonIgnore, NotMapped]
     public virtual Department Department { get; set; } = null!;
 
     public virtual ICollection<Department> Departments { get; set; } = new List<Department>();
