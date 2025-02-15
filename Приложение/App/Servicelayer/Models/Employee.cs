@@ -25,11 +25,9 @@ public partial class Employee
 
     public int PositionId { get; set; }
 
-    public int? DirectManager { get; set; }
+    public DateTime? Birthday { get; set; } 
 
-    public DateTime? Birthday { get; set; }
-
-    public string Password { get; set; } = null!;
+    public string? Password { get; set; }
 
     public DateTime? DismissalDate { get; set; }
 
@@ -37,25 +35,19 @@ public partial class Employee
     public virtual ICollection<AbsenceEvent> AbsenceEventEmployees { get; set; } = new List<AbsenceEvent>();
 
     [NotMapped]
-    public virtual ICollection<AbsenceEvent> AbsenceEventReplasementEmployees { get; set; } = new List<AbsenceEvent>();
+    public virtual ICollection<AbsenceEvent> AbsenceEventReplacementEmployees { get; set; } = new List<AbsenceEvent>();
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
-    [JsonIgnore]
-    public virtual Department? Department { get; set; } = null!;
+    [JsonIgnore , NotMapped]
+    public virtual Department Department { get; set; } = null!;
 
     public virtual ICollection<Department> Departments { get; set; } = new List<Department>();
 
-    [JsonIgnore]
-
-    public virtual Employee? DirectManagerNavigation { get; set; }
+    public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
 
     [NotMapped]
     public virtual ICollection<Event> EventsNavigation { get; set; } = new List<Event>();
-
-    [JsonIgnore]
-
-    public virtual ICollection<Employee> InverseDirectManagerNavigation { get; set; } = new List<Employee>();
 
     [NotMapped]
     public virtual Position Position { get; set; } = null!;

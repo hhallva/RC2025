@@ -7,7 +7,7 @@ public partial class Event
 {
     public int EventId { get; set; }
 
-    public int EventTypeId { get; set; }
+    public int TypeId { get; set; }
 
     public string Name { get; set; } = null!;
 
@@ -22,11 +22,11 @@ public partial class Event
     public string? Description { get; set; }
 
     [NotMapped]
-    public virtual EventType? EventType { get; set; } = null!;
+    public virtual EventType? Type { get; set; } = null!;
 
     public virtual Employee? ResponsibleEmployee { get; set; }
 
-    public virtual ICollection<Department> Dapartments { get; set; } = new List<Department>();
+    public virtual ICollection<Department> Departments { get; set; } = new List<Department>();
 
     public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
 

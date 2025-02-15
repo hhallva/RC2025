@@ -8,7 +8,7 @@ public partial class WorkingCalendar
     /// <summary>
     /// Идентификатор строки
     /// </summary>
-    public long WorkingCalendarId { get; set; }
+    public int Id { get; set; }
 
     /// <summary>
     /// День-исключение

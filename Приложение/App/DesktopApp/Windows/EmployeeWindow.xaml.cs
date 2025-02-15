@@ -55,12 +55,10 @@ namespace DesktopApp
                 Employee = new();
             }
 
-
             DataContext = Employee;
 
             DepartmentComboBox.ItemsSource = _departments;
             DepartmentComboBox.SelectedItem = _departments.Find(e => e.DepartmentId == Employee.DepartmentId);
-
 
             _positions = await _positionService.GetAsync();
             PositionComboBox.ItemsSource = _positions;
@@ -102,6 +100,7 @@ namespace DesktopApp
 
                 password.Append((char)charCode);
             }
+            Employee.Password = password.ToString();
             PasswordTextBox.Text = password.ToString();
         }
 
@@ -156,7 +155,7 @@ namespace DesktopApp
 
         private async void DismissButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Employee.Events.Where(e => e.EventTypeId == 1)
+            if (Employee.Events.Where(e => e.TypeId == 1)
                 .Any(e => e.StartDate > DateTime.Now))
             {
                 MessageBox.Show("Невозмонжно уволить сотрудника.\nПрисутсвтует запись на обучение.", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -199,12 +198,12 @@ namespace DesktopApp
 
             FreeDaysListView.ItemsSource = Employee.AbsenceEventEmployees
                 .Where(e => (showFuture && e.StartDate > now) || (showCurrent && e.StartDate <= now && e.EndDate >= now) || (showPast && e.EndDate < now))
-                .Where(e => !e.AbsenceType.ToLower().Contains("отпуск"))
+                .Where(e => !e.Type.ToLower().Contains("отпуск"))
                 .OrderBy(e => e.StartDate);
 
             HolidaysListView.ItemsSource = Employee.AbsenceEventEmployees
                 .Where(e => (showFuture && e.StartDate > now) || (showCurrent && e.StartDate <= now && e.EndDate >= now) || (showPast && e.EndDate < now))
-                .Where(e => e.AbsenceType.ToLower().Contains("отпуск"))
+                .Where(e => e.Type.ToLower().Contains("отпуск"))
                 .OrderBy(e => e.StartDate);
         }
 
@@ -227,11 +226,7 @@ namespace DesktopApp
 
         private void EditData(Employee employee)
         {
-            employee.Password = employee.Password ?? "Password";
-            employee.AbsenceEventEmployees = new List<AbsenceEvent>();
-            employee.Events = new List<Event>();
             employee.PositionId = (PositionComboBox.SelectedItem as Position).PositionId;
-            employee.Position = (PositionComboBox.SelectedItem as Position);
             employee.DepartmentId = (DepartmentComboBox.SelectedItem as Department).DepartmentId;
         }
 
@@ -266,8 +261,8 @@ namespace DesktopApp
                         Name = "Обучение",
                         StartDate = startDate,
                         EndDate = endDate,
-                        EventTypeId = 1,
-                        Description = DescriptionTextBox.Text,
+                        TypeId = 1,
+                        Description = (string.IsNullOrWhiteSpace(DescriptionTextBox.Text)) ? null : DescriptionTextBox.Text,
                         Status = "Запланировано"
                     };
 
@@ -283,9 +278,9 @@ namespace DesktopApp
                     AbsenceEvent absenceEvent = new()
                     {
                         StartDate = startDate,
-                        DaysCount = (int)(endDate - startDate).TotalDays,
-                        AbsenceType = content,
-                        Description = DescriptionTextBox.Text,
+                        EndDate = endDate,
+                        Type = content,
+                        Description = (string.IsNullOrWhiteSpace(DescriptionTextBox.Text)) ? null : DescriptionTextBox.Text,
                         EmployeeId = Employee.EmployeeId
                     };
 
@@ -313,16 +308,16 @@ namespace DesktopApp
                 if (absenceEvents.Any(a => (absence.StartDate <= a.EndDate && a.StartDate <= absence.EndDate)))
                     errors.Append("Отпуск и отгул не могут быть в один одни даты (не могут пересекаться).");
                 if (events.Any(e => (absence.StartDate <= e.EndDate && e.StartDate <= absence.EndDate) &&
-                                (absence.AbsenceType == "Отгул" && e.EventTypeId == 1)))
+                                (absence.Type == "Отгул" && e.TypeId == 1)))
                     errors.Append("Отгул и обучение не могут быть в одни даты (не могут пересекаться).");
                 if (specialDays.Any(s => (absence.StartDate <= s.ExceptionDate && absence.EndDate >= s.ExceptionDate) &&
-                                  (absence.AbsenceType == "Отгул" && s.IsWorkingDay == false)))
+                                  (absence.Type == "Отгул" && s.IsWorkingDay == false)))
                     errors.Append("Отгул не может быть в выходной день по производственному календарю.");
             }
             if (newEvent is Event training)
             {
                 if (absenceEvents.Any(a => (training.StartDate <= a.EndDate && a.StartDate <= training.EndDate) &&
-                                               a.AbsenceType == "Отгул"))
+                                               a.Type == "Отгул"))
                     errors.Append("Отгул и обучение не могут быть в одни даты (не могут пересекаться).");
             }
 

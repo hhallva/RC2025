@@ -9,13 +9,13 @@ public partial class AbsenceEvent
 
     public DateTime StartDate { get; set; }
 
-    public int DaysCount { get; set; }
+    public DateTime EndDate { get; set; }
 
-    public string AbsenceType { get; set; } = null!;
+    public string Type { get; set; } = null!;
 
     public string? Description { get; set; }
 
-    public int? ReplasementEmployeeId { get; set; }
+    public int? ReplacementEmployeeId { get; set; }
 
     public int EmployeeId { get; set; }
 
@@ -25,5 +25,5 @@ public partial class AbsenceEvent
 
     [JsonIgnore]
     [NotMapped]
-    public virtual Employee? ReplasementEmployee { get; set; }
+    public virtual Employee? ReplacementEmployee { get; set; }
 }

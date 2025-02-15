@@ -2,7 +2,6 @@ using DataLayer.DataContexts;
 using DataLayer.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,7 +29,7 @@ builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opt =>
 {
-    opt.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "WebApi.xml"));
+    opt.EnableAnnotations();
     opt.AddServer(new() { Url = "http://localhost:5297" }); //ѕри добавлении этой строки в Postman по€вл€етс€ адресс
 });
 

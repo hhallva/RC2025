@@ -1,6 +1,6 @@
 ﻿namespace DataLayer.Models;
 
-public partial class Сandidate
+public partial class Candidate
 {
     public int CandidateId { get; set; }
 
@@ -10,11 +10,11 @@ public partial class Сandidate
 
     public string? Patronymic { get; set; }
 
-    public int DesiredPosition { get; set; }
+    public int PositionId { get; set; }
 
     public string Resume { get; set; } = null!;
 
-    public DateTime DateReceived { get; set; }
+    public DateTime CreatedDate { get; set; }
 
-    public virtual Position DesiredPositionNavigation { get; set; } = null!;
+    public virtual Position Position { get; set; } = null!;
 }

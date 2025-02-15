@@ -1,9 +1,9 @@
 ﻿using DataLayer.DataContexts;
 using DataLayer.DTOs;
 using DataLayer.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace WebApi.Controllers
 {
@@ -12,20 +12,15 @@ namespace WebApi.Controllers
     /// </summary>
     [Route("api/v1/")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class DocumentsController(AppDbContext context) : ControllerBase
     {
-        /// <summary>
-        /// GET: /api/v1/Documents
-        /// Получение списка всех документов
-        /// </summary>
-        /// <remarks>Получает список всех документов из базы данных</remarks>
-        /// <returns>Список документов</returns>
-        /// <response code="200">Успешное получение списка</response>
-        /// <response code="404">Документы не найдены</response>
         [HttpGet("Documents")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(DocumentDto))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiErrorDto))]
+        [SwaggerOperation(
+            Summary = "Получение списка документов ",
+            Description = "Метод для получения списка документов из БД.")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Успешное получение списка. Возврат списка документов.", Type = typeof(IEnumerable<DocumentDto>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Документы не найдены. Возврат сообщения об ошибке.", Type = typeof(ApiErrorDto))]
         public async Task<ActionResult<IEnumerable<DocumentDto>>> GetDocumentsAsync()
         {
             var documents = await context.Documents
@@ -33,8 +28,8 @@ namespace WebApi.Controllers
                 {
                     Id = m.DocumentId,
                     Title = m.Name,
-                    CreatedDate = m.CreateDate,
-                    ApprovedDate = m.ConfirmDate,
+                    CreatedDate = m.CreatedDate,
+                    ApprovedDate = m.ApprovedDate,
                     Category = m.Category,
                     HasComments = m.Comments.Count != 0
                 }).ToListAsync();
@@ -44,21 +39,15 @@ namespace WebApi.Controllers
             return documents;
         }
 
-        /// <summary>
-        /// GET: /api/v1/Document/{id}/Comments
-        /// Получение списка комментариев у конктерного документа
-        /// </summary>
-        ///<remarks>Принимает id необходимого документа и возвращает список комментариев оставленных у него</remarks>
-        /// <param name="id">Id документа, у которого хотим получить комментарии</param>
-        /// <returns>Список комментариев</returns>
-        /// <response code="200">Успешное получение списка комментариев</response>
-        /// <response code="400">Неверный параметр</response>
-        /// <response code="404">Не найдены комментарии для документа</response>
-        [HttpGet("Document/{id:int}/Comments")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CommentDto))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiErrorDto))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiErrorDto))]
-        public async Task<ActionResult<IEnumerable<CommentDto>>> GetDocumentCommentsAsync(int id)
+        [HttpGet("Document/{id}/Comments")]
+        [SwaggerOperation(
+            Summary = "Получение списка комментариев ",
+            Description = "Метод для получения списка комментариев относящихся к документу из БД.")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Успешное получение списка. Возврат списка комментариев.", Type = typeof(IEnumerable<CommentDto>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Комментарии не найдены. Возврат сообщения об ошибке.", Type = typeof(ApiErrorDto))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "Неверные параметры. Возврат сообщения об ошибке.", Type = typeof(ApiErrorDto))]
+        public async Task<ActionResult<IEnumerable<CommentDto>>> GetDocumentCommentsAsync(
+            [SwaggerParameter("Id документа у которого хотим получить комментарии", Required = true)] int id)
         {
             if (id <= 0)
                 return BadRequest(new ApiErrorDto("Недопустимый идентификатор документа. ID должен быть положительным числом.", 2000));
@@ -76,20 +65,15 @@ namespace WebApi.Controllers
             return commentDtos;
         }
 
-        /// <summary>
-        /// POST: /api/v1/Document/{id}/Comments
-        /// Создание комментария для конктерного документа
-        /// </summary>
-        ///<remarks>Принимает id документа и комментарий, сохраняет этот комменатрий в базе данных</remarks>
-        /// <param name="id">Id документа, которому хотим оставить комментарий</param>
-        /// <param name="commentDto">Комментарий</param>
-        /// <returns>Созданный комментарий</returns>
-        /// <response code="201">Успешное создание комментария</response>
-        /// <response code="400">Неправильные параметры</response>       
         [HttpPost("Document/{id}/Comments")]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CommentDto))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiErrorDto))]
-        public async Task<ActionResult<CommentDto>> PostCommentAsync(int id, CommentDto commentDto)
+        [SwaggerOperation(
+             Summary = "Создание комментария",
+             Description = "Метод для создания комментария к документу из БД, принимает Id документа и данные комментария, возвращает созданный комментарий")]
+        [SwaggerResponse(StatusCodes.Status200OK, "Успешное создание комментария. Возврат созданного комментария.", Type = typeof(CommentDto))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "Неверные параметры. Возврат сообщения об ошибке.", Type = typeof(ApiErrorDto))]
+        public async Task<ActionResult<CommentDto>> PostCommentAsync(
+             [SwaggerParameter("Id документа у которого хотим оставить комментарий", Required = true)] int id,
+             [SwaggerRequestBody("Данные комментария", Required = true)] CommentDto commentDto)
         {
             try
             {

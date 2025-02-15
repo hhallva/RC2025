@@ -2,6 +2,7 @@
 using DataLayer.DTOs;
 using DataLayer.Services;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace WebApi.Controllers
 {
@@ -10,37 +11,30 @@ namespace WebApi.Controllers
     /// </summary>
     [Route("api/v1/")]
     [ApiController]
-    public class AccountController(TokenService tokenService, AppDbContext context) : ControllerBase
+    public class AccountController(TokenService service, AppDbContext context) : ControllerBase
     {
-        /// <summary>
-        /// POST: /api/v1/SignIn
-        /// Вход в учетную запись, генерация JWT-токена
-        /// </summary>
-        /// <remarks>Принимает учетные данные пользователя (email и пароль) и при удачной аунтентификации позвращает JWT-токен</remarks>
-        /// <param name="employee">Объект содержащий email и пароль пользователя</param>
-        /// <returns>JWT-токен</returns>
-        /// <response code="200">Успешная авторизация</response>
-        /// <response code="400">Неверные параметры</response>
-        /// <response code="403">Доступ запрещён</response>
-        /// <response code="404">Пользователь не найден</response>
         [HttpPost("SignIn")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ApiErrorDto))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ApiErrorDto))]
-        [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ApiErrorDto))]
-        public IActionResult Login(LoginDto employee)
+        [SwaggerOperation(
+            Summary = "Получение JWT-токена",
+            Description = "Метод для генерации JWT-токена, принимает учетные данные пользователя, при успешной авторизации возварщает JWT-токен.")]
+        [SwaggerResponse(StatusCodes.Status201Created, "Успешная авторизация. Возврат JWT-токена.", Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Пользователь не найден. Возврат сообщения об ошибке.", Type = typeof(ApiErrorDto))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "Неверные параметры. Возврат сообщения об ошибке.", Type = typeof(ApiErrorDto))]
+        [SwaggerResponse(StatusCodes.Status403Forbidden, "Доступ запрещен. Возврат сообщения об ошибке.", Type = typeof(ApiErrorDto))]
+        public IActionResult Login(
+            [SwaggerRequestBody("Учетные данные пользователя", Required = true)] LoginDto employee)
         {
             if (string.IsNullOrWhiteSpace(employee.Email))
-                return BadRequest(new ApiErrorDto("Почта не указана", 3000));
+                return BadRequest(new ApiErrorDto("Почта не указана", 1000));
             if (string.IsNullOrWhiteSpace(employee.Password))
-                return BadRequest(new ApiErrorDto("Пароль не указан", 3001));
+                return BadRequest(new ApiErrorDto("Пароль не указан", 1001));
 
             var dbEmployee = context.Employees.FirstOrDefault(u => u.Email == employee.Email);
-            if (dbEmployee is null)
-                return NotFound(new ApiErrorDto("Пользователь не найден", 3002));
+            if (dbEmployee == null)
+                return NotFound(new ApiErrorDto("Пользователь не найден", 1002));
             if (dbEmployee.Password != employee.Password)
-                return StatusCode(403, new ApiErrorDto("Доступ запрещён", 3003));
-            return Ok(tokenService.GenerateToken(dbEmployee));
+                return StatusCode(403, new ApiErrorDto("Доступ запрещён", 1003));
+            return Ok(service.GenerateToken(dbEmployee));
         }
     }
 }

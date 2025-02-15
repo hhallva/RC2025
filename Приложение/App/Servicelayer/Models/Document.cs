@@ -6,15 +6,17 @@ public partial class Document
 
     public string Name { get; set; } = null!;
 
-    public DateTime CreateDate { get; set; }
+    public DateTime CreatedDate { get; set; }
 
-    public DateTime ConfirmDate { get; set; }
+    public DateTime ApprovedDate { get; set; }
 
     public string Status { get; set; } = null!;
 
     public string Category { get; set; } = null!;
 
-    public string? Author { get; set; }
+    public int AuthorId { get; set; }
+
+    public virtual Employee Author { get; set; } = null!;
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 

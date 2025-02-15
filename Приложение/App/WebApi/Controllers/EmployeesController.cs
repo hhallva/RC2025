@@ -65,7 +65,7 @@ namespace WebApi.Controllers
 
             var absences = await context.AbsenceEvents
                 .Where(a => a.EmployeeId == id)
-                .Where(e => e.StartDate.AddDays(e.DaysCount - 1) > DateTime.Now)
+                .Where(e => e.StartDate > DateTime.Now)
                 .ToListAsync();
 
             context.AbsenceEvents.RemoveRange(absences);
