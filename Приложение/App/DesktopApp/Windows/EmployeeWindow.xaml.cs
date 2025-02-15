@@ -20,6 +20,7 @@ namespace DesktopApp
         private Employee _employee;
         private List<Department> _departments;
         private List<Position> _positions;
+        private Random random = new();
 
         public Employee Employee { get => _employee; set => _employee = value; }
 
@@ -36,7 +37,7 @@ namespace DesktopApp
             AddButton.Visibility = Visibility.Collapsed;
             DismissButton.Visibility = Visibility.Collapsed;
             SaveButton.Visibility = Visibility.Collapsed;
-           
+
             if (Employee != null)
             {
                 EmployeeData.IsEnabled = false;
@@ -86,6 +87,24 @@ namespace DesktopApp
             }
         }
 
+        private void GeneratePassword_Click(object sender, RoutedEventArgs e)
+        {
+            StringBuilder password = new();
+            while (password.Length < 8)
+            {
+                int type = random.Next(3);
+                int charCode = type switch
+                {
+                    0 => random.Next((int)'A', (int)'Z' + 1),
+                    1 => random.Next((int)'a', (int)'z' + 1),
+                    _ => random.Next((int)'0', (int)'9' + 1)
+                };
+
+                password.Append((char)charCode);
+            }
+            PasswordTextBox.Text = password.ToString();
+        }
+
         private bool CheckCata()
         {
             StringBuilder errors = new();
@@ -117,7 +136,7 @@ namespace DesktopApp
             if (errors.ToString().Contains("заполненно неправильно."))
                 errors.AppendLine("Номер телефона может содежать только цифры и спецсимволы \"+\", \"(\", \")\", \"-\", \" \", \"#\"\nМаксимум 20 символов.");
 
-            pattern = @"^[e-zA-Z0-9а-яА-Я]+@[e-zA-Z0-9а-яА-Я\.]+\.[e-zA-Zа-яА-Я0-9]{2,}$";
+            pattern = "^[e-zA-Z0-9а-яА-Я]+@[e-zA-Z0-9а-яА-Я\\.]+\\.[e-zA-Zа-яА-Я0-9]{2,}$";
             if (!string.IsNullOrWhiteSpace(EmailTextBox.Text))
                 if (!Regex.IsMatch(EmailTextBox.Text, pattern))
                 errors.AppendLine("Поле \"Email\" заполненно неправильно.\nЭлектронная почта должна быть написанна в соответствии с шаблоном: x@x.x\nx - символ русского или английского алфавита, почта может модержать числа.");
@@ -320,5 +339,7 @@ namespace DesktopApp
             EmployeeData.IsEnabled = EditCheckBox.IsChecked == true;    
             EventData.IsEnabled = EditCheckBox.IsChecked == true;
         }
+
+       
     }
 }

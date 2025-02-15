@@ -9,7 +9,7 @@
         Title="Карточка сотрудника" 
         WindowStartupLocation="CenterScreen"
         Loaded="Window_Loaded"
-        Height="650" Width="950" 
+        Height="750" Width="950" 
         MinHeight="650" MinWidth="950">
     <Window.DataContext>
         <viewModels:Employee/>
@@ -52,7 +52,11 @@
 
                     <TextBlock Text="Кабинет:" Margin="0,10,0,0"/>
                     <TextBox x:Name="CabinetTextBox" Text="{Binding Cabinet}"/>
+                    
+                    <TextBlock Text="Пароль:" Margin="0,10,0,0"/>
+                    <TextBox x:Name="PasswordTextBox" Text="{Binding Password}"/>
 
+                    <Button Content="Сгенерировать случайный пароль" Margin="0,10,0,0" Background="#FFCCE8F4" BorderBrush="#FFE6E6E6" x:Name="GeneratePassword" Click="GeneratePassword_Click"/>
                     <Button Content="Сохранить именения" Margin="0,10,0,0" Background="#FFE4F4CC" BorderBrush="#FFE6E6E6" x:Name="SaveButton" Click="SaveButton_Click"/>
                     <Button Content="Добавить сотрудника" Margin="0,10,0,0" Background="#FFE4F4CC" BorderBrush="#FFE6E6E6" x:Name="AddButton" Click="AddEmployeeButton_Click"/>
                     <Button Content="Уволить сотрудника" Margin="0,10,0,0" Background="#FFFF8C56" BorderBrush="#FFE6E6E6" x:Name="DismissButton" Click="DismissButton_Click"/>
