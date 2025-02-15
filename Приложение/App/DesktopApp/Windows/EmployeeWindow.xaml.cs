@@ -226,6 +226,10 @@ namespace DesktopApp
 
         private void EditData(Employee employee)
         {
+            employee.Password = (string.IsNullOrWhiteSpace(employee.Password)) ? null : employee.Password.Trim();
+            employee.Patronymic = (string.IsNullOrWhiteSpace(employee.Patronymic)) ? null : employee.Patronymic.Trim();
+            employee.Phone = (string.IsNullOrWhiteSpace(employee.Phone)) ? null : employee.Phone.Trim();
+
             employee.PositionId = (PositionComboBox.SelectedItem as Position).PositionId;
             employee.DepartmentId = (DepartmentComboBox.SelectedItem as Department).DepartmentId;
         }
