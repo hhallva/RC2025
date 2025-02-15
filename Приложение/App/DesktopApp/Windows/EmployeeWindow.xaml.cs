@@ -49,7 +49,7 @@ namespace DesktopApp
             }
             else
             {
-                AddEventButton.IsEnabled = false;
+                AddEventStackPanel.IsEnabled = false;
 
                 AddButton.Visibility = Visibility.Visible;
                 Employee = new();
