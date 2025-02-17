@@ -69,7 +69,7 @@ namespace DesktopApp
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (CheckCata())
+            if (await CheckData())
                 return;
 
             try
@@ -104,7 +104,14 @@ namespace DesktopApp
             PasswordTextBox.Text = password.ToString();
         }
 
-        private bool CheckCata()
+        private async void GenerateEmail_Click(object sender, RoutedEventArgs e)
+        {
+            var email = $"{Employee.Surname.ToLower()}@гкдр.ру";
+            Employee.Email = email.ToString();
+            EmailTextBox.Text = email.ToString();
+        }
+
+        private async Task<bool> CheckData()
         {
             StringBuilder errors = new();
 
@@ -140,6 +147,11 @@ namespace DesktopApp
                 if (!Regex.IsMatch(EmailTextBox.Text, pattern))
                 errors.AppendLine("Поле \"Email\" заполненно неправильно.\nЭлектронная почта должна быть написанна в соответствии с шаблоном: x@x.x\nx - символ русского или английского алфавита, почта может модержать числа.");
 
+            var emlpoyees = await _employeeService.GetAllAsync();
+
+            if (emlpoyees.Any(e => e.Email == Employee.Email))
+               errors.AppendLine("Такая почта уже существует!");
+
             pattern = "^[e-zA-Z0-9а-яА-Я\\s]{1,10}$";
             if (!string.IsNullOrWhiteSpace(CabinetTextBox.Text))
                 if (!Regex.IsMatch(CabinetTextBox.Text, pattern))
@@ -158,7 +170,7 @@ namespace DesktopApp
             if (Employee.Events.Where(e => e.TypeId == 1)
                 .Any(e => e.StartDate > DateTime.Now))
             {
-                MessageBox.Show("Невозмонжно уволить сотрудника.\nПрисутсвтует запись на обучение.", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Невозможно уволить сотрудника.\n Присутствует запись на обучение.", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
@@ -209,7 +221,7 @@ namespace DesktopApp
 
         private async void AddEmployeeButton_Click(object sender, RoutedEventArgs e)
         {
-            if (CheckCata())
+            if (await CheckData())
                 return;
 
             try

@@ -10,7 +10,7 @@
                     null : 
                     (int)(DateTime.Now.Date - DismissalDate.Value.Date).TotalDays;
 
-        public bool IsDismissedAgo => (IsDismiss && DayAfterDismissal > 30);
+        public bool IsDismissedAgo => (IsDismiss && DayAfterDismissal > 14);
 
     }
 }
