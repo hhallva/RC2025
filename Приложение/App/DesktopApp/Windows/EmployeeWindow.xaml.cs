@@ -130,7 +130,9 @@ namespace DesktopApp
             if (string.IsNullOrWhiteSpace(CabinetTextBox.Text))
                 errors.AppendLine("Поле \"Кабинет\" обязательно для заполнения.");
 
-            string pattern = @"^[\+]?[\d\(\)\-\s#]{1,20}$";
+   
+            string pattern = "^[\\+]?[\\d\\(\\)\\-\\s#]{1,20}$";
+             pattern = @"^\+\d\(\d{3})\d{3}\-\d{2}-\d{2}$";
             if (!string.IsNullOrWhiteSpace(PhoneTextBox.Text))
                 if (!Regex.IsMatch(PhoneTextBox.Text, pattern))
                     errors.AppendLine("Поле \"Мобильный телефон\" заполненно неправильно.");
