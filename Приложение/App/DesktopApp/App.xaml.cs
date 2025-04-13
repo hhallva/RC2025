@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Net.Http;
+using System.Windows;
 
 namespace DesktopApp
 {
@@ -7,6 +8,6 @@ namespace DesktopApp
     /// </summary>
     public partial class App : Application
     {
-
+        public static HttpClient HttpClient { get; set; } = new();
     }
 }

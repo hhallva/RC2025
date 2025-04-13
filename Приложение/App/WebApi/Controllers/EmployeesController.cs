@@ -1,5 +1,6 @@
 ﻿using DataLayer.DataContexts;
 using DataLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,7 @@ namespace WebApi.Controllers
     public class EmployeesController(AppDbContext context) : ControllerBase
     {
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<Employee>> GetAllEmployeesAsync()
         {
             var employee = await context.Employees
@@ -21,11 +23,6 @@ namespace WebApi.Controllers
 
             return Ok(employee);
         }
-
-
-
-
-
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Employee>> GetEmployeeAsync(int id)
